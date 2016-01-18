@@ -1,0 +1,13 @@
+postgres:
+  image: postgres:9.5
+  ports:
+    - '5432:5432'
+  environment:
+    - POSTGRES_PASSWORD=1234
+    - POSTGRES_USER=dev
+    - POSTGRES_DB=dev-db
+
+redis:
+  image: redis:3.0
+  ports:
+    - '6379:6379'
