@@ -1,0 +1,62 @@
+$form-border-color: #d6d6d6;
+
+.form-container {
+  background-color: white;
+  border: 1px solid $form-border-color;
+  width: 350px;
+  margin: 100px auto 0;
+  padding: 0;
+}
+
+.form-container__switch {
+  @extend .clearfix;
+}
+
+.form-container__switch-btn {
+  background-color: transparent;
+  width: 50%;
+  height: 60px;
+  border: none;
+  display: block;
+  float: left;
+  text-align: center;
+  line-height: 60px;
+  font-size: 22px;
+  text-decoration: none;
+  color: inherit;
+
+  box-shadow: 0 0 0 1px $form-border-color;
+
+  &.right {
+    box-shadow: 0 0 0 1px $form-border-color;
+  }
+
+  &.active {
+    box-shadow: none;
+  }
+}
+
+.form {
+  padding: 20px;
+}
+
+.form-field {
+  margin-bottom: 15px;
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.form-field__label {
+  display: block;
+  margin-bottom: 5px;
+  font-size: 18px;
+}
+
+.form-field__input {
+  display: block;
+  width: 100%;
+  padding: 5px;
+  border: 1px solid $form-border-color;
+  font-size: 18px;
+}

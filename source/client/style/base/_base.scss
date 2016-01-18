@@ -1,0 +1,11 @@
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+body {}
+
+.clearfix::after {
+  content: "";
+  display: table;
+  clear: both;
+}

@@ -6,6 +6,7 @@
   "author": "",
   "license": "",
   "dependencies": {
+    "classnames": "^2.2.3",
     "config": "^1.19.0",
     "connect-redis": "^3.0.2",
     "ejs": "^2.3.4",

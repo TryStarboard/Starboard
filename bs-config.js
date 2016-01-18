@@ -4,8 +4,9 @@ module.exports = {
   ui: false,
   files: [
     './template/**',
-    './source/**',
+    './source-node5/**',
     './config/**',
+    './public/**'
   ],
   proxy: {
     target: 'http://localhost:10000',
@@ -16,5 +17,6 @@ module.exports = {
       match: /$/
     }
   },
-  reloadDebounce: 1000
+  reloadDebounce: 1000,
+  reloadDelay: 1000
 };
