@@ -33,7 +33,9 @@
     "babel-preset-react": "^6.3.13",
     "browser-sync": "^2.11.1",
     "eslint": "^1.10.3",
+    "history": "^1.17.0",
     "nodemon": "^1.8.1",
+    "react-router": "^2.0.0-rc5",
     "webpack": "^1.12.11"
   },
   "scripts": {
