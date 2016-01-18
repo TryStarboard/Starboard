@@ -1,25 +1,31 @@
-import { Router } from 'express';
 import { createElement } from 'react';
 import { renderToString } from 'react-dom/server';
 import { match, RouterContext } from 'react-router';
 import routes from '../../client/component/routes';
 
-const router = Router();
+function matchPath(url) {
+  return new Promise((resolve, reject) => {
+    match({routes, location: url}, (err, redirectLocation, renderProps) => {
+      if (err) {
+        reject(err);
+        return;
+      }
 
-router.use(function (req, res, next) {
-  match({routes, location: req.url}, (err, redirectLocation, renderProps) => {
-    if (err) {
-      res.status(500).send(err.message);
-    } else if (redirectLocation) {
-      res.redirect(302, redirectLocation.pathname + redirectLocation.search);
-    } else if (renderProps) {
-      res.render('index', {
-        content: renderToString(createElement(RouterContext, renderProps))
-      });
-    } else {
-      next();
-    }
+      resolve([redirectLocation, renderProps]);
+    });
   });
-});
+}
 
-export { router as default };
+export default function *(next) {
+  const [redirectLocation, renderProps] = yield matchPath(this.req.url);
+
+  if (redirectLocation) {
+    this.redirect(redirectLocation.pathname + redirectLocation.search);
+  } else if (renderProps) {
+    yield this.render('index', {
+      content: renderToString(createElement(RouterContext, renderProps))
+    });
+  } else {
+    yield next;
+  }
+}

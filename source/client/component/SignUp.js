@@ -1,6 +1,4 @@
 import React, { Component } from 'react';
-import classnames from 'classnames';
-import { Link } from 'react-router';
 import { FormField, FormSwitch } from './Form';
 
 export default class SignUp extends Component {

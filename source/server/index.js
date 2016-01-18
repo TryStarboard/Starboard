@@ -1,21 +1,28 @@
 import 'source-map-support/register';
 import { join } from 'path';
-import express from 'express';
-import { sessionMiddleware } from './datastore/redis';
-import { loggingMiddleware, logger } from './util/logging';
+import koa from 'koa';
+import render from 'koa-ejs';
+import koaStatic from 'koa-static';
+import session from './util/session';
+import { logger, middleware as devLoggingMiddleware } from './util/logging';
 import viewRoute from './route/view';
-import apiRoute from './route/api';
 
-const app = express();
+const app = koa();
 
-app.set('views', join(__dirname, '../../template'));
-app.set('view engine', 'ejs');
+app.keys = ['keyboard cat', 'starboard'];
+app.use(devLoggingMiddleware);
+app.use(session);
+app.use(koaStatic(join(__dirname, '../../public')));
 
-app.use(loggingMiddleware);
-app.use(sessionMiddleware);
-app.use(express.static(join(__dirname, '../../public')));
+render(app, {
+  root: join(__dirname, '../../template'),
+  layout: false,
+  viewExt: 'ejs',
+  cache: false,
+  debug: true,
+});
+
 app.use(viewRoute);
-app.use(apiRoute);
 
 app.listen(10000, '0.0.0.0', () => {
   logger.info('http://0.0.0.0:10000');
