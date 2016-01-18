@@ -35,6 +35,7 @@
     "eslint": "^1.10.3",
     "eslint-plugin-react": "^3.15.0",
     "history": "^1.17.0",
+    "node-sass": "^3.4.2",
     "nodemon": "^1.8.1",
     "react-router": "^2.0.0-rc5",
     "webpack": "^1.12.11"
@@ -46,11 +47,13 @@
     "test": "",
     "check": "npm run lint && npm test",
     "build:server": "babel source -d source-node5 --presets es2015-node5,react -s",
-    "build:client": "webpack",
+    "build:client:js": "webpack",
+    "build:client:css": "node-sass --output-style expanded -o public source/client/style/index.scss",
     "watch:build:server": "npm run build:server -- -w",
-    "watch:build:client": "npm run build:client -- -w",
+    "watch:build:client:js": "npm run build:client:js -- -w",
+    "watch:build:client:css": "npm run build:client:css -- -w",
     "live-reload": "browser-sync start --config bs-config.js",
     "predev": "npm run clean && mkdir source-node5",
-    "dev": "docker-compose up & npm run watch:build:server & npm run watch:build:client & nodemon -w source-node5 -w config -C source-node5/server/index.js & npm run watch:lint & npm run live-reload"
+    "dev": "docker-compose up & npm run watch:build:server & npm run watch:build:client:js & nodemon -w source-node5 -w config -C source-node5/server/index.js & npm run watch:lint & npm run live-reload & npm run watch:build:client:css"
   }
 }
