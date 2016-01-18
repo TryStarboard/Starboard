@@ -1,0 +1,5 @@
+ecmaFeatures:
+  modules: false
+
+rules:
+  no-process-env: 0

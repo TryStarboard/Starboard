@@ -33,6 +33,7 @@
     "babel-preset-react": "^6.3.13",
     "browser-sync": "^2.11.1",
     "eslint": "^1.10.3",
+    "eslint-plugin-react": "^3.15.0",
     "history": "^1.17.0",
     "nodemon": "^1.8.1",
     "react-router": "^2.0.0-rc5",
@@ -40,7 +41,8 @@
   },
   "scripts": {
     "clean": "rm -rf source-node5",
-    "lint": "",
+    "lint": "eslint source config script",
+    "watch:lint": "nodemon --exec 'npm run lint --silent' -w source -w config",
     "test": "",
     "check": "npm run lint && npm test",
     "build:server": "babel source -d source-node5 --presets es2015-node5,react -s",
@@ -49,6 +51,6 @@
     "watch:build:client": "npm run build:client -- -w",
     "live-reload": "browser-sync start --config bs-config.js",
     "predev": "npm run clean && mkdir source-node5",
-    "dev": "docker-compose up & npm run watch:build:server & npm run watch:build:client & nodemon -w source-node5 -w config -C source-node5/server/index.js"
+    "dev": "docker-compose up & npm run watch:build:server & npm run watch:build:client & nodemon -w source-node5 -w config -C source-node5/server/index.js & npm run watch:lint"
   }
 }

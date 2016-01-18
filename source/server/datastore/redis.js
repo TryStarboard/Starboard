@@ -9,7 +9,7 @@ const redis = new Redis(config.get('redis'));
 
 redis.on('error', (err) => {
   logger.error(err);
-})
+});
 
 export const sessionMiddleware = session({
   store: new RedisStore({client: redis}),
