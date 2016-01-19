@@ -1,7 +1,8 @@
-import { createElement } from 'react';
+import React from 'react';
 import { renderToString } from 'react-dom/server';
+import { Provider } from 'react-redux';
 import { match, RouterContext } from 'react-router';
-// import routes from '../../client/component/routes';
+import { routes, store } from '../../component/routes';
 
 function matchPath(url) {
   return new Promise((resolve, reject) => {
@@ -17,15 +18,20 @@ function matchPath(url) {
 }
 
 export default function *() {
-  // console.log(this.req.user);
-  // const [redirectLocation, renderProps] = yield matchPath(this.req.url);
-  //
-  // if (redirectLocation) {
-  //   this.redirect(redirectLocation.pathname + redirectLocation.search);
-  // } else if (renderProps) {
-  yield this.render('index', {
-    content: ''
-    // content: renderToString(createElement(RouterContext, renderProps))
-  });
-  // }
+  const [redirectLocation, renderProps] = yield matchPath(this.req.url);
+
+  if (redirectLocation) {
+    this.redirect(redirectLocation.pathname + redirectLocation.search);
+
+  } else if (renderProps) {
+
+    const app = (
+      <Provider store={store}>
+        <RouterContext {...renderProps}/>
+      </Provider>
+    );
+
+    yield this.render('index', {content: renderToString(app)});
+
+  }
 }
