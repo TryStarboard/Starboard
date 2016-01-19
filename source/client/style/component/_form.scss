@@ -61,3 +61,14 @@ $form-border-color: #0099FF;
   border: 1px solid $form-border-color;
   font-size: 18px;
 }
+
+.form-button {
+  background-color: transparent;
+  border: 1px solid $form-border-color;
+  padding: 5px 10px;
+  font-size: 18px;
+  &:hover {
+    color: white;
+    background-color: $form-border-color;
+  }
+}

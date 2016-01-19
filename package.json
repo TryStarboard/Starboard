@@ -12,15 +12,20 @@
     "ioredis": "^1.14.0",
     "knex": "^0.9.0",
     "koa": "^1.1.2",
+    "koa-bodyparser": "^2.0.1",
     "koa-ejs": "^3.0.0",
     "koa-generic-session": "^1.10.1",
+    "koa-passport": "^1.2.0",
     "koa-redis": "^2.0.1",
     "koa-router": "^5.3.0",
     "koa-static": "^2.0.0",
+    "passport-local": "^1.0.0",
     "pg": "^4.4.3",
     "ramda": "^0.19.1",
     "react": "^0.14.6",
     "react-dom": "^0.14.6",
+    "react-redux": "^4.0.6",
+    "redux": "^3.0.5",
     "rxjs": "^5.0.0-beta.1",
     "socket.io": "^1.4.4",
     "source-map-support": "^0.4.0",
@@ -42,7 +47,8 @@
     "node-sass": "^3.4.2",
     "nodemon": "^1.8.1",
     "react-router": "^2.0.0-rc5",
-    "webpack": "^1.12.11"
+    "webpack": "^1.12.11",
+    "whatwg-fetch": "^0.10.1"
   },
   "scripts": {
     "clean": "rm -rf source-node5",
@@ -58,6 +64,6 @@
     "watch:build:client:css": "npm run build:client:css -- -w",
     "live-reload": "browser-sync start --config bs-config.js",
     "predev": "npm run clean && mkdir source-node5",
-    "dev": "docker-compose up & npm run watch:build:server & npm run watch:build:client:js & nodemon -w source-node5 -w config -C source-node5/server/index.js & npm run watch:lint & npm run live-reload & npm run watch:build:client:css"
+    "dev": "docker-compose up & npm run watch:build:server & npm run watch:build:client:js & nodemon -w source-node5 -w config -C source-node5/server/index.js & npm run live-reload & npm run watch:build:client:css"
   }
 }

@@ -23,3 +23,11 @@ export class FormSwitch extends Component {
     );
   }
 }
+
+export class Button extends Component {
+  render() {
+    return (
+      <button className='form-button'>{this.props.children}</button>
+    );
+  }
+}

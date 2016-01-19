@@ -1,9 +1,12 @@
-import { Router } from 'express';
+import createRouter from 'koa-router';
+import { localAuth } from '../util/auth';
 
-const router = Router();
+const userManagement = createRouter();
 
-router.get('/api/v1/user', function (req, res) {
-  res.send({id: 123});
-});
+userManagement
+  .post('/login', localAuth);
 
-export { router as default };
+const router = createRouter();
+router.use('/api/v1', userManagement.routes(), userManagement.allowedMethods());
+
+export default router.routes();
