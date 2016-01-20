@@ -7,7 +7,7 @@ import bodyParser from 'koa-bodyparser';
 import session from './util/session';
 import { logger, middleware as devLoggingMiddleware } from './util/logging';
 import { authInit, authSession } from './util/auth';
-import viewRoute from './route/view';
+import htmlRoute from './routers/html';
 import apiRoute from './route/api';
 
 const app = koa();
@@ -29,7 +29,7 @@ render(app, {
 });
 
 app.use(apiRoute);
-app.use(viewRoute);
+app.use(htmlRoute);
 
 app.listen(10000, '0.0.0.0', () => {
   logger.info('http://0.0.0.0:10000');

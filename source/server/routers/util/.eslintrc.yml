@@ -1,0 +1,5 @@
+extends: '../../../component/.eslintrc.yml'
+
+env:
+  browser: false
+  node: true

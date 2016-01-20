@@ -17,7 +17,6 @@ export default class Login extends Component {
 
   _onSubmit(event) {
     event.preventDefault();
-    console.log(this.props.dispatch)
-    console.log(event.target);
+    this.props.dispatch();
   }
 }
