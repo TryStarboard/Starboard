@@ -2,8 +2,8 @@ import React from 'react';
 import { renderToString } from 'react-dom/server';
 import { Provider } from 'react-redux';
 import { match, RouterContext } from 'react-router';
-import routes from '../../../component/routes';
-import store from '../../../client/js/store';
+import routes from '../../../universal/routes';
+import store from '../../../universal/store';
 
 function matchPath(url) {
   return new Promise((resolve, reject) => {

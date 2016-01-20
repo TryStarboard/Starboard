@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { collect } from '../../client/js/util/form';
+import { collect } from '../utils/form';
 
 export const SUBMIT_LOGIN = 'SUBMIT_LOGIN';
 

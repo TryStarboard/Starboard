@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { FormField, FormSwitch, Button } from './Form';
-import { submitLogin } from './actions';
+import { submitLogin } from '../actions';
 
 class Login extends Component {
   render() {

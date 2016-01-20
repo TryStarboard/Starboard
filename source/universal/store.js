@@ -3,7 +3,7 @@ import promiseMiddleware from 'redux-promise-middleware';
 import createLogger from 'redux-logger';
 import {
   SUBMIT_LOGIN
-} from '../../component/actions';
+} from './actions';
 
 const createStoreWithMiddleware = applyMiddleware(
   promiseMiddleware(),
