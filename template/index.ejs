@@ -6,6 +6,7 @@
 </head>
 <body>
   <div id="app"><%- content %></div>
+  <script>window.__data__ = <%- JSON.stringify(data) %>;</script>
   <script src="./bundle.js" async></script>
 </body>
 </html>

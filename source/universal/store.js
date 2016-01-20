@@ -11,6 +11,9 @@ const createStoreWithMiddleware = applyMiddleware(
 )(createStore);
 
 const reducers = combineReducers({
+  title(state = null, action) {
+    return state;
+  },
   user(state = null, action) {
     switch (action.type) {
     case SUBMIT_LOGIN:
@@ -21,4 +24,6 @@ const reducers = combineReducers({
   }
 });
 
-export default createStoreWithMiddleware(reducers);
+export default function (state) {
+  return createStoreWithMiddleware(reducers, state);
+}

@@ -3,7 +3,6 @@ import koaLogger from 'koa-logger';
 
 winston.remove(winston.transports.Console);
 winston.add(winston.transports.Console, {
-  json: true,
   colorize: true,
   timestamp: true,
   prettyPrint: true,

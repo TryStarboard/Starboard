@@ -9,4 +9,4 @@ class Dashboard extends Component {
   }
 }
 
-export default connect()(Dashboard);
+export default connect((s) => s)(Dashboard);

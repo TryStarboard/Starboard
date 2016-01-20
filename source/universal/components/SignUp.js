@@ -17,4 +17,4 @@ export default class SignUp extends Component {
   }
 }
 
-export default connect()(SignUp);
+export default connect((s) => s)(SignUp);

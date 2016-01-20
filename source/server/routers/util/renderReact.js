@@ -2,19 +2,27 @@ import React from 'react';
 import { renderToString } from 'react-dom/server';
 import { Provider } from 'react-redux';
 import { match, RouterContext } from 'react-router';
+import { fromCallback } from 'bluebird';
 import routes from '../../../universal/routes';
-import store from '../../../universal/store';
+import createStoreWithInitState from '../../../universal/store';
 
 function matchPath(url) {
-  return new Promise((resolve, reject) => {
-    match({routes, location: url}, (err, redirectLocation, renderProps) => {
-      if (err) {
-        reject(err);
-        return;
-      }
+  return fromCallback(
+    (done) => match({routes, location: url}, done),
+    {multiArgs: true}
+  );
+}
 
-      resolve([redirectLocation, renderProps]);
-    });
+function *renderTemplate(renderProps, state) {
+  const app = (
+    <Provider store={createStoreWithInitState(state)}>
+      <RouterContext {...renderProps}/>
+    </Provider>
+  );
+
+  yield this.render('index', {
+    content: renderToString(app),
+    data: state,
   });
 }
 
@@ -23,15 +31,7 @@ export default function *() {
 
   if (redirectLocation) {
     this.redirect(redirectLocation.pathname + redirectLocation.search);
-
   } else if (renderProps) {
-
-    const app = (
-      <Provider store={store}>
-        <RouterContext {...renderProps}/>
-      </Provider>
-    );
-
-    yield this.render('index', {content: renderToString(app)});
+    yield renderTemplate.call(this, renderProps, {title: 'Hello'});
   }
 }
