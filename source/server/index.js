@@ -8,14 +8,14 @@ import session from './util/session';
 import { logger, middleware as devLoggingMiddleware } from './util/logging';
 import { authInit, authSession } from './util/auth';
 import htmlRoute from './routers/html';
-import apiRoute from './route/api';
+import apiRoute from './routers/api';
 
 const app = koa();
 
 app.keys = ['keyboard cat', 'starboard'];
+app.use(koaStatic(join(__dirname, '../../public')));
 app.use(devLoggingMiddleware);
 app.use(session);
-app.use(koaStatic(join(__dirname, '../../public')));
 app.use(bodyParser());
 app.use(authInit);
 app.use(authSession);
