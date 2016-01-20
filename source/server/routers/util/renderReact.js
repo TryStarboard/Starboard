@@ -2,7 +2,8 @@ import React from 'react';
 import { renderToString } from 'react-dom/server';
 import { Provider } from 'react-redux';
 import { match, RouterContext } from 'react-router';
-import { routes, store } from '../../../component/routes';
+import routes from '../../../component/routes';
+import store from '../../../client/js/store';
 
 function matchPath(url) {
   return new Promise((resolve, reject) => {
@@ -32,6 +33,5 @@ export default function *() {
     );
 
     yield this.render('index', {content: renderToString(app)});
-
   }
 }

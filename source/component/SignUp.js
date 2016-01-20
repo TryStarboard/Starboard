@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { FormField, FormSwitch } from './Form';
+import { connect } from 'react-redux';
+import { FormField, FormSwitch, Button } from './Form';
 
 export default class SignUp extends Component {
   render() {
@@ -9,8 +10,11 @@ export default class SignUp extends Component {
         <form className='form'>
           <FormField label='Email' type='email'/>
           <FormField label='Password' type='password'/>
+          <Button>Submit</Button>
         </form>
       </div>
     );
   }
 }
+
+export default connect()(SignUp);

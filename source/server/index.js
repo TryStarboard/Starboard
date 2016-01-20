@@ -31,6 +31,10 @@ render(app, {
 app.use(apiRoute);
 app.use(htmlRoute);
 
+app.on('error', function (err, ctx) {
+  logger.error('server error', err.stack);
+});
+
 app.listen(10000, '0.0.0.0', () => {
   logger.info('http://0.0.0.0:10000');
 });

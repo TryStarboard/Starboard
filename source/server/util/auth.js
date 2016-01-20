@@ -1,4 +1,3 @@
-/*eslint no-console:0*/
 import passport from 'koa-passport';
 import { Strategy as LocalStrategy } from 'passport-local';
 
@@ -6,21 +5,22 @@ const localStrategy = new LocalStrategy({
   usernameField: 'email',
   passwordField: 'password',
 }, (username, password, done) => {
-  console.log('localStrategy', username, password);
-  done(null, {id: 123});
+  if (password === '1234') {
+    done(null, {id: 123, name: 'daiwei'});
+  } else {
+    done(null, false);
+  }
 });
 
 passport.use(localStrategy);
 
 passport.serializeUser(function (user, done) {
-  console.log('serializeUser', user);
   done(null, user.id);
 });
 
 passport.deserializeUser(function (id, done) {
   setTimeout(function () {
     const user = {id: 123, name: 'daiwei'};
-    console.log('deserializeUser', id);
     done(null, user);
   }, 10);
 });

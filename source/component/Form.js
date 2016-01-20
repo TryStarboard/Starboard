@@ -7,7 +7,7 @@ export class FormField extends Component {
     return (
       <div className='form-field'>
         <label className='form-field__label'>{this.props.label}</label>
-        <input className='form-field__input' type={this.props.type}/>
+        <input className='form-field__input' type={this.props.type} name={this.props.name}/>
       </div>
     );
   }

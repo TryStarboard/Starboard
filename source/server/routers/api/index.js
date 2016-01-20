@@ -18,9 +18,19 @@ function *ensureUnauthed(next) {
 }
 
 const unauthedRoute = new Router();
-unauthedRoute.post('/login', ensureUnauthed, authenticateRequest);
+
+unauthedRoute.post('/login', ensureUnauthed, authenticateRequest, function *(next) {
+  this.body = this.req.user;
+});
+
+const authedRoute = new Router();
+
+authedRoute.get('/profile', ensureAuthed, function *() {
+  this.body = this.req.user;
+});
 
 const router = new Router();
 router.use('/api/v1', unauthedRoute.routes(), unauthedRoute.allowedMethods());
+router.use('/api/v1', authedRoute.routes(), authedRoute.allowedMethods());
 
 export default router.routes();
