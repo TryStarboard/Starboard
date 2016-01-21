@@ -14,6 +14,18 @@ const createStoreWithMiddleware = applyMiddleware(
 )(createStore);
 
 const reducers = combineReducers({
+  form(state = {}, { type, payload }) {
+    switch (type) {
+    case `${SIGNUP}_REJECTED`:
+    case `${LOGIN}_REJECTED`:
+      return payload.data;
+    case `${SIGNUP}_FULFILLED`:
+    case `${LOGIN}_FULFILLED`:
+      return {};
+    default:
+      return state;
+    }
+  },
   user(state = null, { type, payload }) {
     switch (type) {
     case `${SIGNUP}_FULFILLED`:

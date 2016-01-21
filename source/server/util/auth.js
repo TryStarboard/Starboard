@@ -1,11 +1,11 @@
 import passport from 'koa-passport';
 import { Strategy as LocalStrategy } from 'passport-local';
 import { wrap } from 'co';
-import { hash, compare } from 'bcrypt';
+import { hash as _hash, compare } from 'bcrypt';
 import { promisify } from 'bluebird';
 import db from './db';
 
-const hashAsync = promisify(hash);
+const hashAsync = promisify(_hash);
 const compareAsync = promisify(compare);
 
 const opts = {
@@ -13,15 +13,31 @@ const opts = {
   passwordField: 'password',
 };
 
+export class EmailPassNotMatchError extends Error {
+  constructor() {
+    super();
+    Error.captureStackTrace(this, EmailPassNotMatchError);
+    this.name = 'EmailPassNotMatchError';
+  }
+}
+
+export class EmailExistError extends Error {
+  constructor() {
+    super();
+    Error.captureStackTrace(this, EmailExistError);
+    this.name = 'EmailExistError';
+  }
+}
+
 passport.use(new LocalStrategy(opts, wrap(function *(email, password, done) {
   try {
-    const [user] = yield db.select('id', 'password').from('users').where({ email }).limit(1);
+    const [user] = yield db.select('id', 'hash').from('users').where({ email }).limit(1);
     if (!user) {
-      throw new Error('email not exist');
+      throw new EmailPassNotMatchError();
     }
-    const correct = yield compareAsync(password, user.password);
+    const correct = yield compareAsync(password, user.hash);
     if (!correct) {
-      throw new Error('email and password not match');
+      throw new EmailPassNotMatchError();
     }
     done(null, {id: user.id});
   } catch (err) {
@@ -33,12 +49,10 @@ passport.use('local-signup', new LocalStrategy(opts, wrap(function *(email, pass
   try {
     const [user] = yield db.select('email').from('users').where({ email }).limit(1);
     if (user) {
-      const err = new Error();
-      err.code = 'EMAIL_USED';
-      throw err;
+      throw new EmailExistError();
     }
-    const saltHash = yield hashAsync(password, 10);
-    const [id] = yield db('users').insert({ email, password: saltHash }, 'id');
+    const hash = yield hashAsync(password, 10);
+    const [id] = yield db('users').insert({ email, hash }, 'id');
     done(null, { id });
   } catch (err) {
     done(err);

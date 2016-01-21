@@ -29,4 +29,4 @@ export function logout() {
       promise: axios.get('/api/v1/logout')
     }
   };
-};
+}
