@@ -10,8 +10,9 @@ function *ensureAuthed(next) {
 
 const authedRoute = new Router();
 
-authedRoute.get('/profile', ensureAuthed, function *() {
-  this.body = this.req.user;
+authedRoute.get('/logout', ensureAuthed, function *() {
+  this.req.logout();
+  this.status = 200;
 });
 
 export { authedRoute as default };

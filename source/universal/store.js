@@ -1,8 +1,11 @@
 import { combineReducers, createStore, applyMiddleware } from 'redux';
 import promiseMiddleware from 'redux-promise-middleware';
 import createLogger from 'redux-logger';
+import { browserHistory } from 'react-router';
 import {
-  SUBMIT_LOGIN
+  SIGNUP,
+  LOGIN,
+  LOGOUT
 } from './actions';
 
 const createStoreWithMiddleware = applyMiddleware(
@@ -11,13 +14,15 @@ const createStoreWithMiddleware = applyMiddleware(
 )(createStore);
 
 const reducers = combineReducers({
-  title(state = null, action) {
-    return state;
-  },
-  user(state = null, action) {
-    switch (action.type) {
-    case SUBMIT_LOGIN:
-      return state;
+  user(state = null, { type, payload }) {
+    switch (type) {
+    case `${SIGNUP}_FULFILLED`:
+    case `${LOGIN}_FULFILLED`:
+      browserHistory.push('/dashboard');
+      return payload.data;
+    case `${LOGOUT}_FULFILLED`:
+      browserHistory.push('/login');
+      return null;
     default:
       return state;
     }

@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { FormField, FormSwitch, Button } from './Form';
-import { submitLogin } from '../actions';
+import { collect } from '../utils/form';
+import { login } from '../actions';
 
 class Login extends Component {
   render() {
@@ -19,7 +20,7 @@ class Login extends Component {
 
   _onSubmit(event) {
     event.preventDefault();
-    this.props.dispatch(submitLogin(event.target));
+    this.props.dispatch(login(collect(event.target)));
   }
 }
 

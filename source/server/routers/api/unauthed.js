@@ -1,5 +1,5 @@
 import Router from 'koa-router';
-import { authenticateRequest } from '../../util/auth';
+import { authenticateRequest, authenticateSignupRequest } from '../../util/auth';
 
 function *ensureUnauthed(next) {
   if (this.req.isAuthenticated()) {
@@ -9,14 +9,13 @@ function *ensureUnauthed(next) {
   }
 }
 
+function *returnUser() {
+  this.body = this.req.user;
+}
+
 const unauthedRoute = new Router();
 
-unauthedRoute.post('/login', ensureUnauthed, authenticateRequest, function *(next) {
-  this.body = this.req.user;
-});
-
-unauthedRoute.post('/login', ensureUnauthed, authenticateRequest, function *(next) {
-  this.body = this.req.user;
-});
+unauthedRoute.post('/signup', ensureUnauthed, authenticateSignupRequest, returnUser);
+unauthedRoute.post('/login', ensureUnauthed, authenticateRequest, returnUser);
 
 export { unauthedRoute as default };

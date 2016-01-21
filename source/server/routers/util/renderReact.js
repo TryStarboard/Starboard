@@ -32,6 +32,6 @@ export default function *() {
   if (redirectLocation) {
     this.redirect(redirectLocation.pathname + redirectLocation.search);
   } else if (renderProps) {
-    yield renderTemplate.call(this, renderProps, {title: 'Hello'});
+    yield renderTemplate.call(this, renderProps, this.reactState || {});
   }
 }

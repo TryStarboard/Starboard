@@ -11,6 +11,14 @@ function *ensureAuthed(next) {
   }
 }
 
-authedRoute.get('/dashboard', ensureAuthed, renderReact);
+authedRoute.get('/dashboard', ensureAuthed, function *(next) {
+  this.reactState = {user: this.req.user};
+  yield next;
+}, renderReact);
+
+authedRoute.get('/logout', ensureAuthed, function *() {
+  this.req.logout();
+  this.redirect('/login');
+});
 
 export { authedRoute as default };
