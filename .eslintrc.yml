@@ -3,7 +3,12 @@ env:
   es6: true
 
 ecmaFeatures:
-  modules: true
+  defaultParams:  false
+  destructuring: false
+  spread: false
+  experimentalObjectRestSpread:  false
+  jsx: false
+  globalReturn: false
 
 rules:
   # Possible Errors

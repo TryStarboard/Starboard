@@ -1,4 +1,4 @@
-extends: '../../../component/.eslintrc.yml'
+extends: ../../../universal/components/.eslintrc.yml
 
 env:
   browser: false

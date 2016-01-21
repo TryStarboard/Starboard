@@ -3,7 +3,7 @@ import { renderToString } from 'react-dom/server';
 import { Provider } from 'react-redux';
 import { match, RouterContext } from 'react-router';
 import { fromCallback } from 'bluebird';
-import routes from '../../../universal/routes';
+import routes from '../../../universal/components/routes';
 import createStoreWithInitState from '../../../universal/store';
 
 function matchPath(url) {

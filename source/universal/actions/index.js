@@ -1,13 +1,12 @@
 import axios from 'axios';
-import { collect } from '../utils/form';
 
-export const SUBMIT_LOGIN = 'SUBMIT_LOGIN';
+export const SIGNUP = 'SIGNUP';
 
-export function submitLogin(form) {
+export function signup(data) {
   return {
-    type: SUBMIT_LOGIN,
+    type: SIGNUP,
     payload: {
-      promise: axios.post('/api/v1/login', collect(form))
+      promise: axios.post('/api/v1/signup', data)
     }
   };
 }

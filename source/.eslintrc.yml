@@ -1,0 +1,7 @@
+ecmaFeatures:
+  defaultParams:  true
+  destructuring: true
+  spread: true
+  experimentalObjectRestSpread:  true
+  jsx: true
+  modules: true
