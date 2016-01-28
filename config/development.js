@@ -1,6 +1,7 @@
 'use strict';
 
 const url = require('url');
+const join = require('path').join;
 
 const dockerConn = url.parse(process.env.DOCKER_HOST);
 
@@ -15,5 +16,9 @@ module.exports = {
     database: 'dev-db',
     user: 'dev',
     password: '1234',
+  },
+  koa: {
+    publicDir: join(__dirname, '../public'),
+    templateDir: join(__dirname, '../template'),
   }
 };

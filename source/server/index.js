@@ -1,5 +1,5 @@
 import 'source-map-support/register';
-import { join } from 'path';
+import config from 'config';
 import koa from 'koa';
 import render from 'koa-ejs';
 import koaStatic from 'koa-static';
@@ -13,7 +13,7 @@ import apiRoute from './routers/api';
 const app = koa();
 
 app.keys = ['keyboard cat', 'starboard'];
-app.use(koaStatic(join(__dirname, '../../public')));
+app.use(koaStatic(config.get('koa.publicDir')));
 app.use(devLoggingMiddleware);
 app.use(session);
 app.use(bodyParser());
@@ -21,7 +21,7 @@ app.use(authInit);
 app.use(authSession);
 
 render(app, {
-  root: join(__dirname, '../../template'),
+  root: config.get('koa.templateDir'),
   layout: false,
   viewExt: 'ejs',
   cache: false,
