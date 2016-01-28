@@ -14,6 +14,7 @@ const app = koa();
 
 app.keys = ['keyboard cat', 'starboard'];
 app.use(koaStatic(join(__dirname, '../../public')));
+console.log(__dirname);
 app.use(devLoggingMiddleware);
 app.use(session);
 app.use(bodyParser());

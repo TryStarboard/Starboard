@@ -20,6 +20,10 @@ module.exports = {
           plugins: ['transform-runtime']
         }
       },
+      {
+        test: /\.jpg$/,
+        loader: 'file',
+      },
     ]
   }
 };
