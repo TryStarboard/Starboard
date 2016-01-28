@@ -5,3 +5,6 @@ ecmaFeatures:
   experimentalObjectRestSpread:  true
   jsx: true
   modules: true
+
+rules:
+  no-dirname: 2
