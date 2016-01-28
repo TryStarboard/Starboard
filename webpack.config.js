@@ -1,10 +1,13 @@
 'use strict';
 
+const join = require('path').join;
+
 module.exports = {
   entry: './source/client/js/index.js',
 
   output: {
-    filename: './public/bundle.js'
+    filename: 'bundle.js',
+    path: join(__dirname, 'public'),
   },
 
   devtool: 'source-map',
@@ -21,7 +24,7 @@ module.exports = {
         }
       },
       {
-        test: /\.jpg$/,
+        test: /\.(jpg|png)$/,
         loader: 'file',
       },
     ]

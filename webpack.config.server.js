@@ -2,7 +2,9 @@
 
 const fs = require('fs');
 const join = require('path').join;
-const node_modules = fs.readdirSync('node_modules').filter((x) => x !== '.bin' );
+const node_modules = fs.readdirSync('node_modules')
+  .filter((x) => x !== '.bin' )
+  .map((x) => new RegExp(`^${x}`));
 
 module.exports = {
   target: 'node',
@@ -16,14 +18,14 @@ module.exports = {
     process: false,
     global: false,
     Buffer: false,
-    __filename: true,
-    __dirname: true,
+    __filename: false,
+    __dirname: false,
     setImmediate: false,
   },
 
   output: {
-    filename: 'index.js',
-    path: join(__dirname, 'source-node5/server'),
+    filename: 'server.js',
+    path: join(__dirname, 'public'),
     libraryTarget: 'commonjs2',
   },
 
@@ -40,7 +42,7 @@ module.exports = {
         }
       },
       {
-        test: /\.jpg$/,
+        test: /\.(jpg|png)$/,
         loader: 'file',
       },
     ]
