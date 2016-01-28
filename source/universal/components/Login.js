@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { FormField, FormSwitch, Button } from './Form';
+import { Button } from './Form';
 import { collect } from '../utils/form';
 import { login } from '../actions';
 import octocatImg from '../../client/img/octocat.jpg';
