@@ -36,7 +36,7 @@
     "react-redux": "^4.0.6",
     "react-router": "^2.0.0-rc5",
     "redux": "^3.0.5",
-    "redux-logger": "^2.3.2",
+    "redux-logger": "2.3.2",
     "redux-promise-middleware": "^2.3.3",
     "source-map-support": "^0.4.0",
     "winston": "^2.1.1"
@@ -58,9 +58,9 @@
     "webpack": "^1.12.11"
   },
   "scripts": {
-    "clean": "rm -rf source-node5",
-    "lint": "eslint source config script",
-    "watch:lint": "nodemon --exec 'npm run lint --silent' -w source -w config",
+    "clean": "rm -rf public",
+    "lint": "eslint --rulesdir eslint-rules source config script",
+    "watch:lint": "nodemon --exec 'npm run lint --silent' -w source -w config -w script",
     "test": "",
     "check": "npm run lint && npm test",
     "build:server": "webpack --config webpack.config.server.js",
@@ -70,7 +70,7 @@
     "watch:build:client:js": "npm run build:client:js -- -w",
     "watch:build:client:css": "npm run build:client:css -- -w",
     "live-reload": "browser-sync start --config bs-config.js",
-    "predev": "npm run clean && mkdir source-node5",
-    "dev": "docker-compose up & npm run watch:build:server & npm run watch:build:client:js & nodemon -w source-node5 -w config -C source-node5/server/index.js & npm run live-reload & npm run watch:build:client:css"
+    "predev": "npm run clean && mkdir public && npm run build:client:css",
+    "dev": "docker-compose up & npm run watch:build:server & npm run watch:build:client:js & npm run watch:build:client:css & nodemon -w public -w config -C public/server.js & npm run live-reload"
   }
 }
