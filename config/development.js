@@ -20,5 +20,10 @@ module.exports = {
   koa: {
     publicDir: join(__dirname, '../public'),
     templateDir: join(__dirname, '../template'),
+  },
+  github: {
+    clientID: process.env.GITHUB_CLIENT_ID,
+    clientSecret: process.env.GITHUB_CLIENT_SECRET,
+    callbackURL: 'http://localhost:10010/api/v1/github-back'
   }
 };
