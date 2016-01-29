@@ -91,7 +91,7 @@ rules:
   no-void: 2
   no-warning-comments: 0
   no-with: 2
-  radix: 2
+  radix: [2, 'as-needed']
   vars-on-top: 0
   wrap-iife: [2, 'any']
   yoda: 0
