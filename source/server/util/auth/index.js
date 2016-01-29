@@ -1,17 +1,7 @@
 import passport from 'koa-passport';
 import { wrap } from 'co';
-import { hash as _hash, compare } from 'bcrypt';
-import { promisify } from 'bluebird';
 import db from '../db';
 import githubStrategy from './githubStrategy.js';
-
-const hashAsync = promisify(_hash);
-const compareAsync = promisify(compare);
-
-const opts = {
-  usernameField: 'email',
-  passwordField: 'password',
-};
 
 passport.use(githubStrategy);
 
@@ -38,4 +28,4 @@ export {
   authInit,
   authSession,
   passport,
-}
+};

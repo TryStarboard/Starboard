@@ -1,7 +1,8 @@
 import Router from 'koa-router';
+import { passport } from '../../util/auth';
 import renderReact from '../util/renderReact';
 
-const unauthRoute = new Router();
+const unauthedRoute = new Router();
 
 function *ensureUnauthed(next) {
   if (this.req.isAuthenticated()) {
@@ -11,7 +12,15 @@ function *ensureUnauthed(next) {
   }
 }
 
-unauthRoute.get('/login', ensureUnauthed, renderReact);
-unauthRoute.get('/signup', ensureUnauthed, renderReact);
+unauthedRoute.get('/login', ensureUnauthed, renderReact);
 
-export { unauthRoute as default };
+unauthedRoute.get('/github-login', ensureUnauthed, passport.authenticate('github'));
+unauthedRoute.get('/github-back',
+  ensureUnauthed,
+  passport.authenticate('github', {failureRedirect: '/login'}),
+  function *() {
+    this.redirect('/dashboard');
+  }
+);
+
+export { unauthedRoute as default };
