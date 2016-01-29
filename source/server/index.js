@@ -13,6 +13,18 @@ import apiRoute from './routers/api';
 const app = koa();
 
 app.keys = ['keyboard cat', 'starboard'];
+
+// Error handling
+app.use(function *(next) {
+  try {
+    yield next;
+  } catch (err) {
+    this.status = 500;
+    this.body = err.stack;
+    logger.error(err);
+  }
+});
+
 app.use(koaStatic(config.get('koa.publicDir')));
 app.use(devLoggingMiddleware);
 app.use(session);
