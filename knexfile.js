@@ -1,3 +1,5 @@
+/*eslint no-process-env:0*/
+
 'use strict';
 
 const config = require('config');

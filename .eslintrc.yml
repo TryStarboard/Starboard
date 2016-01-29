@@ -97,7 +97,9 @@ rules:
   yoda: 0
 
   # Strict Mode
-  strict: [2, 'global']
+  # Cannot trun this one due to
+  # https://github.com/babel/babel-eslint/issues/228
+  strict: [0, 'global']
 
   # Node.js
   no-mixed-requires: 2

@@ -61,7 +61,7 @@
   },
   "scripts": {
     "clean": "rm -rf public",
-    "lint": "eslint --rulesdir eslint-rules source config script",
+    "lint": "eslint --rulesdir eslint-rules source config script *.js",
     "watch:lint": "nodemon --exec 'npm run lint --silent' -w source -w config -w script",
     "test": "",
     "check": "npm run lint && npm test",

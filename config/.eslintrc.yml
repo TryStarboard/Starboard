@@ -1,6 +1,2 @@
 rules:
   no-process-env: 0
-
-  # Cannot trun this one due to
-  # https://github.com/babel/babel-eslint/issues/228
-  strict: [0, 'global']
