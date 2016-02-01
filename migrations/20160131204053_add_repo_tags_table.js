@@ -6,6 +6,8 @@ exports.up = (knex, Promise) => {
     table.integer('tag_id');
     table.integer('repo_id');
     table.timestamps();
+
+    table.unique(['tag_id', 'repo_id']);
   });
 };
 
