@@ -8,7 +8,7 @@ import {
 
 const createStoreWithMiddleware = applyMiddleware(
   promiseMiddleware(),
-  createLogger()
+  createLogger({logger: console})
 )(createStore);
 
 const reducers = combineReducers({
