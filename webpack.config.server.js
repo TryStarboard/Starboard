@@ -46,6 +46,10 @@ module.exports = {
         test: /\.(jpg|png)$/,
         loader: 'file',
       },
+      {
+        test: /\.svg$/,
+        loader: 'babel?presets[]=react&presets[]=es2015!svg-react',
+      },
     ]
   },
 
