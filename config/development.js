@@ -3,7 +3,7 @@
 const url = require('url');
 const join = require('path').join;
 
-const dockerConn = url.parse(process.env.DOCKER_HOST);
+const dockerConn = url.parse(process.env.DOCKER_HOST || 'tcp://localhost');
 
 module.exports = {
   redis: {
