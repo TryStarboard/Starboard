@@ -3,6 +3,7 @@ import { wrap } from 'co';
 import github from 'octonode';
 import { promisifyAll } from 'bluebird';
 import { pick, map, uniq } from 'lodash';
+import parseLinkHeader from 'parse-link-header';
 import db from './db';
 
 github.auth.config({
@@ -17,37 +18,59 @@ export { github as default };
 export const syncStarsForUser = wrap(function *(id) {
   const [{ access_token }] = yield db('users').select('access_token').where({ id });
   const client = github.client(access_token);
-  const [, repos] = yield client.getAsync('/user/starred');
 
-  // Transform data into format similar to repos table
-  const arr = repos.map((r) => {
-    const obj = pick(r, [
-      'full_name',
-      'description',
-      'homepage',
-      'html_url',
-      'forks_count',
-      'stargazers_count',
-      // 'language',
-    ]);
+  let page = '1';
+  let IDs = [];
 
-    obj.user_id = id;
-    obj.github_id = r.id;
-    obj.starred_at = r.updated_at;
+  while (true) {
+    const [, repos, headers] = yield client.getAsync('/user/starred', {
+      per_page: 100,
+      page,
+    });
 
-    return obj;
-  });
+    // Transform data into format similar to repos table
+    const arr = repos.map((r) => {
+      const obj = pick(r, [
+        'full_name',
+        'description',
+        'homepage',
+        'html_url',
+        'forks_count',
+        'stargazers_count',
+        // 'language',
+      ]);
 
-  // const languages = uniq(map(arr, 'language'));
-  //
-  // console.log(languages);
+      obj.user_id = id;
+      obj.github_id = r.id;
+      obj.starred_at = r.updated_at;
 
-  const rawSQL = db('repos').insert(arr);
+      return obj;
+    });
 
-  return yield db.raw(
-    '? ON CONFLICT (user_id, github_id) ' +
-    'DO UPDATE SET (full_name, description, homepage, html_url, forks_count, stargazers_count) = ' +
-    '(EXCLUDED.full_name, EXCLUDED.description, EXCLUDED.homepage, EXCLUDED.html_url, EXCLUDED.forks_count, EXCLUDED.stargazers_count) ' +
-    'RETURNING "id"',
-    [rawSQL]);
+    // const languages = uniq(map(arr, 'language'));
+    //
+    // console.log(languages);
+
+    const rawSQL = db('repos').insert(arr);
+
+    const { rows } = yield db.raw(
+      '? ON CONFLICT (user_id, github_id) ' +
+      'DO UPDATE SET (full_name, description, homepage, html_url, forks_count, stargazers_count) = ' +
+      '(EXCLUDED.full_name, EXCLUDED.description, EXCLUDED.homepage, ' +
+        'EXCLUDED.html_url, EXCLUDED.forks_count, EXCLUDED.stargazers_count) ' +
+      'RETURNING "id"',
+      [rawSQL]);
+
+    IDs = IDs.concat(map(rows, 'id'));
+
+    const { next } = parseLinkHeader(headers.link);
+
+    if (!next) {
+      break;
+    }
+
+    page = next.page;
+  }
+
+  return IDs;
 });

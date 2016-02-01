@@ -6,7 +6,7 @@ exports.up = (knex, Promise) => {
     table.integer('user_id');
     table.bigInteger('github_id');
     table.string('full_name');
-    table.string('description');
+    table.text('description');
     table.string('homepage');
     table.string('html_url');
     table.integer('forks_count');
