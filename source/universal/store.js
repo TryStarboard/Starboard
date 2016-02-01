@@ -13,7 +13,7 @@ const createStoreWithMiddleware = applyMiddleware(
 )(createStore);
 
 const reducers = combineReducers({
-  stars(state = null, { type, payload }) {
+  stars(state = [], { type, payload }) {
     switch (type) {
     case `${GET_STARS}_FULFILLED`:
       return payload.data;
