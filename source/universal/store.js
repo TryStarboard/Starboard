@@ -3,7 +3,8 @@ import promiseMiddleware from 'redux-promise-middleware';
 import createLogger from 'redux-logger';
 import { browserHistory } from 'react-router';
 import {
-  LOGOUT
+  LOGOUT,
+  GET_STARS
 } from './actions';
 
 const createStoreWithMiddleware = applyMiddleware(
@@ -12,6 +13,14 @@ const createStoreWithMiddleware = applyMiddleware(
 )(createStore);
 
 const reducers = combineReducers({
+  stars(state = [], { type, payload }) {
+    switch (type) {
+    case `${GET_STARS}_FULFILLED`:
+      return payload.data;
+    default:
+      return state;
+    }
+  },
   user(state = null, { type, payload }) {
     switch (type) {
     case `${LOGOUT}_FULFILLED`:
