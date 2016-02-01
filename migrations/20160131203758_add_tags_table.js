@@ -8,6 +8,8 @@ exports.up = (knex, Promise) => {
     table.string('foreground_color');
     table.string('background_color');
     table.timestamps();
+
+    table.unique(['user_id', 'text']);
   });
 };
 

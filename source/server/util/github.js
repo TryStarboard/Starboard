@@ -2,7 +2,7 @@ import config from 'config';
 import { wrap } from 'co';
 import github from 'octonode';
 import { promisifyAll } from 'bluebird';
-import { pick, map, uniq } from 'lodash';
+import { pick, map, uniq, compact } from 'lodash';
 import parseLinkHeader from 'parse-link-header';
 import db from './db';
 
@@ -29,6 +29,8 @@ export const syncStarsForUser = wrap(function *(id) {
     });
 
     // Transform data into format similar to repos table
+    //
+
     const arr = repos.map((r) => {
       const obj = pick(r, [
         'full_name',
@@ -37,7 +39,7 @@ export const syncStarsForUser = wrap(function *(id) {
         'html_url',
         'forks_count',
         'stargazers_count',
-        // 'language',
+        'language',
       ]);
 
       obj.user_id = id;
@@ -47,11 +49,22 @@ export const syncStarsForUser = wrap(function *(id) {
       return obj;
     });
 
-    // const languages = uniq(map(arr, 'language'));
-    //
-    // console.log(languages);
 
-    const rawSQL = db('repos').insert(arr);
+    // Create tags
+    //
+
+    {
+      const languages = uniq(compact(map(arr, 'language')));
+      const sql = db('tags').insert(languages.map((lang) => ({user_id: id, text: lang})));
+      yield db.raw('? ON CONFLICT DO NOTHING', [sql]);
+    }
+
+    break;
+
+    // Insert repo data
+    //
+
+    const sql = db('repos').insert(arr);
 
     const { rows } = yield db.raw(
       '? ON CONFLICT (user_id, github_id) ' +
@@ -59,15 +72,15 @@ export const syncStarsForUser = wrap(function *(id) {
       '(EXCLUDED.full_name, EXCLUDED.description, EXCLUDED.homepage, ' +
         'EXCLUDED.html_url, EXCLUDED.forks_count, EXCLUDED.stargazers_count) ' +
       'RETURNING "id"',
-      [rawSQL]);
+      [sql]);
 
     IDs = IDs.concat(map(rows, 'id'));
 
     const { next } = parseLinkHeader(headers.link);
 
-    if (!next) {
+    // if (!next) {
       break;
-    }
+    // }
 
     page = next.page;
   }
