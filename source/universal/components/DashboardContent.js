@@ -7,7 +7,7 @@ const Repo = ({full_name, description, html_url, tags}) => (
     </div>
     <div className="repo__desc">{description}</div>
     <ul className="repo__tags">
-      {tags.map((tag) => <li key={tag}>{tag}</li>)}
+      {tags[0] != null ? (tags.map((tag) => <li key={tag}>{tag}</li>)) : null}
     </ul>
   </div>
 );
