@@ -1,3 +1,38 @@
 .dashboard {
   margin-left: 64px;
+  padding: 20px;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.repo {
+  width: 200px;
+  border: 1px solid black;
+  padding: 7px 10px;
+  height: 120px;
+  margin-right: 20px;
+  margin-bottom: 20px;
+  border-radius: 4px;
+}
+
+.repo__full-name {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  margin-bottom: 2px;
+  color: #4A90E2;
+  font-size: 14px;
+  line-height: 19px;
+}
+
+.repo__name-link {
+  color: #4A90E2;
+  font-weight: 700;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.repo__desc {
+  font-size: 12px;
+  color: #666666;
+  line-height: 15px;
 }
