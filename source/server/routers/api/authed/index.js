@@ -1,6 +1,5 @@
 import Router from 'koa-router';
 import db from '../../../util/db';
-import { syncStarsForUser } from '../../../util/github';
 
 function *ensureAuthed(next) {
   if (this.req.isAuthenticated()) {
