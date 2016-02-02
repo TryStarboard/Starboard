@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { logout, getStars } from '../actions';
 import LogoutIcon from '../../client/img/logout-icon.svg';
 import UserIcon from '../../client/img/user-icon.svg';

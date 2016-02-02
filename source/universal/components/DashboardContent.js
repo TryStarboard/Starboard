@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 
 const Repo = ({full_name}) => (
   <div className="">{full_name}</div>

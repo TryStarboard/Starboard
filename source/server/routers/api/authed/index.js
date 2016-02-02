@@ -1,6 +1,5 @@
 import Router from 'koa-router';
 import db from '../../../util/db';
-import { syncStarsForUser } from '../../../util/data';
 
 function *ensureAuthed(next) {
   if (this.req.isAuthenticated()) {
@@ -18,12 +17,11 @@ authedRoute.get('/logout', ensureAuthed, function *() {
 });
 
 authedRoute.get('/stars', ensureAuthed, function *() {
-  this.body = yield syncStarsForUser(this.req.user.id);
-  // this.body = yield db('repos')
-  //   .select('full_name', 'description', 'homepage', 'html_url', 'tags.text AS tag')
-  //   .where('repos.user_id', this.req.user.id)
-  //   .leftJoin('repo_tags', 'repos.id', 'repo_tags.repo_id')
-  //   .leftJoin('tags', 'repo_tags.tag_id', 'tags.id');
+  this.body = yield db('repos')
+    .select('full_name', 'description', 'homepage', 'html_url', 'tags.text AS tag')
+    .where('repos.user_id', this.req.user.id)
+    .leftJoin('repo_tags', 'repos.id', 'repo_tags.repo_id')
+    .leftJoin('tags', 'repo_tags.tag_id', 'tags.id');
 });
 
 export { authedRoute as default };
