@@ -2,7 +2,9 @@
   box-sizing: border-box;
 }
 
-body {}
+body {
+  font-family: 'Noto Sans', sans-serif;
+}
 
 .clearfix::after {
   content: "";
