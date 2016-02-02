@@ -18,7 +18,7 @@ authedRoute.get('/logout', ensureAuthed, function *() {
 
 authedRoute.get('/stars', ensureAuthed, function *() {
   const { rows } = yield db.raw(`
-    SELECT repos.id AS id, full_name, description, homepage, html_url, 
+    SELECT repos.id AS id, full_name, description, homepage, html_url,
       array_agg(tags.text) AS tags
     FROM repos
     LEFT JOIN repo_tags ON repo_tags.repo_id = repos.id
