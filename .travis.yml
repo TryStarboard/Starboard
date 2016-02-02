@@ -1,0 +1,12 @@
+language: node_js
+sudo: false
+node_js:
+  - '5.5.0'
+branches:
+  only:
+    - master
+before_install:
+  - npm config set progress=false
+  - npm config set spin=false
+script:
+  - npm run check
