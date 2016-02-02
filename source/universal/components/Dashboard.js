@@ -8,10 +8,10 @@ class Dashboard extends Component {
     return (
       <div>
         <Sidebar dispatch={this.props.dispatch}></Sidebar>
-        <DashboardContent stars={this.props.stars} />
+        <DashboardContent stars={this.props.stars} tags={this.props.tags} />
       </div>
     );
   }
 }
 
-export default connect(({stars, user}) => ({stars, user}))(Dashboard);
+export default connect(({user, stars, tags}) => ({user, stars, tags}))(Dashboard);
