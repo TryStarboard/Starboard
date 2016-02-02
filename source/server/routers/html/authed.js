@@ -1,4 +1,5 @@
 import Router from 'koa-router';
+import { getAll as getAllStars } from '../../util/data/stars';
 import renderReact from '../util/renderReact';
 
 const authedRoute = new Router();
@@ -12,7 +13,11 @@ function *ensureAuthed(next) {
 }
 
 authedRoute.get('/dashboard', ensureAuthed, function *(next) {
-  this.reactState = {user: this.req.user};
+  this.reactState = yield {
+    user: this.req.user,
+    stars: getAllStars(this.req.user.id),
+  };
+
   yield next;
 }, renderReact);
 
