@@ -62,6 +62,7 @@
     "file-loader": "0.8.5",
     "node-sass": "3.4.2",
     "nodemon": "1.8.1",
+    "socket.io-client": "^1.4.5",
     "svg-react-loader": "0.3.2",
     "webpack": "1.12.12"
   },

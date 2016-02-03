@@ -51,7 +51,7 @@ app.on('error', function (err, ctx) {
 
 const server = http.createServer(app.callback());
 
-const io = socketio(server);
+const io = socketio(server, {serveClient: false});
 
 server.listen(10000, '0.0.0.0', () => {
   logger.info('http://0.0.0.0:10000');
