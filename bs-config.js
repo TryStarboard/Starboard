@@ -10,6 +10,7 @@ module.exports = {
   ],
   proxy: {
     target: 'http://localhost:10000',
+    ws: true,
   },
   port: 10010,
   snippetOptions: {
