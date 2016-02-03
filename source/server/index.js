@@ -1,9 +1,11 @@
 import 'source-map-support/register';
+import http from 'http';
 import config from 'config';
 import koa from 'koa';
 import render from 'koa-ejs';
 import koaStatic from 'koa-static';
 import bodyParser from 'koa-bodyparser';
+import socketio from 'socket.io';
 import session from './util/session';
 import { logger, middleware as devLoggingMiddleware } from './util/logging';
 import { authInit, authSession } from './util/auth';
@@ -47,6 +49,14 @@ app.on('error', function (err, ctx) {
   logger.error(err);
 });
 
-app.listen(10000, '0.0.0.0', () => {
+const server = http.createServer(app.callback());
+
+const io = socketio(server);
+
+server.listen(10000, '0.0.0.0', () => {
   logger.info('http://0.0.0.0:10000');
+});
+
+io.on('connection', function(socket){
+  console.log('a user connected');
 });
