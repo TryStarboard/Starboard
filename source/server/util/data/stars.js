@@ -9,7 +9,8 @@ export const getAll = wrap(function *(id) {
     LEFT JOIN repo_tags ON repo_tags.repo_id = repos.id
     LEFT JOIN tags ON repo_tags.tag_id = tags.id
     WHERE repos.user_id = ?
-    GROUP BY repos.id`,
+    GROUP BY repos.id
+    ORDER BY repos.starred_at DESC`,
     [id]
   );
   return rows;

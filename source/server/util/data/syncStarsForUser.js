@@ -40,7 +40,7 @@ function createDataSource(id) {
       let page = 1;
 
       // Let's only support 2000 stars for now
-      while (page <= 2 && !isStopped) {
+      while (page <= 20 && !isStopped) {
         const [, repos, headers] = yield client.getAsync('/user/starred', {
           per_page: 100,
           page,
