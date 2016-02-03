@@ -1,5 +1,6 @@
 import Router from 'koa-router';
 import { getAll as getAllStars } from '../../../util/data/stars';
+import syncStarsForUser from '../../../util/data/syncStarsForUser';
 
 function *ensureAuthed(next) {
   if (this.req.isAuthenticated()) {
@@ -18,6 +19,10 @@ authedRoute.get('/logout', ensureAuthed, function *() {
 
 authedRoute.get('/stars', ensureAuthed, function *() {
   this.body = yield getAllStars(this.req.user.id);
+});
+
+authedRoute.get('/stars/sync', ensureAuthed, function *() {
+  this.body = yield syncStarsForUser(this.req.user.id);
 });
 
 export { authedRoute as default };

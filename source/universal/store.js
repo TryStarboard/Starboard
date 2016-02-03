@@ -5,7 +5,7 @@ import { browserHistory } from 'react-router';
 import defaults from 'lodash/fp/defaults';
 import {
   LOGOUT,
-  GET_STARS
+  SYNC_REPOS
 } from './actions';
 
 const DEFAULT_TAG_COLORS = {
@@ -46,8 +46,6 @@ const reducers = combineReducers({
   },
   stars(state = [], { type, payload }) {
     switch (type) {
-    case `${GET_STARS}_FULFILLED`:
-      return payload.data;
     default:
       return state;
     }

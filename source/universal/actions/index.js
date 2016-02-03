@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 export const LOGOUT = 'LOGOUT';
-export const GET_STARS = 'GET_STARS';
+export const SYNC_REPOS = 'SYNC_REPOS';
 
 export function logout() {
   return {
@@ -12,11 +12,11 @@ export function logout() {
   };
 }
 
-export function getStars() {
+export function syncRepos() {
   return {
-    type: GET_STARS,
+    type: SYNC_REPOS,
     payload: {
-      promise: axios.get('/api/v1/stars')
+      promise: axios.get('/api/v1/stars/sync')
     }
   };
 }
