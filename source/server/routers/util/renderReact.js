@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { PropTypes, Component } from 'react';
 import { renderToString } from 'react-dom/server';
 import { Provider } from 'react-redux';
 import { match, RouterContext } from 'react-router';
 import { fromCallback } from 'bluebird';
+import * as actions from '../../../universal/actions';
 import routes from '../../../universal/components/routes';
-import createStoreWithInitState from '../../../universal/store';
+import createStoreWithInitState from '../../../universal/createStoreWithInitState';
 
 function matchPath(url) {
   return fromCallback(
@@ -13,15 +14,36 @@ function matchPath(url) {
   );
 }
 
-function *renderTemplate(renderProps, state) {
-  const app = (
-    <Provider store={createStoreWithInitState(state)}>
-      <RouterContext {...renderProps}/>
-    </Provider>
-  );
+function createApp(renderProps, state) {
+  class App extends Component {
 
+    static childContextTypes = {
+      logout: PropTypes.func.isRequired,
+      syncRepos: PropTypes.func.isRequired,
+    };
+
+    getChildContext() {
+      return {
+        logout: actions.logout,
+        syncRepos: actions.syncRepos,
+      };
+    }
+
+    render() {
+      return (
+        <Provider store={createStoreWithInitState(state)}>
+          <RouterContext {...renderProps}/>
+        </Provider>
+      );
+    }
+  }
+
+  return <App/>;
+}
+
+function *renderTemplate(renderProps, state) {
   yield this.render('index', {
-    content: renderToString(app),
+    content: renderToString(createApp(renderProps, state)),
     data: state,
   });
 }

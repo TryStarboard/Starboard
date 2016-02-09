@@ -1,7 +1,8 @@
+import React from 'react';
 import { render } from 'react-dom';
 import io from 'socket.io-client';
-import app from './app';
+import App from './app';
 
 const socket = io();
 
-render(app, document.getElementById('app'));
+render(<App/>, document.getElementById('app'));

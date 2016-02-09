@@ -20,7 +20,11 @@ module.exports = {
         loader: 'babel',
         query: {
           presets: ['react', 'es2015'],
-          plugins: ['transform-runtime', 'transform-function-bind'],
+          plugins: [
+            'transform-function-bind',
+            'transform-class-properties',
+            'transform-runtime',
+          ],
         }
       },
       {

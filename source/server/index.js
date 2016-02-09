@@ -57,6 +57,6 @@ server.listen(10000, '0.0.0.0', () => {
   logger.info('http://0.0.0.0:10000');
 });
 
-io.on('connection', function(socket){
+io.on('connection', function (socket) {
   console.log('a user connected');
 });

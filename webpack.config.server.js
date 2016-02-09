@@ -39,7 +39,10 @@ module.exports = {
         loader: 'babel',
         query: {
           presets: ['react', 'es2015-node5'],
-          plugins: ['transform-function-bind'],
+          plugins: [
+            'transform-function-bind',
+            'transform-class-properties',
+          ],
         }
       },
       {
