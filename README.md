@@ -63,8 +63,8 @@ You will need to create a `config/local-development.js` that looks like:
 
 module.exports = {
   github: {
-    clientID: <GITHUB_CLIENT_ID>,
-    clientSecret: <GITHUB_CLIENT_SECRET>,
+    clientID: '<GITHUB_CLIENT_ID>',
+    clientSecret: '<GITHUB_CLIENT_SECRET>',
   }
 };
 ```
