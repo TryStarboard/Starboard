@@ -1,5 +1,6 @@
 import { combineReducers } from 'redux';
 import { browserHistory } from 'react-router';
+import { findIndex, assign, sortBy } from 'lodash/fp';
 import defaults from 'lodash/fp/defaults';
 import {
   LOGOUT
@@ -20,16 +21,26 @@ function user(state = null, { type, payload }) {
   }
 }
 
-function stars(state = [], { type, payload }) {
+function stars(state = [], { type, payload: repos }) {
   switch (type) {
   case UPDATE_SOME_REPOS:
-
-    return payload;
+    // Merge new or existing repos with current list of repos
+    const currentState = state.slice(0);
+    const newRepos = [];
+    for (const repo of repos) {
+      const existingIndex = findIndex(['id', repo.id], currentState);
+      if (existingIndex > -1) {
+        currentState.splice(existingIndex, 1, assign(currentState[existingIndex], repo));
+      } else {
+        newRepos.push(repo);
+      }
+    }
+    return sortBy('id', currentState.concat(newRepos)).reverse();
   case REMOVE_REPOS:
 
     return payload;
   default:
-    return state;
+    return sortBy('id', state).reverse();
   }
 }
 
