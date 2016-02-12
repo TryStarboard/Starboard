@@ -8,7 +8,7 @@ class Dashboard extends Component {
     return (
       <div>
         <Sidebar dispatch={this.props.dispatch}></Sidebar>
-        <DashboardContent stars={this.props.stars} tags={this.props.tags} />
+        <DashboardContent dispatch={this.props.dispatch} stars={this.props.stars} tags={this.props.tags} />
       </div>
     );
   }

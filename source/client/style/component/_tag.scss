@@ -5,13 +5,26 @@
   margin-bottom: 10px;
   margin-right: 10px;
   border-radius: 4px;
+  border-style: solid;
+  border-color: #DDDDDD;
+  border-width: 2px;
 }
 
 .tag__text {
   height: 100%;
-  line-height: 80px - 5px * 2;
+  line-height: 76px - 5px * 2;
   text-align: center;
   overflow: hidden;
   text-overflow: ellipsis;
   font-weight: 700;
+}
+
+.tag__btn {
+  text-align: center;
+  height: 100%;
+  line-height: 76px;
+  fill: #222222;
+  &:hover {
+    fill: #444444
+  }
 }

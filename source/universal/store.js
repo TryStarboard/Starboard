@@ -5,7 +5,7 @@ import { browserHistory } from 'react-router';
 import defaults from 'lodash/fp/defaults';
 import {
   LOGOUT,
-  SYNC_REPOS
+  ADD_TAG,
 } from './actions';
 
 const DEFAULT_TAG_COLORS = {
@@ -52,6 +52,8 @@ const reducers = combineReducers({
   },
   tags(state = [], { type, payload }) {
     switch (type) {
+    case `${ADD_TAG}_FULFILLED`:
+      return [payload.data].concat(state);
     default:
       return state.map((tag) => {
         const colors = DEFAULT_TAG_COLORS[tag.text.toLowerCase()];
