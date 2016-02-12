@@ -1,8 +1,7 @@
 import co, { wrap } from 'co';
-import { curry, pick, map, uniq, compact, omit, noop } from 'lodash';
+import { curry, pick, map, uniq, compact, omit } from 'lodash';
 import parseLinkHeader from 'parse-link-header';
 import { Observable } from 'rx';
-import { fromCallback } from 'bluebird';
 import github from '../github';
 import db from '../db';
 
@@ -128,8 +127,7 @@ export default function (id) {
 
       return db.raw('? ON CONFLICT DO NOTHING', [db('repo_tags').insert(entries)])
         .then(() => {
-          const idsOfCurrentBatch = repos.map(({ id }) => id);
-          console.log(idsOfCurrentBatch);
+          const idsOfCurrentBatch = map(repos, 'id');
           return db.raw(`
             SELECT repos.id AS id, full_name, description, homepage, html_url,
               array_agg(tags.text) AS tag_texts

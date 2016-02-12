@@ -13,11 +13,11 @@ module.exports = {
     ws: true,
   },
   port: 10010,
-  snippetOptions: {
-    rule: {
-      match: /$/
-    }
-  },
+  // snippetOptions: {
+  //   rule: {
+  //     match: /$/
+  //   }
+  // },
   reloadDebounce: 1000,
   reloadDelay: 1000
 };

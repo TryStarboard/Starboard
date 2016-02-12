@@ -37,8 +37,8 @@ function stars(state = [], { type, payload: repos }) {
     }
     return sortBy('id', currentState.concat(newRepos)).reverse();
   case REMOVE_REPOS:
-
-    return payload;
+    // TODO: handle repo removal
+    return state;
   default:
     return sortBy('id', state).reverse();
   }
