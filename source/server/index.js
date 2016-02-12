@@ -5,10 +5,10 @@ import koa from 'koa';
 import render from 'koa-ejs';
 import koaStatic from 'koa-static';
 import bodyParser from 'koa-bodyparser';
-import socketio from 'socket.io';
 import session from './util/session';
 import { logger, middleware as devLoggingMiddleware } from './util/logging';
 import { authInit, authSession } from './util/auth';
+import { configWebsocket } from './util/websocket';
 import htmlRoute from './routers/html';
 import apiRoute from './routers/api';
 
@@ -51,12 +51,8 @@ app.on('error', function (err, ctx) {
 
 const server = http.createServer(app.callback());
 
-const io = socketio(server, {serveClient: false});
+configWebsocket(server);
 
 server.listen(10000, '0.0.0.0', () => {
   logger.info('http://0.0.0.0:10000');
-});
-
-io.on('connection', function (socket) {
-  console.log('a user connected');
 });

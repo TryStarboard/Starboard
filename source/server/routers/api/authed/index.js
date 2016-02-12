@@ -1,6 +1,11 @@
 import Router from 'koa-router';
 import { getAll as getAllStars } from '../../../util/data/stars';
 import syncStarsForUser from '../../../util/data/syncStarsForUser';
+import { getClient } from '../../../util/websocket';
+import {
+  UPDATE_SOME_REPOS,
+  REMOVE_REPOS
+} from '../../../../universal/actions/serverActions';
 
 function *ensureAuthed(next) {
   if (this.req.isAuthenticated()) {
@@ -22,7 +27,15 @@ authedRoute.get('/stars', ensureAuthed, function *() {
 });
 
 authedRoute.get('/stars/sync', ensureAuthed, function *() {
-  this.body = yield syncStarsForUser(this.req.user.id);
+
+  // TODO: This won't work in multi-process enviornment, because HTTP may come
+  // to a different process than WebSocket
+  syncStarsForUser(this.req.user.id)
+    .subscribe((repos) => {
+      getClient().emit(UPDATE_SOME_REPOS, repos);
+    });
+
+  this.status = 200;
 });
 
 export { authedRoute as default };

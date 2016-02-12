@@ -40,7 +40,7 @@ function createDataSource(id) {
       let page = 1;
 
       // Let's only support 2000 stars for now
-      while (page <= 20 && !isStopped) {
+      while (page <= 2 && !isStopped) {
         const [, repos, headers] = yield client.getAsync('/user/starred', {
           per_page: 100,
           page,
@@ -80,56 +80,67 @@ function transformReposForInsertion(repos) {
 }
 
 export default function (id) {
-  return fromCallback((done) => {
 
-    const IDs = [];
+  const IDs = [];
+  const source = createDataSource(id);
 
-    const source = createDataSource(id);
+  const reposSource = source.flatMapWithMaxConcurrent(1, wrap(function *(repos) {
+    const [githubIdLangMap, transformedRepos] = transformReposForInsertion(repos);
+    const sql = db('repos').insert(transformedRepos);
 
-    const reposSource = source.flatMapWithMaxConcurrent(1, wrap(function *(repos) {
-      const [githubIdLangMap, transformedRepos] = transformReposForInsertion(repos);
-      const sql = db('repos').insert(transformedRepos);
+    const { rows } = yield db.raw(
+      '? ON CONFLICT (user_id, github_id) ' +
+      'DO UPDATE SET (full_name, description, homepage, html_url, forks_count, stargazers_count) = ' +
+      '(EXCLUDED.full_name, EXCLUDED.description, EXCLUDED.homepage, ' +
+        'EXCLUDED.html_url, EXCLUDED.forks_count, EXCLUDED.stargazers_count) ' +
+      'RETURNING id, github_id',
+      [sql]
+    );
 
-      const { rows } = yield db.raw(
-        '? ON CONFLICT (user_id, github_id) ' +
-        'DO UPDATE SET (full_name, description, homepage, html_url, forks_count, stargazers_count) = ' +
-        '(EXCLUDED.full_name, EXCLUDED.description, EXCLUDED.homepage, ' +
-          'EXCLUDED.html_url, EXCLUDED.forks_count, EXCLUDED.stargazers_count) ' +
-        'RETURNING id, github_id',
-        [sql]
-      );
+    return rows.map(({ id: repo_id, github_id }) => {
+      IDs.push(repo_id);
+      return {id: repo_id, language: githubIdLangMap[github_id]};
+    });
+  }));
 
-      return rows.map(({ id: repo_id, github_id }) => {
-        IDs.push(repo_id);
-        return {id: repo_id, language: githubIdLangMap[github_id]};
-      });
-    }));
+  const tagsSource = source.flatMapWithMaxConcurrent(1, wrap(function *(repos) {
+    const languages = uniq(compact(map(repos, 'language')));
+    const sql = db('tags').insert(languages.map((lang) => ({user_id: id, text: lang})));
+    yield db.raw('? ON CONFLICT DO NOTHING', [sql]);
+    const tags = yield db('tags').select('id', 'text').where({user_id: id});
 
-    const tagsSource = source.flatMapWithMaxConcurrent(1, wrap(function *(repos) {
-      const languages = uniq(compact(map(repos, 'language')));
-      const sql = db('tags').insert(languages.map((lang) => ({user_id: id, text: lang})));
-      yield db.raw('? ON CONFLICT DO NOTHING', [sql]);
-      const tags = yield db('tags').select('id', 'text').where({user_id: id});
+    const languageTagMap = {};
+    for (const {id: tag_id, text} of tags) {
+      languageTagMap[text] = tag_id;
+    }
 
-      const languageTagMap = {};
-      for (const {id: tag_id, text} of tags) {
-        languageTagMap[text] = tag_id;
-      }
+    return languageTagMap;
+  }));
 
-      return languageTagMap;
-    }));
+  return Observable.zip(reposSource, tagsSource)
+    .flatMap(([repos, languageTagMap]) => {
+      const entries = compact(repos.map(({id: repo_id, language}) => {
+        if (language == null) {
+          return null;
+        }
+        return { repo_id, tag_id: languageTagMap[language] };
+      }));
 
-    Observable.zip(reposSource, tagsSource)
-      .flatMap(([repos, languageTagMap]) => {
-        const entries = compact(repos.map(({id: repo_id, language}) => {
-          if (language == null) {
-            return null;
-          }
-          return { repo_id, tag_id: languageTagMap[language] };
-        }));
-
-        return db.raw('? ON CONFLICT DO NOTHING', [db('repo_tags').insert(entries)]);
-      })
-      .subscribe(noop, done, () => done(null, IDs));
-  });
+      return db.raw('? ON CONFLICT DO NOTHING', [db('repo_tags').insert(entries)])
+        .then(() => {
+          const idsOfCurrentBatch = repos.map(({ id }) => id);
+          console.log(idsOfCurrentBatch);
+          return db.raw(`
+            SELECT repos.id AS id, full_name, description, homepage, html_url,
+              array_agg(tags.text) AS tag_texts
+            FROM repos
+            LEFT JOIN repo_tags ON repo_tags.repo_id = repos.id
+            LEFT JOIN tags ON repo_tags.tag_id = tags.id
+            WHERE repos.id IN (${idsOfCurrentBatch.join(',')})
+            GROUP BY repos.id
+            ORDER BY repos.starred_at DESC`
+          );
+        })
+        .then(({ rows }) => rows);
+    });
 }
