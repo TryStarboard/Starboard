@@ -3,7 +3,7 @@
 const join = require('path').join;
 
 module.exports = {
-  entry: './source/client/js/index.js',
+  entry: './source/client/index.js',
 
   output: {
     filename: 'bundle.js',
@@ -20,7 +20,11 @@ module.exports = {
         loader: 'babel',
         query: {
           presets: ['react', 'es2015'],
-          plugins: ['transform-runtime', 'transform-function-bind'],
+          plugins: [
+            'transform-function-bind',
+            'transform-class-properties',
+            'transform-runtime',
+          ],
         }
       },
       {
