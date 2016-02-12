@@ -1,8 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { Provider } from 'react-redux';
-import routes from '../../universal/components/routes';
-import createStoreWithInitState from '../../universal/createStoreWithInitState';
-import { logout, syncRepos } from '../../universal/actions';
+import routes from '../universal/routes';
+import { logout, syncRepos } from '../universal/actions';
 
 export default class App extends Component {
 
@@ -20,7 +19,7 @@ export default class App extends Component {
 
   render() {
     return (
-      <Provider store={createStoreWithInitState(window.__data__)}>
+      <Provider store={this.props.store}>
         {routes}
       </Provider>
     );

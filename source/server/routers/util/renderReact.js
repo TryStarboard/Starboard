@@ -4,8 +4,8 @@ import { Provider } from 'react-redux';
 import { match, RouterContext } from 'react-router';
 import { fromCallback } from 'bluebird';
 import * as actions from '../../../universal/actions';
-import routes from '../../../universal/components/routes';
-import createStoreWithInitState from '../../../universal/createStoreWithInitState';
+import routes from '../../../universal/routes';
+import createStore from '../../../universal/store/createStore';
 
 function matchPath(url) {
   return fromCallback(
@@ -31,7 +31,7 @@ function createApp(renderProps, state) {
 
     render() {
       return (
-        <Provider store={createStoreWithInitState(state)}>
+        <Provider store={createStore(state)}>
           <RouterContext {...renderProps}/>
         </Provider>
       );

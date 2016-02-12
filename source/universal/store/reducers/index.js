@@ -4,8 +4,8 @@ import defaults from 'lodash/fp/defaults';
 import {
   LOGOUT,
   SYNC_REPOS
-} from '../actions';
-import { DEFAULT_TAG_COLORS } from '../const';
+} from '../../actions';
+import { DEFAULT_TAG_COLORS } from '../../const';
 
 function user(state = null, { type, payload }) {
   switch (type) {
