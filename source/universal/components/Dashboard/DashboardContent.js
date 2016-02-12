@@ -1,6 +1,5 @@
 import React from 'react';
-import { addTag } from '../actions';
-import PlusIcon from '../../client/img/add-tag-icon.svg';
+import PlusIcon from '../../../client/img/add-tag-icon.svg';
 
 const Repo = ({full_name, description, html_url, tag_texts, colorMap}) => (
   <div className="repo">
@@ -50,7 +49,7 @@ function indexTags(tags) {
   return colorMap;
 }
 
-export default ({dispatch, stars, tags}) => {
+export default ({addTag, stars, tags}) => {
 
   const colorMap = indexTags(tags);
 
@@ -59,7 +58,7 @@ export default ({dispatch, stars, tags}) => {
       <div className="dashboard__tags">
         <div onClick={() => {
           const name = prompt('enter the tag name');
-          if (name !== '') dispatch(addTag(name));
+          if (name !== '') addTag(name);
         }}><AddTag></AddTag></div>
         {tags.map((t) => <Tag key={t.id} {...t}/>)}
       </div>
