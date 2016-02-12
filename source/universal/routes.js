@@ -1,7 +1,7 @@
 import React from 'react';
 import { Router, Route, Redirect, browserHistory } from 'react-router';
-import Login from './Login';
-import Dashboard from './Dashboard';
+import Login from './components/Login';
+import Dashboard from './components/Dashboard';
 
 export default (
   <Router history={browserHistory}>

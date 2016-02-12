@@ -1,4 +1,5 @@
 import 'source-map-support/register';
+import http from 'http';
 import config from 'config';
 import koa from 'koa';
 import render from 'koa-ejs';
@@ -7,6 +8,7 @@ import bodyParser from 'koa-bodyparser';
 import session from './util/session';
 import { logger, middleware as devLoggingMiddleware } from './util/logging';
 import { authInit, authSession } from './util/auth';
+import { configWebsocket } from './util/websocket';
 import htmlRoute from './routers/html';
 import apiRoute from './routers/api';
 
@@ -47,6 +49,10 @@ app.on('error', function (err, ctx) {
   logger.error(err);
 });
 
-app.listen(10000, '0.0.0.0', () => {
+const server = http.createServer(app.callback());
+
+configWebsocket(server);
+
+server.listen(10000, '0.0.0.0', () => {
   logger.info('http://0.0.0.0:10000');
 });

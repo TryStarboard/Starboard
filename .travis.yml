@@ -10,9 +10,6 @@ addons:
       - ubuntu-toolchain-r-test
     packages:
       - g++-4.8
-branches:
-  only:
-    - master
 before_install:
   - npm config set progress=false
   - npm config set spin=false
