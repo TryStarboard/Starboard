@@ -1,7 +1,8 @@
 import React, { Component, PropTypes } from 'react';
 import { Provider } from 'react-redux';
 import routes from '../universal/routes';
-import { logout, syncRepos } from '../universal/actions';
+import { logout } from '../universal/actions';
+import { createSyncRepos } from '../universal/actionFactory';
 
 export default class App extends Component {
 
@@ -13,7 +14,7 @@ export default class App extends Component {
   getChildContext() {
     return {
       logout,
-      syncRepos
+      syncRepos: createSyncRepos(this.props.socket, this.props.store),
     };
   }
 

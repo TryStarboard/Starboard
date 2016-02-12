@@ -3,7 +3,7 @@ import { renderToString } from 'react-dom/server';
 import { Provider } from 'react-redux';
 import { match, RouterContext } from 'react-router';
 import { fromCallback } from 'bluebird';
-import * as actions from '../../../universal/actions';
+import { noop } from 'lodash/fp';
 import routes from '../../../universal/routes';
 import createStore from '../../../universal/store/createStore';
 
@@ -24,8 +24,8 @@ function createApp(renderProps, state) {
 
     getChildContext() {
       return {
-        logout: actions.logout,
-        syncRepos: actions.syncRepos,
+        logout: noop,
+        syncRepos: noop,
       };
     }
 

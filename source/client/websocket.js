@@ -15,11 +15,11 @@ export function connectSocket(store) {
   // TODO: handle event emitting when connection is not ready yet
 
   socket.on(UPDATE_SOME_REPOS, function (repos) {
-    updateSomeRepos(repos);
+    store.dispatch(updateSomeRepos(repos));
   });
 
-  socket.on(REMOVE_REPOS, function (data) {
-    console.log(JSON.stringify(data, null, 4));
+  socket.on(REMOVE_REPOS, function (repoFullNames) {
+    store.dispatch(removeRepos(repoFullNames));
   });
 }
 

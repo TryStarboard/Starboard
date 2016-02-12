@@ -4,13 +4,13 @@ export const REMOVE_REPOS = 'REMOVE_REPOS';
 export function updateSomeRepos(repos) {
   return {
     type: UPDATE_SOME_REPOS,
-    data: repos,
+    payload: repos,
   };
 }
 
 export function removeRepos(repos) {
   return {
     type: REMOVE_REPOS,
-    data: repos,
+    payload: repos,
   };
 }
