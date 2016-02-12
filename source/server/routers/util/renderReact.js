@@ -20,12 +20,14 @@ function createApp(renderProps, state) {
     static childContextTypes = {
       logout: PropTypes.func.isRequired,
       syncRepos: PropTypes.func.isRequired,
+      addTag: PropTypes.func.isRequired,
     };
 
     getChildContext() {
       return {
         logout: noop,
         syncRepos: noop,
+        addTag: noop,
       };
     }
 
