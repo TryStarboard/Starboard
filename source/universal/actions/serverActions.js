@@ -22,3 +22,10 @@ export function updateTags(tags) {
     payload: tags,
   };
 }
+
+export function updateTags(tags) {
+  return {
+    type: UPDATE_TAGS,
+    payload: tags,
+  };
+}
