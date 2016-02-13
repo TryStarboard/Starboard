@@ -4,7 +4,7 @@
   "description": "",
   "author": "Daiwei Lu <daiweilu123@gmail.com> (http://daiwei.lu)",
   "license": "MIT",
-  "main": "index.js",
+  "main": "public/server.js",
   "engines": {
     "node": "5.6.0",
     "npm": "3.6.0"
@@ -16,6 +16,7 @@
     "classnames": "2.2.3",
     "co": "4.6.0",
     "config": "1.19.0",
+    "cookies": "0.5.1",
     "ejs": "2.4.1",
     "history": "2.0.0",
     "ioredis": "1.15.0",
@@ -81,6 +82,6 @@
     "watch:build:client:css": "npm run build:client:css -- -w",
     "live-reload": "browser-sync start --config bs-config.js",
     "predev": "npm run clean && mkdir public && npm run build:client:css",
-    "dev": "docker-compose up & npm run watch:build:server & npm run watch:build:client:js & npm run watch:build:client:css & env DEBUG=knex:* nodemon -w public -w config -C public/server.js & npm run live-reload"
+    "dev": "docker-compose up & npm run watch:build:server & npm run watch:build:client:js & npm run watch:build:client:css & env DEBUG='knex:*' nodemon -w public -w config -C public/server.js & npm run live-reload"
   }
 }
