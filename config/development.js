@@ -6,6 +6,9 @@ const join = require('path').join;
 const dockerConn = url.parse(process.env.DOCKER_HOST || 'tcp://localhost');
 
 module.exports = {
+  cookie: {
+    keys: ['keyboard cat', 'starboard'],
+  },
   redis: {
     host: dockerConn.hostname,
     port: 6379,

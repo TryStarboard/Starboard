@@ -13,3 +13,7 @@ client.on('error', (err) => {
 export default session({
   store: redisStore({client})
 });
+
+export {
+  client
+};
