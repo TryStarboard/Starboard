@@ -6,7 +6,7 @@ import { props } from 'bluebird';
 import github from '../github';
 import db from '../db';
 
-const transformRepo = curry(function (id, repo) {
+const transformRepo = curry(function (id, {starred_at, repo}) {
   const transformed = pick(repo, [
     'full_name',
     'description',
@@ -19,7 +19,7 @@ const transformRepo = curry(function (id, repo) {
 
   transformed.user_id = id;
   transformed.github_id = repo.id;
-  transformed.starred_at = repo.updated_at;
+  transformed.starred_at = starred_at;
 
   return transformed;
 });
@@ -39,9 +39,14 @@ function createDataSource(id) {
 
       let page = 1;
 
-      // Let's only support 2000 stars for now
+      // Let's only support 2000 stars for now, 1 page shows 100 repos
       while (page <= 20 && !isStopped) {
-        const [, repos, headers] = yield client.getAsync('/user/starred', {
+        const [, repos, headers] = yield client.getOptionsAsync('/user/starred', {
+          headers: {
+            // Get "starred_at" property
+            Accept: 'application/vnd.github.v3.star+json'
+          }
+        }, {
           per_page: 100,
           page,
         });
@@ -134,7 +139,8 @@ export default function (id) {
           const idsOfCurrentBatch = map(repos, 'id');
           const reposP = db.raw(`
             SELECT repos.id AS id, full_name, description, homepage, html_url,
-              array_agg(tags.text) AS tag_texts
+              array_agg(tags.text) AS tag_texts,
+              extract(epoch from starred_at) AS starred_at
             FROM repos
             LEFT JOIN repo_tags ON repo_tags.repo_id = repos.id
             LEFT JOIN tags ON repo_tags.tag_id = tags.id
