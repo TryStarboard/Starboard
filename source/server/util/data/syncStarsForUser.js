@@ -2,6 +2,7 @@ import co, { wrap } from 'co';
 import { curry, pick, map, uniq, compact, omit } from 'lodash';
 import parseLinkHeader from 'parse-link-header';
 import { Observable } from 'rx';
+import { props } from 'bluebird';
 import github from '../github';
 import db from '../db';
 
@@ -39,7 +40,7 @@ function createDataSource(id) {
       let page = 1;
 
       // Let's only support 2000 stars for now
-      while (page <= 2 && !isStopped) {
+      while (page <= 20 && !isStopped) {
         const [, repos, headers] = yield client.getAsync('/user/starred', {
           per_page: 100,
           page,
@@ -128,7 +129,7 @@ export default function (id) {
       return db.raw('? ON CONFLICT DO NOTHING', [db('repo_tags').insert(entries)])
         .then(() => {
           const idsOfCurrentBatch = map(repos, 'id');
-          return db.raw(`
+          const reposP = db.raw(`
             SELECT repos.id AS id, full_name, description, homepage, html_url,
               array_agg(tags.text) AS tag_texts
             FROM repos
@@ -138,7 +139,11 @@ export default function (id) {
             GROUP BY repos.id
             ORDER BY repos.starred_at DESC`
           );
+          const tagsP = db('tags')
+            .select('id', 'text', 'foreground_color', 'background_color')
+            .where('user_id', id);
+          return props({ repos: reposP, tags: tagsP });
         })
-        .then(({ rows }) => rows);
+        .then(({ repos: { rows: repoRows }, tags }) => ({ repos: repoRows, tags }));
     });
 }
