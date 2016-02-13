@@ -7,7 +7,9 @@ import {
   SYNC_REPOS
 } from '../../universal/actionFactory';
 import {
-  UPDATE_SOME_REPOS
+  UPDATE_SOME_REPOS,
+  REMOVE_REPOS,
+  UPDATE_TAGS
 } from '../../universal/actions/serverActions';
 
 const KEYS = config.get('cookie.keys');
@@ -40,8 +42,15 @@ export function configWebsocket(server) {
 
     socket.on(SYNC_REPOS, function ({ id }) {
       syncStarsForUser(id)
-        .subscribe((repos) => {
-          socket.emit(UPDATE_SOME_REPOS, repos);
+        .subscribe(({ type, data }) => {
+          if (type === 'PROGRESS') {
+            const { repos, tags } = data;
+            socket.emit(UPDATE_TAGS, tags);
+            socket.emit(UPDATE_SOME_REPOS, repos);
+          } else {
+            // DELETE
+            socket.emit(REMOVE_REPOS, data);
+          }
         });
     });
   });
