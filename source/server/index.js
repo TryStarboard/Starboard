@@ -14,7 +14,7 @@ import apiRoute from './routers/api';
 
 const app = koa();
 
-app.keys = ['keyboard cat', 'starboard'];
+app.keys = config.get('cookie.keys');
 
 // Error handling
 app.use(function *(next) {
