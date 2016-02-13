@@ -9,10 +9,10 @@ export function updateSomeRepos(repos) {
   };
 }
 
-export function removeRepos(repos) {
+export function removeRepos(ids) {
   return {
     type: REMOVE_REPOS,
-    payload: repos,
+    payload: ids,
   };
 }
 

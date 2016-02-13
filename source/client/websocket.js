@@ -24,8 +24,8 @@ export function connectSocket(store) {
   // when they arrive in different order, rendering "repos" can throw error due
   // to new "tags" is not pushed to store yet
 
-  socket.on(REMOVE_REPOS, function (repoFullNames) {
-    store.dispatch(removeRepos(repoFullNames));
+  socket.on(REMOVE_REPOS, function (deletedRepoIds) {
+    store.dispatch(removeRepos(deletedRepoIds));
   });
 
   socket.on(UPDATE_TAGS, function (tags) {

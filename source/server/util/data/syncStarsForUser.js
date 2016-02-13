@@ -1,7 +1,7 @@
 import co, { wrap } from 'co';
 import { curry, pick, map, uniq, compact, omit } from 'lodash';
 import parseLinkHeader from 'parse-link-header';
-import { Observable } from 'rx';
+import { Observable, Subject } from 'rx';
 import { props } from 'bluebird';
 import github from '../github';
 import db from '../db';
@@ -117,7 +117,10 @@ export default function (id) {
     return languageTagMap;
   }));
 
-  return Observable.zip(reposSource, tagsSource)
+  const progressSubject = new Subject();
+
+  Observable
+    .zip(reposSource, tagsSource)
     .flatMap(([repos, languageTagMap]) => {
       const entries = compact(repos.map(({id: repo_id, language}) => {
         if (language == null) {
@@ -145,5 +148,18 @@ export default function (id) {
           return props({ repos: reposP, tags: tagsP });
         })
         .then(({ repos: { rows: repoRows }, tags }) => ({ repos: repoRows, tags }));
-    });
+    })
+    .subscribe(
+      (data) => progressSubject.onNext({ type: 'PROGRESS', data }),
+      (err) => progressSubject.onError(err),
+      () => {
+        db('repos').where('user_id', id).whereNotIn('id', IDs).del().returning('id')
+          .then((deletedRepoIds) => {
+            progressSubject.onNext({ type: 'DELETE', data: deletedRepoIds });
+            progressSubject.onCompleted();
+          });
+      }
+    );
+
+  return progressSubject;
 }
