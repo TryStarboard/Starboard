@@ -19,18 +19,22 @@ export function logout() {
 }
 
 export function addTag() {
-  const name = prompt('enter the tag name');
-
-  if (name != null && name !== '') {
-    return {
-      type: ADD_TAG,
-      payload: {
-        promise: axios.post('/api/v1/tags', { name })
-      }
-    };
-  }
-
   return {
-    type: ADD_TAG_FAILED,
+    type: ADD_TAG,
   };
+
+  // const name = prompt('enter the tag name');
+  //
+  // if (name != null && name !== '') {
+  //   return {
+  //     type: ADD_TAG,
+  //     payload: {
+  //       promise: axios.post('/api/v1/tags', { name })
+  //     }
+  //   };
+  // }
+
+  // return {
+  //   type: ADD_TAG_FAILED,
+  // };
 }

@@ -1,6 +1,8 @@
 import React, { Component, PropTypes } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import Modal from 'react-modal';
+import pick from 'lodash/fp/pick';
 import Sidebar from './Sidebar';
 import DashboardContent from './DashboardContent';
 
@@ -19,9 +21,15 @@ class Dashboard extends Component {
       <div>
         <Sidebar {...{logout, syncRepos}}></Sidebar>
         <DashboardContent {...{addTag}} stars={this.props.stars} tags={this.props.tags} />
+        <Modal
+          isOpen={this.props.ui.isAddTagModalOpen}
+          onRequestClose={this.closeModal}>
+
+          hello
+        </Modal>
       </div>
     );
   }
 }
 
-export default connect(({user, stars, tags}) => ({user, stars, tags}))(Dashboard);
+export default connect(pick(['ui', 'stars', 'tags']))(Dashboard);
