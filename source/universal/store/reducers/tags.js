@@ -1,5 +1,5 @@
 import defaults from 'lodash/fp/defaults';
-import { DEFAULT_TAG_COLORS } from '../../const';
+import { DEFAULT_TAG_COLORS } from '../../const/DEFAULT_TAG_COLORS';
 import { UPDATE_TAGS } from '../../actions/serverActions';
 import { ADD_TAG } from '../../actions';
 

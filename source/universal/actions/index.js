@@ -1,11 +1,14 @@
-/*eslint no-alert:0 no-undef:0*/
-
 import axios from 'axios';
 import { browserHistory } from 'react-router';
+import validate from 'validate.js';
+import tap from 'lodash/fp/tap';
+import { collect } from '../utils/form';
 
 export const LOGOUT = 'LOGOUT';
+export const CLOSE_ADD_TAG_MODAL = 'CLOSE_ADD_TAG_MODAL';
+export const OPEN_ADD_TAG_MODAL = 'OPEN_ADD_TAG_MODAL';
 export const ADD_TAG = 'ADD_TAG';
-export const ADD_TAG_FAILED = 'ADD_TAG_FAILED';
+export const ADD_TAG_INVALID_INPUT = 'ADD_TAG_INVALID_INPUT';
 
 export function logout() {
   return {
@@ -18,19 +21,42 @@ export function logout() {
   };
 }
 
-export function addTag() {
-  const name = prompt('enter the tag name');
+export function openAddTagModal() {
+  return {
+    type: OPEN_ADD_TAG_MODAL,
+  };
+}
 
-  if (name != null && name !== '') {
+export function closeAddTagModal() {
+  return {
+    type: CLOSE_ADD_TAG_MODAL,
+  };
+}
+
+export function addTag(event) {
+  event.preventDefault();
+
+  const inputs = collect(event.target);
+  const errors = validate(inputs, {
+    tag_text: {
+      presence: true,
+    },
+  });
+
+  if (errors != null) {
     return {
-      type: ADD_TAG,
-      payload: {
-        promise: axios.post('/api/v1/tags', { name })
-      }
+      type: ADD_TAG_INVALID_INPUT,
+      payload: errors,
     };
   }
 
-  return {
-    type: ADD_TAG_FAILED,
+  return function (dispatch) {
+    dispatch({
+      type: ADD_TAG,
+      payload: {
+        promise: axios.post('/api/v1/tags', { name: inputs.tag_text })
+          .then(tap( (data) => dispatch(closeAddTagModal()) )),
+      },
+    });
   };
 }
