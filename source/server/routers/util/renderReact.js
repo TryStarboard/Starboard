@@ -1,5 +1,5 @@
 import React, { PropTypes, Component } from 'react';
-import { renderToString } from 'react-dom/server';
+import { renderToString } from 'react-dom/dist/react-dom-server.min';
 import { Provider } from 'react-redux';
 import { match, RouterContext } from 'react-router';
 import { fromCallback } from 'bluebird';

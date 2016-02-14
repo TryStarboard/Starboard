@@ -29,6 +29,6 @@ export default function (state = [], { type, payload }) {
   case `${APPLY_TAG_TO_REPO}_FULFILLED`:
     // return
   default:
-    return orderBy(state, ['starred_at'], ['desc']);
+    return state;
   }
 }

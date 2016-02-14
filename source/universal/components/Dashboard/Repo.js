@@ -8,8 +8,7 @@ class Repo extends Component {
       full_name,
       description,
       html_url,
-      tag_texts,
-      colorMap,
+      tags,
       connectDropTarget,
       isOver,
     } = this.props;
@@ -21,13 +20,13 @@ class Repo extends Component {
         </div>
         <div className="repo__desc">{description}</div>
         <ul className="repo__tags">
-          {tag_texts[0] != null ? tag_texts.map((text) => {
+          {tags[0] != null ? tags.map((tag) => {
             const style = {
-              backgroundColor: colorMap[text].bg,
-              color: colorMap[text].fg,
+              backgroundColor: tag.background_color,
+              color: tag.foreground_color,
             };
 
-            return <li key={text} style={style}>{text}</li>;
+            return <li key={tag.id} style={style}>{tag.text}</li>;
           }) : null}
         </ul>
       </div>
