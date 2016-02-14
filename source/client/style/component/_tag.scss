@@ -6,6 +6,17 @@
   margin-right: 10px;
   border-radius: 4px;
   background-color: #DBDDDE;
+
+  &.tag--btn {
+    border: none;
+    position: relative;
+    svg {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+  }
 }
 
 .tag__text {
@@ -15,14 +26,4 @@
   overflow: hidden;
   text-overflow: ellipsis;
   font-weight: 700;
-}
-
-.tag__btn {
-  text-align: center;
-  height: 100%;
-  line-height: 76px;
-  fill: #222222;
-  &:hover {
-    fill: #444444
-  }
 }
