@@ -6,7 +6,7 @@ export default {
     right: 'auto',
     bottom: 'auto',
     transform: 'translate(-50%, -50%)',
-    border: '1px solid #ccc',
+    border: 'none',
     background: '#fff',
     borderRadius: 0,
     padding: '20px',

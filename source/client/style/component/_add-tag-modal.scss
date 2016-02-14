@@ -1,0 +1,11 @@
+.ReactModal__Content {
+  box-shadow: 0 5px 20px rgba(1, 1, 1, 0.3);
+}
+
+.add-tag-modal__form {
+  margin-bottom: 0;
+
+  > *:last-child {
+    margin-bottom: 0;
+  }
+}

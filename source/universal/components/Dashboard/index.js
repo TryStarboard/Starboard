@@ -32,9 +32,9 @@ class Dashboard extends Component {
           isOpen={this.props.ui.isAddTagModalOpen}
           onRequestClose={closeAddTagModal}
           style={MODAL_STYLES}>
-          <form onSubmit={addTag}>
-            <input type="text" name="tag_text" placeholder="Tag text here..." required/>
-            <button>Create</button>
+          <form onSubmit={addTag} className='add-tag-modal__form'>
+            <input className="u-full-width" type="text" name="tag_text" placeholder="Tag text here..." required/>
+            <button className="button-primary" type="submit">Create</button>
           </form>
         </Modal>
       </div>
