@@ -1,45 +1,7 @@
 import React from 'react';
-import PlusIcon from '../../../client/img/add-tag-icon.svg';
-
-const Repo = ({full_name, description, html_url, tag_texts, colorMap}) => (
-  <div className="repo">
-    <div className="repo__full-name">
-      <a className="repo__name-link" target="_blank" href={html_url}>{full_name}</a>
-    </div>
-    <div className="repo__desc">{description}</div>
-    <ul className="repo__tags">
-      {tag_texts[0] != null ? tag_texts.map((text) => {
-        const style = {
-          backgroundColor: colorMap[text].bg,
-          color: colorMap[text].fg,
-        };
-
-        return <li key={text} style={style}>{text}</li>;
-      }) : null}
-    </ul>
-  </div>
-);
-
-const Tag = ({text, foreground_color, background_color}) => {
-  const style = {
-    backgroundColor: background_color,
-    color: foreground_color,
-  };
-
-  return (
-    <div className="tag" style={style}>
-      <div className="tag__text">{text}</div>
-    </div>
-  );
-};
-
-const AddTag = ({onClick}) => {
-  return (
-    <div className="tag" onClick={onClick}>
-      <div className="tag__btn"><PlusIcon/></div>
-    </div>
-  );
-};
+import AddTag from './AddTag';
+import Tag from './Tag';
+import Repo from './Repo';
 
 function indexTags(tags) {
   const colorMap = {};
