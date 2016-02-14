@@ -1,11 +1,10 @@
 import React, { Component, PropTypes } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import Modal from 'react-modal';
 import pick from 'lodash/fp/pick';
 import Sidebar from './Sidebar';
 import DashboardContent from './DashboardContent';
-import MODAL_STYLES from '../../const/MODAL_STYLES';
+import AddTagModal from './AddTagModal';
 
 class Dashboard extends Component {
 
@@ -28,15 +27,7 @@ class Dashboard extends Component {
           {...{openAddTagModal}}
           stars={this.props.stars}
           tags={this.props.tags}/>
-        <Modal
-          isOpen={this.props.ui.isAddTagModalOpen}
-          onRequestClose={closeAddTagModal}
-          style={MODAL_STYLES}>
-          <form onSubmit={addTag} className='add-tag-modal__form'>
-            <input className="u-full-width" type="text" name="tag_text" placeholder="Tag text here..." required/>
-            <button className="button-primary" type="submit">Create</button>
-          </form>
-        </Modal>
+        <AddTagModal ui={this.props.ui} closeAddTagModal={closeAddTagModal} addTag={addTag}/>
       </div>
     );
   }
