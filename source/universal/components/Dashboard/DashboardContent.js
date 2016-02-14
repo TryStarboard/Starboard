@@ -33,9 +33,9 @@ const Tag = ({text, foreground_color, background_color}) => {
   );
 };
 
-const AddTag = () => {
+const AddTag = ({onClick}) => {
   return (
-    <div className="tag">
+    <div className="tag" onClick={onClick}>
       <div className="tag__btn"><PlusIcon/></div>
     </div>
   );
@@ -56,10 +56,7 @@ export default ({addTag, stars, tags}) => {
   return (
     <div className='dashboard'>
       <div className="dashboard__tags">
-        <div onClick={() => {
-          const name = prompt('enter the tag name');
-          if (name !== '') addTag(name);
-        }}><AddTag></AddTag></div>
+        <AddTag onClick={addTag}></AddTag>
         {tags.map((t) => <Tag key={t.id} {...t}/>)}
       </div>
       <div className="dashboard__repos">
