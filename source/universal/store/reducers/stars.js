@@ -2,7 +2,7 @@ import findIndex from 'lodash/findIndex';
 import orderBy from 'lodash/orderBy';
 import assign from 'lodash/fp/assign';
 import differenceWith from 'lodash/differenceWith';
-import { UPDATE_SOME_REPOS, REMOVE_REPOS } from '../../actions/serverActions';
+import { UPDATE_SOME_REPOS, REMOVE_REPOS, APPLY_TAG_TO_REPO } from '../../actions/serverActions';
 
 function mergeReposArray(currentArr, incomingArr) {
   const currentArrCopy = currentArr.slice(0);
@@ -26,6 +26,8 @@ export default function (state = [], { type, payload }) {
     return orderBy(mergeReposArray(state, payload), ['starred_at'], ['desc']);
   case REMOVE_REPOS:
     return differenceWith(state, payload, (repo, id) => repo.id === id);
+  case `${APPLY_TAG_TO_REPO}_FULFILLED`:
+    // return
   default:
     return orderBy(state, ['starred_at'], ['desc']);
   }

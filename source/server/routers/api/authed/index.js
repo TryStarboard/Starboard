@@ -1,6 +1,7 @@
 import Router from 'koa-router';
 import { getAll as getAllStars } from '../../../util/data/stars';
 import { getAll as getAllTags, addTag } from '../../../util/data/tags';
+import { addRepoTag } from '../../../util/data/RepoTags';
 
 function *ensureAuthed(next) {
   if (this.req.isAuthenticated()) {
@@ -28,6 +29,11 @@ authedRoute.post('/tags', ensureAuthed, function *(next) {
 
 authedRoute.get('/tags', ensureAuthed, function *(next) {
   this.body = yield getAllTags(this.req.user.id);
+});
+
+authedRoute.post('/repo_tags', ensureAuthed, function *() {
+  yield addRepoTag(this.request.body);
+  this.status = 204;
 });
 
 export { authedRoute as default };

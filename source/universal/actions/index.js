@@ -9,6 +9,7 @@ export const CLOSE_ADD_TAG_MODAL = 'CLOSE_ADD_TAG_MODAL';
 export const OPEN_ADD_TAG_MODAL = 'OPEN_ADD_TAG_MODAL';
 export const ADD_TAG = 'ADD_TAG';
 export const ADD_TAG_INVALID_INPUT = 'ADD_TAG_INVALID_INPUT';
+export const APPLY_TAG_TO_REPO = 'APPLY_TAG_TO_REPO';
 
 export function logout() {
   return {
@@ -58,5 +59,14 @@ export function addTag(event) {
           .then(tap( (data) => dispatch(closeAddTagModal()) )),
       },
     });
+  };
+}
+
+export function applyTagToRepo(tag_id, repo_id) {
+  return {
+    type: APPLY_TAG_TO_REPO,
+    payload: {
+      promise: axios.post('/api/v1/repo_tags', { tag_id, repo_id }),
+    }
   };
 }

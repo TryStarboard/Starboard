@@ -14,17 +14,24 @@ class Dashboard extends Component {
     openAddTagModal: PropTypes.func.isRequired,
     closeAddTagModal: PropTypes.func.isRequired,
     addTag: PropTypes.func.isRequired,
+    applyTagToRepo: PropTypes.func.isRequired,
   };
 
   render() {
-    const {logout, syncRepos, openAddTagModal, closeAddTagModal, addTag} =
-      bindActionCreators(this.context, this.props.dispatch);
+    const {
+      logout,
+      syncRepos,
+      openAddTagModal,
+      closeAddTagModal,
+      addTag,
+      applyTagToRepo,
+    } = bindActionCreators(this.context, this.props.dispatch);
 
     return (
       <div>
         <Sidebar {...{logout, syncRepos}}></Sidebar>
         <DashboardContent
-          {...{openAddTagModal}}
+          {...{openAddTagModal, applyTagToRepo}}
           stars={this.props.stars}
           tags={this.props.tags}/>
         <AddTagModal
