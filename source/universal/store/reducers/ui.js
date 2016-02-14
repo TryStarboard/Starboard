@@ -1,5 +1,5 @@
 import assign from 'lodash/fp/assign';
-import { ADD_TAG } from '../../actions/index';
+import { OPEN_ADD_TAG_MODAL, CLOSE_ADD_TAG_MODAL } from '../../actions/index';
 
 const DEFAULT_UI = {
   isAddTagModalOpen: false,
@@ -7,8 +7,10 @@ const DEFAULT_UI = {
 
 export default function (state = DEFAULT_UI, { type }) {
   switch (type) {
-  case ADD_TAG:
+  case OPEN_ADD_TAG_MODAL:
     return assign(state, {isAddTagModalOpen: true});
+  case CLOSE_ADD_TAG_MODAL:
+    return assign(state, {isAddTagModalOpen: false});
   default:
     return state;
   }

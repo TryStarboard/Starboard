@@ -5,27 +5,37 @@ import Modal from 'react-modal';
 import pick from 'lodash/fp/pick';
 import Sidebar from './Sidebar';
 import DashboardContent from './DashboardContent';
+import MODAL_STYLES from '../../const/MODAL_STYLES';
 
 class Dashboard extends Component {
 
   static contextTypes = {
     logout: PropTypes.func.isRequired,
     syncRepos: PropTypes.func.isRequired,
+    openAddTagModal: PropTypes.func.isRequired,
+    closeAddTagModal: PropTypes.func.isRequired,
     addTag: PropTypes.func.isRequired,
   };
 
   render() {
-    const {logout, syncRepos, addTag} = bindActionCreators(this.context, this.props.dispatch);
+    const {logout, syncRepos, openAddTagModal, closeAddTagModal, addTag} =
+      bindActionCreators(this.context, this.props.dispatch);
 
     return (
       <div>
         <Sidebar {...{logout, syncRepos}}></Sidebar>
-        <DashboardContent {...{addTag}} stars={this.props.stars} tags={this.props.tags} />
+        <DashboardContent
+          {...{openAddTagModal}}
+          stars={this.props.stars}
+          tags={this.props.tags}/>
         <Modal
           isOpen={this.props.ui.isAddTagModalOpen}
-          onRequestClose={this.closeModal}>
-
-          hello
+          onRequestClose={closeAddTagModal}
+          style={MODAL_STYLES}>
+          <form onSubmit={addTag}>
+            <input type="text" name="tag_text" placeholder="Tag text here..." required/>
+            <button>Create</button>
+          </form>
         </Modal>
       </div>
     );

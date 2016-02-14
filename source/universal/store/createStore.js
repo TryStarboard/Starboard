@@ -2,18 +2,21 @@
 
 import { createStore, applyMiddleware, compose } from 'redux';
 import promiseMiddleware from 'redux-promise-middleware';
+import thunk from 'redux-thunk';
 import createLogger from 'redux-logger';
 import reducers from './reducers';
 
-const createStoreWithMiddleware = compose(
-  applyMiddleware(
-    promiseMiddleware(),
-    createLogger({logger: console})
-  ),
-  // For Redux devtool
+const middleware = applyMiddleware(
+  promiseMiddleware(),
+  thunk,
+  createLogger({logger: console})
+);
+
+const reduxDevtool =
   typeof window === 'object' && typeof window.devToolsExtension !== 'undefined' ?
-    window.devToolsExtension() : (f) => f
-)(createStore);
+  window.devToolsExtension() : (f) => f;
+
+const createStoreWithMiddleware = compose(reduxDevtool, middleware)(createStore);
 
 export default function (state) {
   return createStoreWithMiddleware(reducers, state);

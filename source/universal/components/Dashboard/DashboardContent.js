@@ -11,14 +11,14 @@ function indexTags(tags) {
   return colorMap;
 }
 
-export default ({addTag, stars, tags}) => {
+export default ({openAddTagModal, stars, tags}) => {
 
   const colorMap = indexTags(tags);
 
   return (
     <div className='dashboard'>
       <div className="dashboard__tags">
-        <AddTag onClick={addTag}></AddTag>
+        <AddTag onClick={openAddTagModal}></AddTag>
         {tags.map((t) => <Tag key={t.id} {...t}/>)}
       </div>
       <div className="dashboard__repos">
