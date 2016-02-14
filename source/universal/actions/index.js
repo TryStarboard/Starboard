@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { browserHistory } from 'react-router';
 import validate from 'validate.js';
+import tap from 'lodash/fp/tap';
 import { collect } from '../utils/form';
 
 export const LOGOUT = 'LOGOUT';
@@ -55,10 +56,7 @@ export function addTag(event) {
       type: ADD_TAG,
       payload: {
         promise: axios.post('/api/v1/tags', { name: inputs.tag_text })
-          .then((data) => {
-            dispatch(closeAddTagModal());
-            return data;
-          }),
+          .then(tap( (data) => dispatch(closeAddTagModal()) )),
       },
     });
   };
