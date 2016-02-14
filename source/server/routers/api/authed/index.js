@@ -23,8 +23,7 @@ authedRoute.get('/stars', ensureAuthed, function *() {
 });
 
 authedRoute.post('/tags', ensureAuthed, function *(next) {
-  const [ tag ] = yield addTag(this.req.user.id, this.request.body.name);
-  this.body = tag;
+  this.body = yield addTag(this.req.user.id, this.request.body.name);
 });
 
 authedRoute.get('/tags', ensureAuthed, function *(next) {
@@ -32,8 +31,7 @@ authedRoute.get('/tags', ensureAuthed, function *(next) {
 });
 
 authedRoute.post('/repo_tags', ensureAuthed, function *() {
-  yield addRepoTag(this.request.body);
-  this.status = 204;
+  this.body = yield addRepoTag(this.request.body);
 });
 
 export { authedRoute as default };

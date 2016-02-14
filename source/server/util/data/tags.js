@@ -12,6 +12,7 @@ export const getAll = wrap(function *(id) {
   return rows;
 });
 
-export const addTag = function (user_id, text) {
-  return db('tags').insert({user_id, text}, '*');
-};
+export const addTag = wrap(function *(user_id, text) {
+  const [tag] = yield db('tags').insert({user_id, text}, '*');
+  return tag;
+});

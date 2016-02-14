@@ -91,9 +91,4 @@ const mapStateToProps = createSelector(
   (tags, repos, ui) => ({tags, stars: repos, ui})
 );
 
-export default connect((state) => {
-  console.time('A');
-  const selected = mapStateToProps(state);
-  console.timeEnd('A');
-  return selected;
-})(Dashboard);
+export default connect(mapStateToProps)(Dashboard);
