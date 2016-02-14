@@ -9,3 +9,9 @@
     margin-bottom: 0;
   }
 }
+
+.add-tag-modal__label {
+  &.add-tag-modal__label--has-error {
+    color: red;
+  }
+}

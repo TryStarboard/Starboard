@@ -17,7 +17,7 @@ const reduxDevtool =
   typeof window === 'object' && typeof window.devToolsExtension !== 'undefined' ?
   window.devToolsExtension() : identity;
 
-const createStoreWithMiddleware = compose(reduxDevtool, middleware)(createStore);
+const createStoreWithMiddleware = compose(middleware, reduxDevtool)(createStore);
 
 export default function (state) {
   return createStoreWithMiddleware(reducers, state);

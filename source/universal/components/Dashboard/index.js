@@ -27,7 +27,10 @@ class Dashboard extends Component {
           {...{openAddTagModal}}
           stars={this.props.stars}
           tags={this.props.tags}/>
-        <AddTagModal ui={this.props.ui} closeAddTagModal={closeAddTagModal} addTag={addTag}/>
+        <AddTagModal
+          ui={this.props.ui}
+          closeAddTagModal={closeAddTagModal}
+          addTag={addTag}/>
       </div>
     );
   }
