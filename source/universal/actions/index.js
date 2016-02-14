@@ -37,7 +37,6 @@ export function addTag(event) {
   event.preventDefault();
 
   const inputs = collect(event.target);
-
   const errors = validate(inputs, {
     tag_text: {
       presence: true,
