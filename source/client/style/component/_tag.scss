@@ -5,6 +5,7 @@
   margin-bottom: 10px;
   margin-right: 10px;
   border-radius: 4px;
+  background-color: #DBDDDE;
 }
 
 .tag__text {
@@ -14,4 +15,14 @@
   overflow: hidden;
   text-overflow: ellipsis;
   font-weight: 700;
+}
+
+.tag__btn {
+  text-align: center;
+  height: 100%;
+  line-height: 76px;
+  fill: #222222;
+  &:hover {
+    fill: #444444
+  }
 }

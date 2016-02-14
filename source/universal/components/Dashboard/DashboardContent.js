@@ -1,4 +1,5 @@
 import React from 'react';
+import PlusIcon from '../../../client/img/add-tag-icon.svg';
 
 const Repo = ({full_name, description, html_url, tag_texts, colorMap}) => (
   <div className="repo">
@@ -32,6 +33,14 @@ const Tag = ({text, foreground_color, background_color}) => {
   );
 };
 
+const AddTag = ({onClick}) => {
+  return (
+    <div className="tag" onClick={onClick}>
+      <div className="tag__btn"><PlusIcon/></div>
+    </div>
+  );
+};
+
 function indexTags(tags) {
   const colorMap = {};
   for (const {text, foreground_color, background_color} of tags) {
@@ -40,13 +49,14 @@ function indexTags(tags) {
   return colorMap;
 }
 
-export default ({stars, tags}) => {
+export default ({addTag, stars, tags}) => {
 
   const colorMap = indexTags(tags);
 
   return (
     <div className='dashboard'>
       <div className="dashboard__tags">
+        <AddTag onClick={addTag}></AddTag>
         {tags.map((t) => <Tag key={t.id} {...t}/>)}
       </div>
       <div className="dashboard__repos">

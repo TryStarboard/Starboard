@@ -1,5 +1,6 @@
 import Router from 'koa-router';
 import { getAll as getAllStars } from '../../../util/data/stars';
+import { getAll as getAllTags, addTag } from '../../../util/data/tags';
 
 function *ensureAuthed(next) {
   if (this.req.isAuthenticated()) {
@@ -18,6 +19,15 @@ authedRoute.get('/logout', ensureAuthed, function *() {
 
 authedRoute.get('/stars', ensureAuthed, function *() {
   this.body = yield getAllStars(this.req.user.id);
+});
+
+authedRoute.post('/tags', ensureAuthed, function *(next) {
+  const [ tag ] = yield addTag(this.req.user.id, this.request.body.name);
+  this.body = tag;
+});
+
+authedRoute.get('/tags', ensureAuthed, function *(next) {
+  this.body = yield getAllTags(this.req.user.id);
 });
 
 export { authedRoute as default };

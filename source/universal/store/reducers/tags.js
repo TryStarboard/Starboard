@@ -1,6 +1,7 @@
 import defaults from 'lodash/fp/defaults';
 import { DEFAULT_TAG_COLORS } from '../../const';
 import { UPDATE_TAGS } from '../../actions/serverActions';
+import { ADD_TAG } from '../../actions';
 
 function populateColors(tags) {
   return tags.map((tag) => {
@@ -17,6 +18,8 @@ function populateColors(tags) {
 
 export default function (state = [], { type, payload }) {
   switch (type) {
+  case `${ADD_TAG}_FULFILLED`:
+    return [payload.data].concat(state);
   case UPDATE_TAGS:
     return populateColors(payload);
   default:

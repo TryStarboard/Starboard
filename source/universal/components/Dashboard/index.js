@@ -9,15 +9,16 @@ class Dashboard extends Component {
   static contextTypes = {
     logout: PropTypes.func.isRequired,
     syncRepos: PropTypes.func.isRequired,
+    addTag: PropTypes.func.isRequired,
   };
 
   render() {
-    const {logout, syncRepos} = bindActionCreators(this.context, this.props.dispatch);
+    const {logout, syncRepos, addTag} = bindActionCreators(this.context, this.props.dispatch);
 
     return (
       <div>
         <Sidebar {...{logout, syncRepos}}></Sidebar>
-        <DashboardContent stars={this.props.stars} tags={this.props.tags} />
+        <DashboardContent {...{addTag}} stars={this.props.stars} tags={this.props.tags} />
       </div>
     );
   }
