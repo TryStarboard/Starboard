@@ -25,7 +25,7 @@ module.exports = {
 
   output: {
     filename: 'server.js',
-    path: join(__dirname, 'public'),
+    path: join(__dirname, 'build'),
     libraryTarget: 'commonjs2',
   },
 
