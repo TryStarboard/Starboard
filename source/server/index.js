@@ -1,4 +1,5 @@
 import 'source-map-support/register';
+import './loadEnv';
 import http from 'http';
 import config from 'config';
 import koa from 'koa';

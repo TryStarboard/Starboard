@@ -4,18 +4,19 @@ const join = require('path').join;
 
 module.exports = {
   cookie: {
-    keys: ['keyboard cat', 'starboard'],
+    keys: [process.env.COOKIE_KEY1, process.env.COOKIE_KEY2],
   },
   redis: {
-    host: process.env.REDIS_PORT_6379_TCP_ADDR,
-    port: process.env.REDIS_PORT_6379_TCP_PORT,
+    host: process.env.REDIS_HOST,
+    port: process.env.REDIS_PORT,
+    password: process.env.REDIS_PASS,
   },
   postgres: {
-    host: process.env.POSTGRES_PORT_5432_TCP_ADDR,
-    port: process.env.POSTGRES_PORT_5432_TCP_PORT,
-    database: 'dev-db',
-    user: 'dev',
-    password: '1234',
+    host: process.env.POSTGRES_HOST,
+    port: process.env.POSTGRES_PORT,
+    database: process.env.POSTGRES_DB,
+    user: process.env.POSTGRES_USER,
+    password: process.env.POSTGRES_PASS,
   },
   koa: {
     publicDir: join(__dirname, '../public'),
@@ -24,6 +25,6 @@ module.exports = {
   github: {
     clientID: process.env.GITHUB_CLIENT_ID,
     clientSecret: process.env.GITHUB_CLIENT_SECRET,
-    callbackURL: 'http://localhost:10000/github-back'
+    callbackURL: process.env.GITHUB_CALLBACK_URL,
   }
 };
