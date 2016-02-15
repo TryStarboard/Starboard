@@ -6,7 +6,9 @@ import {
   openAddTagModal,
   closeAddTagModal,
   addTag,
-  applyTagToRepo
+  applyTagToRepo,
+  beginDragTag,
+  endDragTag
 } from '../universal/actions';
 import { createSyncRepos } from '../universal/actionFactory';
 
@@ -19,6 +21,8 @@ export default class App extends Component {
     closeAddTagModal: PropTypes.func.isRequired,
     addTag: PropTypes.func.isRequired,
     applyTagToRepo: PropTypes.func.isRequired,
+    beginDragTag: PropTypes.func.isRequired,
+    endDragTag: PropTypes.func.isRequired,
   };
 
   getChildContext() {
@@ -29,6 +33,8 @@ export default class App extends Component {
       closeAddTagModal,
       addTag,
       applyTagToRepo,
+      beginDragTag,
+      endDragTag,
     };
   }
 

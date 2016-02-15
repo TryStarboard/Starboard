@@ -1,10 +1,11 @@
 import React from 'react';
 import PlusIcon from '../../../client/img/add-tag-icon.svg';
+import TrashCanIcon from '../../../client/img/trash-can-icon.svg';
 
-const AddTag = ({onClick}) => {
+const AddTag = ({onClick, ui: {isDraggingTag}}) => {
   return (
     <button className="tag tag--btn" onClick={onClick}>
-      <PlusIcon/>
+      {isDraggingTag ? <TrashCanIcon/> : <PlusIcon/>}
     </button>
   );
 };

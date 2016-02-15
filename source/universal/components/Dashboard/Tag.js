@@ -8,6 +8,8 @@ class Tag extends Component {
     // Injected by React DnD
     isDragging: PropTypes.bool.isRequired,
     connectDragSource: PropTypes.func.isRequired,
+    beginDragTag: PropTypes.func.isRequired,
+    endDragTag: PropTypes.func.isRequired,
   };
 
   render() {
@@ -36,9 +38,13 @@ class Tag extends Component {
 export default DragSource(
   'TAG',
   {
-    beginDrag({id}) {
+    beginDrag({id, beginDragTag}) {
+      beginDragTag();
       return {id};
-    }
+    },
+    endDrag({endDragTag}) {
+      endDragTag();
+    },
   },
   (connect, monitor) => ({
     connectDragSource: connect.dragSource(),
