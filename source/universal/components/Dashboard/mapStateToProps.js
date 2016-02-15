@@ -41,13 +41,6 @@ const reposWithTagDetailSelector = createSelector(
   }
 );
 
-export default createSelector(
-  tagsWithColorsSelector,
-  reposWithTagDetailSelector,
-  uiSelector,
-  (tags, repos, ui) => ({tags, stars: repos, ui})
-);
-
 export {
   tagsWithColorsSelector,
   reposWithTagDetailSelector,
