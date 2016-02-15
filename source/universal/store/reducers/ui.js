@@ -1,5 +1,5 @@
 import assign from 'lodash/fp/assign';
-import u, { if as uif, constant } from 'updeep';
+import u from 'updeep';
 import { contains, not, pipe } from 'ramda';
 import {
   OPEN_ADD_TAG_MODAL,
@@ -31,7 +31,7 @@ export default function (state = DEFAULT_UI, { type, payload }) {
     return assign(state, {isDraggingTag: false});
   case SELECT_TAG:
     return u({
-      selectedTags: uif(pipe(contains(payload.id), not), constant([payload.id]))
+      selectedTags: u.if(pipe(contains(payload.id), not), u.constant([payload.id]))
     }, state);
   default:
     return state;

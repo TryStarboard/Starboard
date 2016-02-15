@@ -43,6 +43,7 @@ const reposWithTagDetailSelector = createSelector(
 
 export {
   tagsWithColorsSelector,
+  tagsMapSelector,
   reposWithTagDetailSelector,
   uiSelector,
 };

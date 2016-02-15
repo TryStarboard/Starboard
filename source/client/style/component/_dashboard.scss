@@ -1,14 +1,19 @@
-$tags-bar-width: 80px * 3 + 10px * 3 + 20px;
+// $tags-bar-width: 80px * 3 + 10px * 3 + 20px;
+$tags-bar-width: 310px;
 
 .dashboard {
   margin-left: 64px;
   position: relative;
 }
 
+.dashboard__filters {
+  height: 20px + 24px + 10px;
+}
+
 .dashboard__tags {
   float: left;
   width: $tags-bar-width;
-  height: 100vh;
+  height: calc(100vh - 40px);
   overflow: auto;
   padding: 20px 0 10px 20px;
   margin-right: -10px;
@@ -21,7 +26,7 @@ $tags-bar-width: 80px * 3 + 10px * 3 + 20px;
   padding: 20px 0 0 20px;
   display: flex;
   flex-wrap: wrap;
-  height: 100vh;
+  height: calc(100vh - 40px);
   overflow: auto;
   float: left;
   width: calc(100% - #{$tags-bar-width - 10px});
