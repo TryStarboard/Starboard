@@ -3,23 +3,33 @@ import { DragSource } from 'react-dnd';
 
 class Tag extends Component {
 
+  static contextTypes = {
+    selectTag: PropTypes.func.isRequired,
+  };
+
   static propTypes = {
     text: PropTypes.string.isRequired,
+    beginDragTag: PropTypes.func.isRequired,
+    endDragTag: PropTypes.func.isRequired,
+
     // Injected by React DnD
     isDragging: PropTypes.bool.isRequired,
     connectDragSource: PropTypes.func.isRequired,
-    beginDragTag: PropTypes.func.isRequired,
-    endDragTag: PropTypes.func.isRequired,
   };
 
   render() {
     const {
+      id,
       text,
       foreground_color,
       background_color,
       isDragging,
       connectDragSource,
     } = this.props;
+
+    const {
+      selectTag,
+    } = this.context;
 
     const style = {
       backgroundColor: background_color,
@@ -28,7 +38,7 @@ class Tag extends Component {
     };
 
     return connectDragSource(
-      <div className="tag" style={style}>
+      <div className="tag" style={style} onClick={() => selectTag({id})}>
         <div className="tag__text">{text}</div>
       </div>
     );

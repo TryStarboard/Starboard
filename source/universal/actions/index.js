@@ -15,6 +15,7 @@ export const BEGIN_DRAG_TAG = 'BEGIN_DRAG_TAG';
 export const END_DRAG_TAG = 'END_DRAG_TAG';
 export const DELETE_TAG = 'DELETE_TAG';
 export const REMOVE_REPO_TAG = 'REMOVE_REPO_TAG';
+export const SELECT_TAG = 'SELECT_TAG';
 
 export function logout() {
   return {
@@ -115,5 +116,12 @@ export function removeRepoTag(tag) {
       data: tag,
       promise: axios.delete(`/api/v1/repo_tags`, {data: tag}),
     }
+  };
+}
+
+export function selectTag(tag) {
+  return {
+    type: SELECT_TAG,
+    payload: tag,
   };
 }

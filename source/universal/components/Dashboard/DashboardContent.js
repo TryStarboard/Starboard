@@ -3,12 +3,14 @@ import { DragDropContext } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
 import TagsSideBar from './TagsSideBar';
 import ReposList from './ReposList';
+import FilterBar from './FilterBar';
 import RepoTagDragLayer from './RepoTagDragLayer';
 
 class DashboardContent extends Component {
   render() {
     return (
       <div className='dashboard'>
+        <FilterBar/>
         <TagsSideBar/>
         <ReposList/>
         <RepoTagDragLayer/>

@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
+import { findIndex, propEq } from 'ramda';
 import { reposWithTagDetailSelector } from './mapStateToProps';
 import Repo from './Repo';
 
@@ -37,7 +38,18 @@ class ReposList extends Component {
 export default connect(
   createSelector(
     reposWithTagDetailSelector,
-    (repos) => ({ repos })
+    (state) => state.filters,
+    (repos, filters) => {
+      if (!filters.length) {
+        return { repos };
+      }
+
+      return {
+        repos: repos.filter((repo) => {
+          return findIndex(propEq('id', filters[0]), repo.tags) > -1;
+        }),
+      };
+    }
   ),
   null,
   null,
