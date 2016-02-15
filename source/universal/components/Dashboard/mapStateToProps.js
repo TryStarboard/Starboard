@@ -47,3 +47,9 @@ export default createSelector(
   uiSelector,
   (tags, repos, ui) => ({tags, stars: repos, ui})
 );
+
+export {
+  tagsWithColorsSelector,
+  reposWithTagDetailSelector,
+  uiSelector,
+};
