@@ -20,14 +20,14 @@ class Repo extends Component {
           <a className="repo__name-link" target="_blank" href={html_url}>{full_name}</a>
         </div>
         <ul className="repo__tags">
-          {tags[0] != null ? tags.map((tag) => {
+          {tags.map((tag) => {
             const style = {
               backgroundColor: tag.background_color,
               color: tag.foreground_color,
             };
 
             return <li key={tag.id} style={style}>{tag.text}</li>;
-          }) : null}
+          })}
         </ul>
         <div className="repo__desc">{description}</div>
       </div>
