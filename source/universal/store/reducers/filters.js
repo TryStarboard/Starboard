@@ -1,5 +1,5 @@
 import u from 'updeep';
-import { contains } from 'ramda';
+import { contains, append, without } from 'ramda';
 import { SELECT_TAG } from '../../actions/index';
 
 export default function (state = [], { type, payload }) {
@@ -8,8 +8,8 @@ export default function (state = [], { type, payload }) {
     return u(
       u.ifElse(
         contains(payload.id),
-        u.constant([]),
-        u.constant([payload.id])
+        without([payload.id]),
+        append(payload.id)
       ),
       state);
   default:
