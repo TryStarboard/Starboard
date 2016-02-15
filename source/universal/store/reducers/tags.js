@@ -1,5 +1,6 @@
+import reject from 'lodash/reject';
 import { UPDATE_TAGS } from '../../actions/serverActions';
-import { ADD_TAG } from '../../actions';
+import { ADD_TAG, DELETE_TAG } from '../../actions';
 
 export default function (state = [], { type, payload }) {
   switch (type) {
@@ -7,6 +8,8 @@ export default function (state = [], { type, payload }) {
     return [payload.data].concat(state);
   case UPDATE_TAGS:
     return payload;
+  case `${DELETE_TAG}_PENDING`:
+    return reject(state, ['id', payload.id]);
   default:
     return state;
   }

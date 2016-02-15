@@ -27,9 +27,7 @@ export default DropTarget(
   'TAG',
   {
     drop(props, monitor) {
-      const tag = monitor.getItem();
-      console.log(tag);
-      // props.applyTagToRepo(tag.id, props.id);
+      props.deleteTag(monitor.getItem());
     }
   },
   (connect, monitor) => ({

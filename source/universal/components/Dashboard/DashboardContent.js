@@ -15,12 +15,13 @@ class DashboardContent extends Component {
       applyTagToRepo,
       beginDragTag,
       endDragTag,
+      deleteTag,
     } = this.props;
 
     return (
       <div className='dashboard'>
         <div className="dashboard__tags">
-          <AddTag onClick={openAddTagModal} ui={this.props.ui}></AddTag>
+          <AddTag onClick={openAddTagModal} ui={this.props.ui} deleteTag={deleteTag}></AddTag>
           {tags.map((tag) => <Tag {...tag} {...{beginDragTag, endDragTag}} key={tag.id}/>)}
         </div>
         <div className="dashboard__repos">

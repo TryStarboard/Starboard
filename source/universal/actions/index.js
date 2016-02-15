@@ -12,6 +12,7 @@ export const ADD_TAG_INVALID_INPUT = 'ADD_TAG_INVALID_INPUT';
 export const APPLY_TAG_TO_REPO = 'APPLY_TAG_TO_REPO';
 export const BEGIN_DRAG_TAG = 'BEGIN_DRAG_TAG';
 export const END_DRAG_TAG = 'END_DRAG_TAG';
+export const DELETE_TAG = 'DELETE_TAG';
 
 export function logout() {
   return {
@@ -83,5 +84,15 @@ export function beginDragTag() {
 export function endDragTag() {
   return {
     type: END_DRAG_TAG,
+  };
+}
+
+export function deleteTag(tag) {
+  return {
+    type: DELETE_TAG,
+    payload: {
+      data: tag,
+      promise: axios.delete(`/api/v1/repo_tags/${tag.id}`),
+    }
   };
 }

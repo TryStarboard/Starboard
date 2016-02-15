@@ -8,7 +8,8 @@ import {
   addTag,
   applyTagToRepo,
   beginDragTag,
-  endDragTag
+  endDragTag,
+  deleteTag
 } from '../universal/actions';
 import { createSyncRepos } from '../universal/actionFactory';
 
@@ -23,6 +24,7 @@ export default class App extends Component {
     applyTagToRepo: PropTypes.func.isRequired,
     beginDragTag: PropTypes.func.isRequired,
     endDragTag: PropTypes.func.isRequired,
+    deleteTag: PropTypes.func.isRequired,
   };
 
   getChildContext() {
@@ -35,6 +37,7 @@ export default class App extends Component {
       applyTagToRepo,
       beginDragTag,
       endDragTag,
+      deleteTag,
     };
   }
 
