@@ -5,3 +5,4 @@
 local*
 *.log
 /secret
+/deployment
