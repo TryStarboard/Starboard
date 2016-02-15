@@ -1,5 +1,11 @@
+// TODO: 80px * 3 + 10px * 3 + 20px is the ideal with,
+// but browser scrollbar can make things ugly,
+// before we can replace the scrollbar, we have to leave extra space for it
 // $tags-bar-width: 80px * 3 + 10px * 3 + 20px;
 $tags-bar-width: 310px;
+
+$filters-height: 20px + 24px + 10px;
+$dashboard-content-height: calc(100vh - #{$filters-height});
 
 .dashboard {
   margin-left: 64px;
@@ -7,13 +13,13 @@ $tags-bar-width: 310px;
 }
 
 .dashboard__filters {
-  height: 20px + 24px + 10px;
+  height: $filters-height;
 }
 
 .dashboard__tags {
   float: left;
   width: $tags-bar-width;
-  height: calc(100vh - 40px);
+  height: $dashboard-content-height;
   overflow: auto;
   padding: 20px 0 10px 20px;
   margin-right: -10px;
@@ -26,7 +32,9 @@ $tags-bar-width: 310px;
   padding: 20px 0 0 20px;
   display: flex;
   flex-wrap: wrap;
-  height: calc(100vh - 40px);
+  align-content: flex-start;
+  align-items: flex-start;
+  height: $dashboard-content-height;
   overflow: auto;
   float: left;
   width: calc(100% - #{$tags-bar-width - 10px});
