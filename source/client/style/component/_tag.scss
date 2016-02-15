@@ -17,6 +17,13 @@
       transform: translate(-50%, -50%);
     }
   }
+
+  &.tag--delete-active {
+    background-color: red;
+    svg path {
+      fill: white;
+    }
+  }
 }
 
 .tag__text {
