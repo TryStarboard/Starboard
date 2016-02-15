@@ -26,7 +26,7 @@ export default connect(
     tagsMapSelector,
     (filters, tagMap) => {
       return {
-        filters: filters.length ? [tagMap[filters[0]]] : [],
+        filters: filters.map((id) => tagMap[id]),
       };
     }
   )

@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-import { findIndex, propEq } from 'ramda';
+import { contains, __, all, pluck } from 'ramda';
 import { reposWithTagDetailSelector } from './mapStateToProps';
 import Repo from './Repo';
 
@@ -46,7 +46,10 @@ export default connect(
 
       return {
         repos: repos.filter((repo) => {
-          return findIndex(propEq('id', filters[0]), repo.tags) > -1;
+          return all(
+            contains(__, pluck('id', repo.tags)),
+            filters
+          );
         }),
       };
     }

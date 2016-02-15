@@ -9,6 +9,7 @@ class Tag extends Component {
 
   static propTypes = {
     text: PropTypes.string.isRequired,
+    isSelected: PropTypes.bool,
     beginDragTag: PropTypes.func.isRequired,
     endDragTag: PropTypes.func.isRequired,
 
@@ -23,6 +24,7 @@ class Tag extends Component {
       text,
       foreground_color,
       background_color,
+      isSelected,
       isDragging,
       connectDragSource,
     } = this.props;
@@ -35,10 +37,14 @@ class Tag extends Component {
       backgroundColor: background_color,
       color: foreground_color,
       opacity: isDragging ? 0.5 : 1,
+      transform: isSelected ? 'scale(0.8)' : null,
     };
 
     return connectDragSource(
-      <div className="tag" style={style} onClick={() => selectTag({id})}>
+      <div
+        className='tag'
+        style={style}
+        onClick={() => selectTag({id})}>
         <div className="tag__text">{text}</div>
       </div>
     );
