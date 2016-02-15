@@ -66,6 +66,7 @@ export function applyTagToRepo(tag_id, repo_id) {
   return {
     type: APPLY_TAG_TO_REPO,
     payload: {
+      data: { tag_id, repo_id },
       promise: axios.post('/api/v1/repo_tags', { tag_id, repo_id }),
     }
   };
