@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-import { uiSelector, tagsMapSelector } from './mapStateToProps';
+import { tagsMapSelector } from './mapStateToProps';
 
 class FilterBar extends Component {
   render() {
@@ -20,15 +20,13 @@ class FilterBar extends Component {
   }
 }
 
-
-
 export default connect(
   createSelector(
-    uiSelector,
+    (state) => state.filters,
     tagsMapSelector,
-    (ui, tagMap) => {
+    (filters, tagMap) => {
       return {
-        filters: ui.selectedTags.length ? [tagMap[ui.selectedTags[0]]] : [],
+        filters: filters.length ? [tagMap[filters[0]]] : [],
       };
     }
   )
