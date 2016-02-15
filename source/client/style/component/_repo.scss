@@ -2,7 +2,6 @@
   width: 250px;
   border: 1px solid #999;
   padding: 5px 10px;
-  height: 150px;
   margin-right: 20px;
   margin-bottom: 20px;
   line-height: 1.5;
@@ -29,14 +28,14 @@
 .repo__desc {
   font-size: 14px;
   color: #666666;
-  height: 150px - (5px + 1px) * 2 - 16px * 1.5 - 14px * 1.5 - 5px; // 5px at last is totally random
-  overflow: hidden;
+  min-height: 80px;
 }
 
 .repo__tags {
   list-style: none;
   padding: 0;
   margin: 0;
+  margin-top: 5px;
   font-size: 14px;
   display: flex;
   flex-wrap: wrap;

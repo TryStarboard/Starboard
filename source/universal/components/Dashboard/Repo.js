@@ -19,7 +19,6 @@ class Repo extends Component {
         <div className="repo__full-name">
           <a className="repo__name-link" target="_blank" href={html_url}>{full_name}</a>
         </div>
-        <div className="repo__desc">{description}</div>
         <ul className="repo__tags">
           {tags[0] != null ? tags.map((tag) => {
             const style = {
@@ -30,6 +29,7 @@ class Repo extends Component {
             return <li key={tag.id} style={style}>{tag.text}</li>;
           }) : null}
         </ul>
+        <div className="repo__desc">{description}</div>
       </div>
     );
   }
