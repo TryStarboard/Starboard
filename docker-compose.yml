@@ -12,10 +12,10 @@ redis:
   ports:
     - '6379:6379'
 
-app:
-  build: .
-  links:
-    - postgres
-    - redis
-  ports:
-    - '80:80'
+# app:
+#   build: .
+#   links:
+#     - postgres
+#     - redis
+#   ports:
+#     - '80:80'
