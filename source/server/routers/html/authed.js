@@ -16,7 +16,7 @@ function *ensureAuthed(next) {
 authedRoute.get('/dashboard', ensureAuthed, function *(next) {
   this.reactState = yield {
     user: this.req.user,
-    repos: getAllRepos(this.req.user.id),
+    repos: getAllRepos(this.req.user.id, 100),
     tags: getAllTags(this.req.user.id),
   };
 

@@ -13,12 +13,22 @@ const SQL_PIECE2 = `
   GROUP BY repos.id
   ORDER BY repos.starred_at DESC`;
 
-export const getAll = wrap(function *(id) {
-  const { rows } = yield db.raw(
-    `${SQL_PIECE1} WHERE repos.user_id = ? ${SQL_PIECE2}`,
-    [id]
-  );
-  return rows;
+export const getAll = wrap(function *(id, limit) {
+  let result;
+
+  if (limit == null) {
+    result = yield db.raw(
+      `${SQL_PIECE1} WHERE repos.user_id = ? ${SQL_PIECE2}`,
+      [id]
+    );
+  } else {
+    result = yield db.raw(
+      `${SQL_PIECE1} WHERE repos.user_id = ? ${SQL_PIECE2} LIMIT ?`,
+      [id, limit]
+    );
+  }
+
+  return result.rows;
 });
 
 export const getReposWithIds = wrap(function *(ids) {

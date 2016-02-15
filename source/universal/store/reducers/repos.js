@@ -4,7 +4,12 @@ import assign from 'lodash/fp/assign';
 import without from 'lodash/without';
 import differenceWith from 'lodash/differenceWith';
 import { UPDATE_SOME_REPOS, REMOVE_REPOS } from '../../actions/serverActions';
-import { APPLY_TAG_TO_REPO, DELETE_TAG, REMOVE_REPO_TAG } from '../../actions';
+import {
+  APPLY_TAG_TO_REPO,
+  DELETE_TAG,
+  REMOVE_REPO_TAG,
+  GET_ALL_REPOS
+} from '../../actions';
 
 function mergeReposArray(currentArr, incomingArr) {
   const currentArrCopy = currentArr.slice(0);
@@ -40,6 +45,8 @@ function removeTagFromRepo(state, payload) {
 
 export default function (state = [], { type, payload }) {
   switch (type) {
+  case `${GET_ALL_REPOS}_FULFILLED`:
+    return payload.data;
   case UPDATE_SOME_REPOS:
     return orderBy(mergeReposArray(state, payload), ['starred_at'], ['desc']);
   case REMOVE_REPOS:
