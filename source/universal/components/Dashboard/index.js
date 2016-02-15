@@ -15,6 +15,9 @@ class Dashboard extends Component {
     closeAddTagModal: PropTypes.func.isRequired,
     addTag: PropTypes.func.isRequired,
     applyTagToRepo: PropTypes.func.isRequired,
+    beginDragTag: PropTypes.func.isRequired,
+    endDragTag: PropTypes.func.isRequired,
+    deleteTag: PropTypes.func.isRequired,
   };
 
   render() {
@@ -25,13 +28,17 @@ class Dashboard extends Component {
       closeAddTagModal,
       addTag,
       applyTagToRepo,
+      beginDragTag,
+      endDragTag,
+      deleteTag,
     } = bindActionCreators(this.context, this.props.dispatch);
 
     return (
       <div>
         <Sidebar {...{logout, syncRepos}}></Sidebar>
         <DashboardContent
-          {...{openAddTagModal, applyTagToRepo}}
+          {...{openAddTagModal, applyTagToRepo, beginDragTag, endDragTag, deleteTag}}
+          ui={this.props.ui}
           stars={this.props.stars}
           tags={this.props.tags}/>
         <AddTagModal

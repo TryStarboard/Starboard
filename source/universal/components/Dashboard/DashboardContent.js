@@ -6,17 +6,28 @@ import Tag from './Tag';
 import Repo from './Repo';
 
 class DashboardContent extends Component {
+
   render() {
-    const {openAddTagModal, stars, tags, applyTagToRepo} = this.props;
+    const {
+      stars,
+      openAddTagModal,
+      tags,
+      applyTagToRepo,
+      beginDragTag,
+      endDragTag,
+      deleteTag,
+    } = this.props;
 
     return (
       <div className='dashboard'>
         <div className="dashboard__tags">
-          <AddTag onClick={openAddTagModal}></AddTag>
-          {tags.map((t) => <Tag {...t} key={t.id}/>)}
+          <AddTag onClick={openAddTagModal} ui={this.props.ui} deleteTag={deleteTag}></AddTag>
+          {tags.map((tag) => <Tag {...tag} {...{beginDragTag, endDragTag}} key={tag.id}/>)}
         </div>
         <div className="dashboard__repos">
-          {stars.map((repo) => <Repo {...repo} applyTagToRepo={applyTagToRepo} key={repo.id}/>)}
+          {stars.map((repo) =>
+            <Repo {...repo} {...{applyTagToRepo}} key={repo.id}/>
+          )}
         </div>
       </div>
     );

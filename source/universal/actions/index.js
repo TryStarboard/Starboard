@@ -10,6 +10,9 @@ export const OPEN_ADD_TAG_MODAL = 'OPEN_ADD_TAG_MODAL';
 export const ADD_TAG = 'ADD_TAG';
 export const ADD_TAG_INVALID_INPUT = 'ADD_TAG_INVALID_INPUT';
 export const APPLY_TAG_TO_REPO = 'APPLY_TAG_TO_REPO';
+export const BEGIN_DRAG_TAG = 'BEGIN_DRAG_TAG';
+export const END_DRAG_TAG = 'END_DRAG_TAG';
+export const DELETE_TAG = 'DELETE_TAG';
 
 export function logout() {
   return {
@@ -68,6 +71,28 @@ export function applyTagToRepo(tag_id, repo_id) {
     payload: {
       data: { tag_id, repo_id },
       promise: axios.post('/api/v1/repo_tags', { tag_id, repo_id }),
+    }
+  };
+}
+
+export function beginDragTag() {
+  return {
+    type: BEGIN_DRAG_TAG,
+  };
+}
+
+export function endDragTag() {
+  return {
+    type: END_DRAG_TAG,
+  };
+}
+
+export function deleteTag(tag) {
+  return {
+    type: DELETE_TAG,
+    payload: {
+      data: tag,
+      promise: axios.delete(`/api/v1/tags/${tag.id}`),
     }
   };
 }
