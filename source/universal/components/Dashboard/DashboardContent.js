@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import { DragDropContext } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
 import AddTag from './AddTag';
@@ -8,17 +8,29 @@ import RepoTagDragLayer from './RepoTagDragLayer';
 
 class DashboardContent extends Component {
 
+  static contextTypes = {
+    openAddTagModal: PropTypes.func.isRequired,
+    applyTagToRepo: PropTypes.func.isRequired,
+    beginDragTag: PropTypes.func.isRequired,
+    endDragTag: PropTypes.func.isRequired,
+    deleteTag: PropTypes.func.isRequired,
+    removeRepoTag: PropTypes.func.isRequired,
+  };
+
   render() {
     const {
       stars,
-      openAddTagModal,
       tags,
+    } = this.props;
+
+    const {
+      openAddTagModal,
       applyTagToRepo,
       beginDragTag,
       endDragTag,
       deleteTag,
       removeRepoTag,
-    } = this.props;
+    } = this.context;
 
     return (
       <div className='dashboard'>

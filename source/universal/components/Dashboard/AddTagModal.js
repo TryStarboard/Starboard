@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import Modal from 'react-modal';
 import classnames from 'classnames';
 import MODAL_STYLES from '../../const/MODAL_STYLES';
 
-const AddTagModal = ({ui: {isAddTagModalOpen, addTagModalErrorMsg}, closeAddTagModal, addTag}) => (
+const AddTagModal = ({ui: {isAddTagModalOpen, addTagModalErrorMsg}}, {closeAddTagModal, addTag}) => (
   <Modal
     isOpen={isAddTagModalOpen}
     onRequestClose={closeAddTagModal}
@@ -21,5 +21,10 @@ const AddTagModal = ({ui: {isAddTagModalOpen, addTagModalErrorMsg}, closeAddTagM
     </form>
   </Modal>
 );
+
+AddTagModal.contextTypes = {
+  closeAddTagModal: PropTypes.func.isRequired,
+  addTag: PropTypes.func.isRequired,
+};
 
 export { AddTagModal as default };

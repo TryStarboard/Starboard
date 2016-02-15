@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { Provider } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import routes from '../universal/routes';
 import {
   logout,
@@ -30,18 +31,20 @@ export default class App extends Component {
   };
 
   getChildContext() {
-    return {
-      logout,
-      syncRepos: createSyncRepos(this.props.socket, this.props.store),
-      openAddTagModal,
-      closeAddTagModal,
-      addTag,
-      applyTagToRepo,
-      beginDragTag,
-      endDragTag,
-      deleteTag,
-      removeRepoTag,
-    };
+    return bindActionCreators(
+      {
+        logout,
+        syncRepos: createSyncRepos(this.props.socket, this.props.store),
+        openAddTagModal,
+        closeAddTagModal,
+        addTag,
+        applyTagToRepo,
+        beginDragTag,
+        endDragTag,
+        deleteTag,
+        removeRepoTag,
+      },
+      this.props.store.dispatch);
   }
 
   render() {
