@@ -4,3 +4,5 @@
 /build
 local*
 *.log
+/secret
+/deployment

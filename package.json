@@ -11,12 +11,12 @@
   },
   "dependencies": {
     "axios": "0.9.1",
-    "bcrypt": "0.8.5",
     "bluebird": "3.3.0",
     "classnames": "2.2.3",
     "co": "4.6.0",
     "config": "1.19.0",
     "cookies": "0.5.1",
+    "dotenv": "2.0.0",
     "ejs": "2.4.1",
     "history": "2.0.0",
     "ioredis": "1.15.0",
@@ -51,6 +51,7 @@
     "rx": "4.0.7",
     "socket.io": "1.4.5",
     "source-map-support": "0.4.0",
+    "svg-react-loader": "0.3.2",
     "updeep": "0.13.0",
     "validate.js": "0.9.0",
     "winston": "2.1.1"
@@ -75,7 +76,6 @@
     "node-sass": "3.4.2",
     "nodemon": "1.8.1",
     "socket.io-client": "1.4.5",
-    "svg-react-loader": "0.3.2",
     "webpack": "1.12.13"
   },
   "scripts": {
