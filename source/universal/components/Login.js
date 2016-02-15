@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 import octocatImg from '../../client/img/octocat.jpg';
 
 class Login extends Component {
@@ -13,4 +12,4 @@ class Login extends Component {
   }
 }
 
-export default connect((s) => null, null, null, {pure: true})(Login);
+export { Login as default };
