@@ -1,6 +1,6 @@
 import Router from 'koa-router';
 import { getAll as getAllStars } from '../../../util/data/Repos';
-import { getAll as getAllTags, addTag, deleteTag } from '../../../util/data/tags';
+import { getAll as getAllTags, addTag, deleteTag } from '../../../util/data/Tags';
 import { addRepoTag, deleteRepoTag } from '../../../util/data/RepoTags';
 
 function *ensureAuthed(next) {

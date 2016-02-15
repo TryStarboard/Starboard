@@ -1,6 +1,6 @@
 import Router from 'koa-router';
 import { getAll as getAllStars } from '../../util/data/Repos';
-import { getAll as getAllTags } from '../../util/data/tags';
+import { getAll as getAllTags } from '../../util/data/Tags';
 import renderReact from '../util/renderReact';
 
 const authedRoute = new Router();
