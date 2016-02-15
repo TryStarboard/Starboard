@@ -1,6 +1,6 @@
 import Router from 'koa-router';
-import { getAll as getAllStars } from '../../../util/data/stars';
-import { getAll as getAllTags, addTag, deleteTag } from '../../../util/data/tags';
+import { getAll as getAllRepos } from '../../../util/data/Repos';
+import { getAll as getAllTags, addTag, deleteTag } from '../../../util/data/Tags';
 import { addRepoTag, deleteRepoTag } from '../../../util/data/RepoTags';
 
 function *ensureAuthed(next) {
@@ -18,8 +18,8 @@ authedRoute.get('/logout', ensureAuthed, function *() {
   this.status = 200;
 });
 
-authedRoute.get('/stars', ensureAuthed, function *() {
-  this.body = yield getAllStars(this.req.user.id);
+authedRoute.get('/repos', ensureAuthed, function *() {
+  this.body = yield getAllRepos(this.req.user.id);
 });
 
 authedRoute.post('/tags', ensureAuthed, function *(next) {

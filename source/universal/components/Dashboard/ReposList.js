@@ -4,9 +4,9 @@ import { createSelector } from 'reselect';
 import { reposWithTagDetailSelector } from './mapStateToProps';
 import Repo from './Repo';
 
-const ReposList = ({stars}, {applyTagToRepo, removeRepoTag}) => (
+const ReposList = ({repos}, {applyTagToRepo, removeRepoTag}) => (
   <div className="dashboard__repos">
-    {stars.map((repo) =>
+    {repos.map((repo) =>
       <Repo {...repo} {...{applyTagToRepo, removeRepoTag}} key={repo.id}/>
     )}
   </div>
@@ -20,7 +20,7 @@ ReposList.contextTypes = {
 export default connect(
   createSelector(
     reposWithTagDetailSelector,
-    (repos) => ({stars: repos})
+    (repos) => ({ repos })
   ),
   null,
   null,

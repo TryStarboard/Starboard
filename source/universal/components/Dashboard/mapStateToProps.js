@@ -4,7 +4,7 @@ import keyBy from 'lodash/fp/keyBy';
 import assign from 'lodash/fp/assign';
 import { DEFAULT_TAG_COLORS } from '../../const/DEFAULT_TAG_COLORS';
 
-const reposSelector = (state) => state.stars;
+const reposSelector = (state) => state.repos;
 const tagsSelector = (state) => state.tags;
 const uiSelector = (state) => state.ui;
 
