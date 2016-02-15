@@ -4,6 +4,7 @@ import { bindActionCreators } from 'redux';
 import routes from '../universal/routes';
 import {
   logout,
+  getAllRepos,
   openAddTagModal,
   closeAddTagModal,
   addTag,
@@ -19,6 +20,7 @@ export default class App extends Component {
 
   static childContextTypes = {
     logout: PropTypes.func.isRequired,
+    getAllRepos: PropTypes.func.isRequired,
     syncRepos: PropTypes.func.isRequired,
     openAddTagModal: PropTypes.func.isRequired,
     closeAddTagModal: PropTypes.func.isRequired,
@@ -34,6 +36,7 @@ export default class App extends Component {
     return bindActionCreators(
       {
         logout,
+        getAllRepos,
         syncRepos: createSyncRepos(this.props.socket, this.props.store),
         openAddTagModal,
         closeAddTagModal,
