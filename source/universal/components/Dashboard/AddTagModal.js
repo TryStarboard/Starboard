@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
+import { connect } from 'react-redux';
 import Modal from 'react-modal';
 import classnames from 'classnames';
+import { uiSelector } from './mapStateToProps';
 import MODAL_STYLES from '../../const/MODAL_STYLES';
 
-const AddTagModal = ({ui: {isAddTagModalOpen, addTagModalErrorMsg}, closeAddTagModal, addTag}) => (
+const AddTagModal = ({isAddTagModalOpen, addTagModalErrorMsg}, {closeAddTagModal, addTag}) => (
   <Modal
     isOpen={isAddTagModalOpen}
     onRequestClose={closeAddTagModal}
@@ -22,4 +24,9 @@ const AddTagModal = ({ui: {isAddTagModalOpen, addTagModalErrorMsg}, closeAddTagM
   </Modal>
 );
 
-export { AddTagModal as default };
+AddTagModal.contextTypes = {
+  closeAddTagModal: PropTypes.func.isRequired,
+  addTag: PropTypes.func.isRequired,
+};
+
+export default connect(uiSelector, null, null, {pure: true})(AddTagModal);

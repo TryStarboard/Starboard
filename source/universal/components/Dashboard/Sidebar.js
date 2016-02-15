@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import LogoutIcon from '../../../client/img/logout-icon.svg';
 import UserIcon from '../../../client/img/user-icon.svg';
 import DashboardIcon from '../../../client/img/dashboard-icon.svg';
 import RefreshIcon from '../../../client/img/refresh-icon.svg';
 
-export default ({logout, syncRepos}) => (
+const Sidebar = (props, {logout, syncRepos}) => (
   <nav className='nav'>
     <div className="nav__top">
       <button className='nav__btn'><UserIcon/></button>
@@ -16,3 +16,10 @@ export default ({logout, syncRepos}) => (
     </div>
   </nav>
 );
+
+Sidebar.contextTypes = {
+  logout: PropTypes.func.isRequired,
+  syncRepos: PropTypes.func.isRequired,
+};
+
+export { Sidebar as default };
