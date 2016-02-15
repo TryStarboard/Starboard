@@ -103,9 +103,7 @@ export function removeRepoTag(tag) {
     type: REMOVE_REPO_TAG,
     payload: {
       data: tag,
-      promise: axios.delete(`/api/v1/repo_tags`, {
-
-      }),
+      promise: axios.delete(`/api/v1/repo_tags`, {data: tag}),
     }
   };
 }

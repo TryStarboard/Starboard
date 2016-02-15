@@ -1,7 +1,7 @@
 import Router from 'koa-router';
 import { getAll as getAllStars } from '../../../util/data/stars';
 import { getAll as getAllTags, addTag, deleteTag } from '../../../util/data/tags';
-import { addRepoTag } from '../../../util/data/RepoTags';
+import { addRepoTag, deleteRepoTag } from '../../../util/data/RepoTags';
 
 function *ensureAuthed(next) {
   if (this.req.isAuthenticated()) {
@@ -36,6 +36,10 @@ authedRoute.delete('/tags/:id', ensureAuthed, function *(next) {
 
 authedRoute.post('/repo_tags', ensureAuthed, function *() {
   this.body = yield addRepoTag(this.request.body);
+});
+
+authedRoute.delete('/repo_tags', ensureAuthed, function *() {
+  this.body = yield deleteRepoTag(this.request.body);
 });
 
 export { authedRoute as default };
