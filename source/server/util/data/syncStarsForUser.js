@@ -6,7 +6,7 @@ import { props } from 'bluebird';
 import github from '../github';
 import db from '../db';
 import { getAll as getAllTags } from './tags';
-import { getReposWithIds } from './stars';
+import { getReposWithIds } from './Repos';
 
 const transformRepo = curry(function (id, {starred_at, repo}) {
   const transformed = pick(repo, [

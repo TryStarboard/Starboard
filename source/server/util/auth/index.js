@@ -1,7 +1,7 @@
 import passport from 'koa-passport';
 import { wrap } from 'co';
 import db from '../db';
-import githubStrategy from './githubStrategy.js';
+import githubStrategy from './githubStrategy';
 
 passport.use(githubStrategy);
 

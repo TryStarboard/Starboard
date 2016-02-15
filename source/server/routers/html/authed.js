@@ -1,5 +1,5 @@
 import Router from 'koa-router';
-import { getAll as getAllStars } from '../../util/data/stars';
+import { getAll as getAllStars } from '../../util/data/Repos';
 import { getAll as getAllTags } from '../../util/data/tags';
 import renderReact from '../util/renderReact';
 
