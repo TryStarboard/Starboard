@@ -13,4 +13,4 @@ class Login extends Component {
   }
 }
 
-export default connect((s) => s)(Login);
+export default connect((s) => null, null, null, {pure: true})(Login);
