@@ -92,7 +92,7 @@ export function deleteTag(tag) {
     type: DELETE_TAG,
     payload: {
       data: tag,
-      promise: axios.delete(`/api/v1/repo_tags/${tag.id}`),
+      promise: axios.delete(`/api/v1/tags/${tag.id}`),
     }
   };
 }
