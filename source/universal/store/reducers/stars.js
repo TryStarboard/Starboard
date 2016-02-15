@@ -23,9 +23,9 @@ function mergeReposArray(currentArr, incomingArr) {
 
 function applyTagToRepo(state, payload) {
   const copy = state.slice(0);
-  const index = findIndex(copy, ['id', payload.data.repo_id]);
-  const repo = copy[index];
-  copy.splice(index, 1, assign(repo, {tags: repo.tags.concat([payload.data.tag_id])}));
+  const repoIndex = findIndex(copy, ['id', payload.repo_id]);
+  const repo = copy[repoIndex];
+  copy.splice(repoIndex, 1, assign(repo, {tags: repo.tags.concat([payload.tag_id])}));
   return copy;
 }
 
@@ -35,7 +35,7 @@ export default function (state = [], { type, payload }) {
     return orderBy(mergeReposArray(state, payload), ['starred_at'], ['desc']);
   case REMOVE_REPOS:
     return differenceWith(state, payload, (repo, id) => repo.id === id);
-  case `${APPLY_TAG_TO_REPO}_FULFILLED`:
+  case `${APPLY_TAG_TO_REPO}_PENDING`: // Optimistic updates
     return applyTagToRepo(state, payload);
   default:
     return state;
