@@ -21,6 +21,9 @@ function createApp(renderProps, state) {
       logout: PropTypes.func.isRequired,
       syncRepos: PropTypes.func.isRequired,
       addTag: PropTypes.func.isRequired,
+      openAddTagModal: PropTypes.func.isRequired,
+      closeAddTagModal: PropTypes.func.isRequired,
+      applyTagToRepo: PropTypes.func.isRequired,
     };
 
     getChildContext() {
@@ -28,6 +31,9 @@ function createApp(renderProps, state) {
         logout: noop,
         syncRepos: noop,
         addTag: noop,
+        openAddTagModal: noop,
+        closeAddTagModal: noop,
+        applyTagToRepo: noop,
       };
     }
 

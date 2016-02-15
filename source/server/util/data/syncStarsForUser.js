@@ -136,20 +136,24 @@ export default function (id) {
         return { repo_id, tag_id: languageTagMap[language] };
       }));
 
-      return db.raw('? ON CONFLICT DO NOTHING', [db('repo_tags').insert(entries)])
+      return db
+        .raw('? ON CONFLICT DO NOTHING', [db('repo_tags').insert(entries)])
         .then(() => {
-          const idsOfCurrentBatch = map(repos, 'id');
-          const reposP = getReposWithIds(idsOfCurrentBatch);
-          const tagsP = getAllTags(id);
-          return props({ repos: reposP, tags: tagsP });
-        })
-        .then(({ repos: repoRows, tags }) => ({ repos: repoRows, tags }));
+          return props({
+            repos: getReposWithIds(map(repos, 'id')),
+            tags: getAllTags(id),
+          });
+        });
     })
     .subscribe(
       (data) => progressSubject.onNext({ type: 'PROGRESS', data }),
       (err) => progressSubject.onError(err),
       () => {
-        db('repos').where('user_id', id).whereNotIn('id', IDs).del().returning('id')
+        db('repos')
+          .where('user_id', id)
+          .whereNotIn('id', IDs)
+          .del()
+          .returning('id')
           .then((deletedRepoIds) => {
             progressSubject.onNext({ type: 'DELETE', data: deletedRepoIds });
             progressSubject.onCompleted();
