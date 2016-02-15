@@ -1,6 +1,8 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
+import u from 'updeep';
+import { pipe, prop, contains, __, assoc } from 'ramda';
 import AddTag from './AddTag';
 import Tag from './Tag';
 import { tagsWithColorsSelector, uiSelector } from './mapStateToProps';
@@ -23,7 +25,18 @@ export default connect(
   createSelector(
     tagsWithColorsSelector,
     uiSelector,
-    (tags, ui) => ({tags, ui})
+    (state) => state.filters,
+    (tags, ui, filters) => {
+      return {
+        ui,
+        tags: tags.map(u(
+          u.if(
+            pipe(prop('id'), contains(__, filters)),
+            assoc('isSelected', true)
+          )
+        ))
+      };
+    }
   ),
   null,
   null,
