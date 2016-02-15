@@ -42,6 +42,8 @@ module.exports = {
           plugins: [
             'transform-function-bind',
             'transform-class-properties',
+            'transform-react-constant-elements',
+            'transform-react-inline-elements',
           ],
         }
       },
