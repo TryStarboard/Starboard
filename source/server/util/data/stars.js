@@ -3,7 +3,7 @@ import db from '../db';
 
 const SQL_PIECE1 = `
   SELECT repos.id AS id, full_name, description, homepage, html_url,
-    array_agg(tags.id) AS tags,
+    array_agg(tags.id ORDER BY repo_tags.id ASC) AS tags,
     extract(epoch from starred_at) AS starred_at
   FROM repos
   LEFT JOIN repo_tags ON repo_tags.repo_id = repos.id
