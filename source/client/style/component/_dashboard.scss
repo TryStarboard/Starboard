@@ -2,6 +2,7 @@ $tags-bar-width: 80px * 3 + 10px * 3 + 20px;
 
 .dashboard {
   margin-left: 64px;
+  position: relative;
 }
 
 .dashboard__tags {
@@ -24,4 +25,13 @@ $tags-bar-width: 80px * 3 + 10px * 3 + 20px;
   overflow: auto;
   float: left;
   width: calc(100% - #{$tags-bar-width - 10px});
+}
+
+.dashboard__repo-tag-drag-layer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  svg path {
+    fill: red;
+  }
 }

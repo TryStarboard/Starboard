@@ -4,6 +4,7 @@ import HTML5Backend from 'react-dnd-html5-backend';
 import AddTag from './AddTag';
 import Tag from './Tag';
 import Repo from './Repo';
+import RepoTagDragLayer from './RepoTagDragLayer';
 
 class DashboardContent extends Component {
 
@@ -29,6 +30,7 @@ class DashboardContent extends Component {
             <Repo {...repo} {...{applyTagToRepo}} key={repo.id}/>
           )}
         </div>
+        <RepoTagDragLayer/>
       </div>
     );
   }
