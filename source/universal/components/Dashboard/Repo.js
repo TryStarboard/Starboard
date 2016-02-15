@@ -2,16 +2,19 @@ import React, { Component } from 'react';
 import { DropTarget } from 'react-dnd';
 import classnames from 'classnames';
 import findIndex from 'lodash/findIndex';
+import RepoTag from './RepoTag';
 
 class Repo extends Component {
   render() {
     const {
+      id,
       full_name,
       description,
       html_url,
       tags,
       connectDropTarget,
       isOver,
+      removeRepoTag,
     } = this.props;
 
     return connectDropTarget(
@@ -20,14 +23,7 @@ class Repo extends Component {
           <a className="repo__name-link" target="_blank" href={html_url}>{full_name}</a>
         </div>
         <ul className="repo__tags">
-          {tags.map((tag) => {
-            const style = {
-              backgroundColor: tag.background_color,
-              color: tag.foreground_color,
-            };
-
-            return <li key={tag.id} style={style}>{tag.text}</li>;
-          })}
+          {tags.map((tag) => <RepoTag {...tag} removeRepoTag={removeRepoTag} repo_id={id} key={tag.id}/>)}
         </ul>
         <div className="repo__desc">{description}</div>
       </div>

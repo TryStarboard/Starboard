@@ -4,6 +4,7 @@ import HTML5Backend from 'react-dnd-html5-backend';
 import AddTag from './AddTag';
 import Tag from './Tag';
 import Repo from './Repo';
+import RepoTagDragLayer from './RepoTagDragLayer';
 
 class DashboardContent extends Component {
 
@@ -16,6 +17,7 @@ class DashboardContent extends Component {
       beginDragTag,
       endDragTag,
       deleteTag,
+      removeRepoTag,
     } = this.props;
 
     return (
@@ -26,9 +28,10 @@ class DashboardContent extends Component {
         </div>
         <div className="dashboard__repos">
           {stars.map((repo) =>
-            <Repo {...repo} {...{applyTagToRepo}} key={repo.id}/>
+            <Repo {...repo} {...{applyTagToRepo, removeRepoTag}} key={repo.id}/>
           )}
         </div>
+        <RepoTagDragLayer/>
       </div>
     );
   }

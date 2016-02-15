@@ -39,12 +39,17 @@
   font-size: 14px;
   display: flex;
   flex-wrap: wrap;
-  li {
-    margin: 0 5px 5px 0;
-    background-color: #DBDDDE;
-    padding: 1px 8px 2px;
-    border-radius: 4px;
-    color: black;
-    font-weight: 700;
+}
+
+.repo__tag {
+  margin: 0 5px 5px 0;
+  background-color: #DBDDDE;
+  padding: 1px 8px 2px;
+  border-radius: 4px;
+  color: black;
+  font-weight: 700;
+
+  &.repo__tag--dragging {
+    opacity: 0;
   }
 }
