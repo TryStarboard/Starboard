@@ -6,6 +6,10 @@
   margin-right: 20px;
   margin-bottom: 20px;
   line-height: 1.5;
+
+  &.repo--is-tag-over {
+    background-color: #DBDDDE;
+  }
 }
 
 .repo__full-name {
@@ -34,13 +38,14 @@
   padding: 0;
   margin: 0;
   font-size: 14px;
+  display: flex;
+  flex-wrap: wrap;
   li {
-    margin: 0;
-    background-color: black;
-    float: left;
+    margin: 0 5px 5px 0;
+    background-color: #DBDDDE;
     padding: 1px 8px 2px;
     border-radius: 4px;
-    color: white;
+    color: black;
     font-weight: 700;
   }
 }

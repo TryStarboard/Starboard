@@ -1,10 +1,10 @@
 import React, { Component, PropTypes } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import pick from 'lodash/fp/pick';
 import Sidebar from './Sidebar';
 import DashboardContent from './DashboardContent';
 import AddTagModal from './AddTagModal';
+import mapStateToProps from './mapStateToProps';
 
 class Dashboard extends Component {
 
@@ -14,17 +14,24 @@ class Dashboard extends Component {
     openAddTagModal: PropTypes.func.isRequired,
     closeAddTagModal: PropTypes.func.isRequired,
     addTag: PropTypes.func.isRequired,
+    applyTagToRepo: PropTypes.func.isRequired,
   };
 
   render() {
-    const {logout, syncRepos, openAddTagModal, closeAddTagModal, addTag} =
-      bindActionCreators(this.context, this.props.dispatch);
+    const {
+      logout,
+      syncRepos,
+      openAddTagModal,
+      closeAddTagModal,
+      addTag,
+      applyTagToRepo,
+    } = bindActionCreators(this.context, this.props.dispatch);
 
     return (
       <div>
         <Sidebar {...{logout, syncRepos}}></Sidebar>
         <DashboardContent
-          {...{openAddTagModal}}
+          {...{openAddTagModal, applyTagToRepo}}
           stars={this.props.stars}
           tags={this.props.tags}/>
         <AddTagModal
@@ -36,4 +43,4 @@ class Dashboard extends Component {
   }
 }
 
-export default connect(pick(['ui', 'stars', 'tags']))(Dashboard);
+export default connect(mapStateToProps)(Dashboard);

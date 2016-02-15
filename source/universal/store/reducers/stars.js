@@ -3,6 +3,7 @@ import orderBy from 'lodash/orderBy';
 import assign from 'lodash/fp/assign';
 import differenceWith from 'lodash/differenceWith';
 import { UPDATE_SOME_REPOS, REMOVE_REPOS } from '../../actions/serverActions';
+import { APPLY_TAG_TO_REPO } from '../../actions';
 
 function mergeReposArray(currentArr, incomingArr) {
   const currentArrCopy = currentArr.slice(0);
@@ -20,13 +21,23 @@ function mergeReposArray(currentArr, incomingArr) {
   return incomingArrCopy.concat(currentArrCopy);
 }
 
+function applyTagToRepo(state, payload) {
+  const copy = state.slice(0);
+  const index = findIndex(copy, ['id', payload.data.repo_id]);
+  const repo = copy[index];
+  copy.splice(index, 1, assign(repo, {tags: repo.tags.concat([payload.data.tag_id])}));
+  return copy;
+}
+
 export default function (state = [], { type, payload }) {
   switch (type) {
   case UPDATE_SOME_REPOS:
     return orderBy(mergeReposArray(state, payload), ['starred_at'], ['desc']);
   case REMOVE_REPOS:
     return differenceWith(state, payload, (repo, id) => repo.id === id);
+  case `${APPLY_TAG_TO_REPO}_FULFILLED`:
+    return applyTagToRepo(state, payload);
   default:
-    return orderBy(state, ['starred_at'], ['desc']);
+    return state;
   }
 }

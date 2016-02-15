@@ -1,5 +1,5 @@
 import React, { PropTypes, Component } from 'react';
-import { renderToString } from 'react-dom/server';
+import { renderToString } from 'react-dom/dist/react-dom-server.min';
 import { Provider } from 'react-redux';
 import { match, RouterContext } from 'react-router';
 import { fromCallback } from 'bluebird';
@@ -21,6 +21,9 @@ function createApp(renderProps, state) {
       logout: PropTypes.func.isRequired,
       syncRepos: PropTypes.func.isRequired,
       addTag: PropTypes.func.isRequired,
+      openAddTagModal: PropTypes.func.isRequired,
+      closeAddTagModal: PropTypes.func.isRequired,
+      applyTagToRepo: PropTypes.func.isRequired,
     };
 
     getChildContext() {
@@ -28,6 +31,9 @@ function createApp(renderProps, state) {
         logout: noop,
         syncRepos: noop,
         addTag: noop,
+        openAddTagModal: noop,
+        closeAddTagModal: noop,
+        applyTagToRepo: noop,
       };
     }
 

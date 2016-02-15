@@ -5,6 +5,8 @@ import { Observable, Subject } from 'rx';
 import { props } from 'bluebird';
 import github from '../github';
 import db from '../db';
+import { getAll as getAllTags } from './tags';
+import { getReposWithIds } from './stars';
 
 const transformRepo = curry(function (id, {starred_at, repo}) {
   const transformed = pick(repo, [
@@ -134,32 +136,24 @@ export default function (id) {
         return { repo_id, tag_id: languageTagMap[language] };
       }));
 
-      return db.raw('? ON CONFLICT DO NOTHING', [db('repo_tags').insert(entries)])
+      return db
+        .raw('? ON CONFLICT DO NOTHING', [db('repo_tags').insert(entries)])
         .then(() => {
-          const idsOfCurrentBatch = map(repos, 'id');
-          const reposP = db.raw(`
-            SELECT repos.id AS id, full_name, description, homepage, html_url,
-              array_agg(tags.text) AS tag_texts,
-              extract(epoch from starred_at) AS starred_at
-            FROM repos
-            LEFT JOIN repo_tags ON repo_tags.repo_id = repos.id
-            LEFT JOIN tags ON repo_tags.tag_id = tags.id
-            WHERE repos.id IN (${idsOfCurrentBatch.join(',')})
-            GROUP BY repos.id
-            ORDER BY repos.starred_at DESC`
-          );
-          const tagsP = db('tags')
-            .select('id', 'text', 'foreground_color', 'background_color')
-            .where('user_id', id);
-          return props({ repos: reposP, tags: tagsP });
-        })
-        .then(({ repos: { rows: repoRows }, tags }) => ({ repos: repoRows, tags }));
+          return props({
+            repos: getReposWithIds(map(repos, 'id')),
+            tags: getAllTags(id),
+          });
+        });
     })
     .subscribe(
       (data) => progressSubject.onNext({ type: 'PROGRESS', data }),
       (err) => progressSubject.onError(err),
       () => {
-        db('repos').where('user_id', id).whereNotIn('id', IDs).del().returning('id')
+        db('repos')
+          .where('user_id', id)
+          .whereNotIn('id', IDs)
+          .del()
+          .returning('id')
           .then((deletedRepoIds) => {
             progressSubject.onNext({ type: 'DELETE', data: deletedRepoIds });
             progressSubject.onCompleted();
