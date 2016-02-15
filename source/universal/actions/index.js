@@ -13,6 +13,7 @@ export const APPLY_TAG_TO_REPO = 'APPLY_TAG_TO_REPO';
 export const BEGIN_DRAG_TAG = 'BEGIN_DRAG_TAG';
 export const END_DRAG_TAG = 'END_DRAG_TAG';
 export const DELETE_TAG = 'DELETE_TAG';
+export const REMOVE_REPO_TAG = 'REMOVE_REPO_TAG';
 
 export function logout() {
   return {
@@ -93,6 +94,18 @@ export function deleteTag(tag) {
     payload: {
       data: tag,
       promise: axios.delete(`/api/v1/tags/${tag.id}`),
+    }
+  };
+}
+
+export function removeRepoTag(tag) {
+  return {
+    type: REMOVE_REPO_TAG,
+    payload: {
+      data: tag,
+      promise: axios.delete(`/api/v1/repo_tags`, {
+
+      }),
     }
   };
 }

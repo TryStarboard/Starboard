@@ -7,7 +7,6 @@ const { pow, sqrt } = Math;
 class RepoTagDragLayer extends Component {
 
   static propTypes = {
-    item: PropTypes.object,
     itemType: PropTypes.string,
     currentOffset: PropTypes.shape({
       x: PropTypes.number.isRequired,
@@ -34,7 +33,7 @@ class RepoTagDragLayer extends Component {
 
     const { x, y } = differenceFromInitialOffset;
     const showTrashCan = sqrt(pow(x, 2) + pow(y, 2)) > 200;
-    
+
     if (!showTrashCan) {
       return null;
     }

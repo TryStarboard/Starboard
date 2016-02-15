@@ -33,15 +33,21 @@ class RepoTag extends Component {
   }
 }
 
+const { pow, sqrt } = Math;
+
 export default DragSource(
   'REPO_TAG',
   {
-    beginDrag({ id }) {
-      return { id };
+    beginDrag({ id, repo_id }) {
+      return { tag_id: id, repo_id };
     },
-    // endDrag({endDragTag}) {
-    //   endDragTag();
-    // },
+    endDrag({ removeRepoTag }, monitor) {
+      const { x, y } = monitor.getDifferenceFromInitialOffset();
+      const shouldRemoveTag = sqrt(pow(x, 2) + pow(y, 2)) > 200;
+      if (shouldRemoveTag) {
+        removeRepoTag(monitor.getItem());
+      }
+    },
   },
   (connect, monitor) => ({
     connectDragSource: connect.dragSource(),

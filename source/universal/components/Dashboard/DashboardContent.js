@@ -17,6 +17,7 @@ class DashboardContent extends Component {
       beginDragTag,
       endDragTag,
       deleteTag,
+      removeRepoTag,
     } = this.props;
 
     return (
@@ -27,7 +28,7 @@ class DashboardContent extends Component {
         </div>
         <div className="dashboard__repos">
           {stars.map((repo) =>
-            <Repo {...repo} {...{applyTagToRepo}} key={repo.id}/>
+            <Repo {...repo} {...{applyTagToRepo, removeRepoTag}} key={repo.id}/>
           )}
         </div>
         <RepoTagDragLayer/>
