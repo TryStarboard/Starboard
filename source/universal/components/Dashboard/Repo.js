@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { DropTarget } from 'react-dnd';
 import classnames from 'classnames';
+import findIndex from 'lodash/findIndex';
 
 class Repo extends Component {
   render() {
@@ -37,6 +38,10 @@ class Repo extends Component {
 export default DropTarget(
   'TAG',
   {
+    canDrop(props, monitor) {
+      const tag = monitor.getItem();
+      return findIndex(props.tags, ['id', tag.id]) === -1;
+    },
     drop(props, monitor) {
       const tag = monitor.getItem();
       props.applyTagToRepo(tag.id, props.id);
@@ -44,6 +49,6 @@ export default DropTarget(
   },
   (connect, monitor) => ({
     connectDropTarget: connect.dropTarget(),
-    isOver: monitor.isOver(),
+    isOver: monitor.canDrop() && monitor.isOver(),
   })
 )(Repo);
