@@ -27,9 +27,10 @@ export default function createKoaServer() {
       }
     });
 
-    app.use(koaStatic(config.get('koa.publicDir')));
     app.use(devLogging);
   }
+
+  app.use(koaStatic(config.get('koa.publicDir')));
 
   app.use(session);
   app.use(bodyParser());
