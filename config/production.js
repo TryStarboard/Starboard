@@ -19,6 +19,7 @@ module.exports = {
     password: process.env.POSTGRES_PASS,
   },
   koa: {
+    publicDir: join(__dirname, '../public'),
     templateDir: join(__dirname, '../template'),
   },
   github: {
