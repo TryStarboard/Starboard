@@ -61,13 +61,13 @@ function createDataSource(id) {
 
         observer.onNext(repos.map(transformFunc));
 
-        const { next } = parseLinkHeader(headers.link);
+        const linkHeader = parseLinkHeader(headers.link);
 
-        if (!next) {
+        if (!linkHeader || !linkHeader.next) {
           break;
         }
 
-        page = next.page;
+        page = linkHeader.next.page;
       }
 
       observer.onCompleted();
