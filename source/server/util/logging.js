@@ -10,4 +10,4 @@ winston.add(winston.transports.Console, {
 });
 
 export const logger = winston;
-export const middleware = koaLogger();
+export const devLogging = koaLogger();

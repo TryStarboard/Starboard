@@ -1,11 +1,10 @@
 import config from 'config';
 import socketio from 'socket.io';
 import Cookies from 'cookies';
+import co from 'co';
+import { client as redisClient } from './redis';
 import syncStarsForUser from './data/syncStarsForUser';
-import { client as redisClient } from './session';
-import {
-  SYNC_REPOS
-} from '../../universal/actionFactory';
+import { SYNC_REPOS } from '../../universal/actionFactory';
 import {
   UPDATE_SOME_REPOS,
   REMOVE_REPOS,
@@ -14,48 +13,48 @@ import {
 
 const KEYS = config.get('cookie.keys');
 
-let socket;
+function authenticate(socket, next) {
+  co(function *() {
 
-export function configWebsocket(server) {
-  const io = socketio(server, {
-    serveClient: false
-  });
-
-  io.use(function(_socket, next) {
-    const cookies = new Cookies(_socket.request, null, KEYS);
+    const cookies = new Cookies(socket.request, null, KEYS);
     const sid = cookies.get('koa.sid', {signed: true});
 
-    redisClient.get(`koa:sess:${sid}`)
-      .then((str) => {
-        const obj = JSON.parse(str);
-        if (!obj || obj.passport.user == null) {
-          next(new Error('session not found, cannot auth websocket'));
-          return;
-        }
-        next();
-      })
-      .catch(next);
-  });
+    const str = yield redisClient.get(`koa:sess:${sid}`);
 
-  io.on('connection', (_socket) => {
-    socket = _socket;
+    const obj = JSON.parse(str);
 
-    socket.on(SYNC_REPOS, function ({ id }) {
-      syncStarsForUser(id)
-        .subscribe(({ type, data }) => {
-          if (type === 'PROGRESS') {
-            const { repos, tags } = data;
-            socket.emit(UPDATE_TAGS, tags);
-            socket.emit(UPDATE_SOME_REPOS, repos);
-          } else {
-            // DELETE
-            socket.emit(REMOVE_REPOS, data);
-          }
-        });
-    });
-  });
+    if (!obj || obj.passport.user == null) {
+      next(new Error('session not found, cannot auth websocket'));
+    } else {
+      socket.handshake.user = { id: obj.passport.user };
+      next();
+    }
+
+  }).catch(next);
 }
 
-export function getClient() {
-  return socket;
+function handleSyncRepos(socket) {
+  return function () {
+    syncStarsForUser(socket.handshake.user.id)
+      .subscribe(({ type, data }) => {
+        if (type === 'PROGRESS') {
+          const { repos, tags } = data;
+          socket.emit(UPDATE_TAGS, tags);
+          socket.emit(UPDATE_SOME_REPOS, repos);
+        } else {
+          // DELETE
+          socket.emit(REMOVE_REPOS, data);
+        }
+      });
+  };
+}
+
+function handleConnection(socket) {
+  socket.on(SYNC_REPOS, handleSyncRepos(socket));
+}
+
+export function createWebsocketServer(server) {
+  const io = socketio(server, { serveClient: false });
+  io.use(authenticate);
+  io.on('connection', handleConnection);
 }
