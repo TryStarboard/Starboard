@@ -17,7 +17,9 @@ $dashboard-content-height: calc(100vh - #{$filters-height});
 }
 
 .dashboard__tags {
-  float: left;
+  position: absolute;
+  top: $filters-height;
+  left: 0;
   width: $tags-bar-width;
   height: $dashboard-content-height;
   overflow: auto;
@@ -29,6 +31,10 @@ $dashboard-content-height: calc(100vh - #{$filters-height});
 }
 
 .dashboard__repos {
+  position: absolute;
+  top: $filters-height;
+  left: $tags-bar-width;
+  right: 0;
   padding: 20px 0 0 20px;
   display: flex;
   flex-wrap: wrap;
@@ -36,8 +42,6 @@ $dashboard-content-height: calc(100vh - #{$filters-height});
   align-items: flex-start;
   height: $dashboard-content-height;
   overflow: auto;
-  float: left;
-  width: calc(100% - #{$tags-bar-width - 10px});
 }
 
 .dashboard__repo-tag-drag-layer {
