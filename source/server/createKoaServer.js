@@ -16,6 +16,8 @@ export default function createKoaServer() {
 
   app.keys = config.get('cookie.keys');
 
+  app.use(koaStatic(config.get('koa.publicDir')));
+
   if (process.env.NODE_ENV === 'development') {
     app.use(function *(next) {
       try {
@@ -29,8 +31,6 @@ export default function createKoaServer() {
 
     app.use(devLogging);
   }
-
-  app.use(koaStatic(config.get('koa.publicDir')));
 
   app.use(session);
   app.use(bodyParser());

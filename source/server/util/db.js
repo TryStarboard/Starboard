@@ -1,7 +1,12 @@
 import knex from 'knex';
 import config from 'config';
 
-export default knex({
+const db = knex({
   client: 'pg',
-  connection: config.get('postgres')
+  connection: config.get('postgres'),
 });
+
+// db.on('query', console.log);
+// db.on('query-error', console.log);
+
+export { db as default };
