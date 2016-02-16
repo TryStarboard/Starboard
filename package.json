@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "axios": "0.9.1",
-    "bluebird": "3.3.0",
+    "bluebird": "3.3.1",
     "classnames": "2.2.3",
     "co": "4.6.0",
     "config": "1.19.0",
@@ -93,7 +93,7 @@
     "watch:build:client:css": "npm run build:client:css -- -w",
     "predev": "npm run clean && mkdir public && mkdir build && npm run build:client:css",
     "dev:databases": "docker-compose up",
-    "dev:server": "npm run watch:build:server & env DEBUG='knex:*' nodemon -w build -w config -C build/server.js",
+    "dev:server": "npm run watch:build:server & env DEBUG='knex:*' NODE_ENV=development nodemon -w build -w config -C build/server.js",
     "dev:client": "npm run watch:build:client:js & npm run watch:build:client:css",
     "dev:live-reload": "browser-sync start --config bs-config.js",
     "dev": "npm run dev:databases & npm run dev:server & npm run dev:client & npm run dev:live-reload"

@@ -12,10 +12,12 @@ passport.serializeUser(function (user, done) {
 passport.deserializeUser(wrap(function *(id, done) {
   try {
     const [user] = yield db('users').select('id').where({ id }).limit(1);
+
     if (!user) {
-      throw new Error('user does not exist');
+      done(null, false);
+    } else {
+      done(null, user);
     }
-    done(null, user);
   } catch (err) {
     done(err);
   }

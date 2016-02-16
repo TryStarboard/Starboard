@@ -2,11 +2,18 @@ import co, { wrap } from 'co';
 import { curry, pick, map, uniq, compact, omit } from 'lodash';
 import parseLinkHeader from 'parse-link-header';
 import { Observable, Subject } from 'rx';
-import { props } from 'bluebird';
+import { props, fromCallback } from 'bluebird';
 import github from '../github';
 import db from '../db';
 import { getAll as getAllTags } from './Tags';
 import { getReposWithIds } from './Repos';
+
+const GET_STARRED_OPTS = {
+  headers: {
+    // Get "starred_at" property
+    Accept: 'application/vnd.github.v3.star+json'
+  }
+};
 
 const transformRepo = curry(function (id, {starred_at, repo}) {
   const transformed = pick(repo, [
@@ -26,6 +33,12 @@ const transformRepo = curry(function (id, {starred_at, repo}) {
   return transformed;
 });
 
+function getStarred(client, query) {
+  return fromCallback(function (done) {
+    client.getOptions('/user/starred', GET_STARRED_OPTS, query, done);
+  }, {multiArgs: true});
+}
+
 function createDataSource(id) {
 
   return Observable.create(function (observer) {
@@ -43,15 +56,8 @@ function createDataSource(id) {
 
       // Let's only support 2000 stars for now, 1 page shows 100 repos
       while (page <= 20 && !isStopped) {
-        const [, repos, headers] = yield client.getOptionsAsync('/user/starred', {
-          headers: {
-            // Get "starred_at" property
-            Accept: 'application/vnd.github.v3.star+json'
-          }
-        }, {
-          per_page: 100,
-          page,
-        });
+        const query = { per_page: 100, page };
+        const [, repos, headers] = yield getStarred(client, query);
 
         observer.onNext(repos.map(transformFunc));
 
