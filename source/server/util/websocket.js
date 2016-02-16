@@ -3,6 +3,7 @@ import socketio from 'socket.io';
 import Cookies from 'cookies';
 import co from 'co';
 import { client as redisClient } from './redis';
+import { logger } from './logging';
 import syncStarsForUser from './data/syncStarsForUser';
 import { SYNC_REPOS } from '../../universal/actionFactory';
 import {
@@ -45,7 +46,7 @@ function handleSyncRepos(socket) {
           // DELETE
           socket.emit(REMOVE_REPOS, data);
         }
-      });
+      }, (err) => logger.error(err));
   };
 }
 
