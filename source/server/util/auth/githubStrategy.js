@@ -1,15 +1,16 @@
 import config from 'config';
 import { wrap } from 'co';
 import GithubStrategy from 'passport-github';
+import { path } from 'ramda';
 import db from '../db';
 
 // profile data example
 //
-// { id: '2153667',
-//   displayName: 'Daiwei Lu',
-//   username: 'd6u',
-//   profileUrl: 'https://github.com/d6u',
-//   emails: [ { value: 'daiweilu123@gmail.com' } ],
+// { id: '123',
+//   displayName: 'User Name',
+//   username: 'user',
+//   profileUrl: 'https://github.com/user',
+//   emails: undefined || [ { value: 'user@email.com' } ],
 //   provider: 'github'
 //   ...
 
@@ -23,7 +24,7 @@ export const handle = wrap(function *(accessToken, refreshToken, profile, done) 
     if (!user) {
       const data = {
         github_id: profile.id,
-        email: profile.emails[0].value,
+        email: path(['emails', 0, 'value'], profile),
         username: profile.username,
         access_token: accessToken,
         refresh_token: refreshToken,
