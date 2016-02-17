@@ -12,3 +12,14 @@ createWebsocketServer(server);
 server.listen(10000, '0.0.0.0', () => {
   logger.info('Server listening on 0.0.0.0:10000');
 });
+
+['SIGTERM', 'SIGINT'].forEach(function (sig) {
+  process.once(sig, function () {
+    logger.info(`receive ${sig}`);
+    server.close(function () {
+      logger.info(`server closed on ${sig}`, {}, function () {
+        process.exit(0);
+      });
+    });
+  });
+});

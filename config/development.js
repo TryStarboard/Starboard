@@ -37,6 +37,7 @@ module.exports = {
       humanReadableUnhandledException: true,
       json: true,
       showLevel: true,
+      handleExceptions: true,
     }
   },
 };
