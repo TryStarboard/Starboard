@@ -1,5 +1,6 @@
 'use strict';
 
+const pkg = require('../package.json');
 const join = require('path').join;
 
 module.exports = {
@@ -27,7 +28,18 @@ module.exports = {
     clientSecret: process.env.GITHUB_CLIENT_SECRET,
     callbackURL: process.env.GITHUB_CALLBACK_URL,
   },
-  logEntries: {
-    token: process.env.LOG_ENTRIES_TOKEN,
+  logging: {
+    Logentries: {
+      token: process.env.LOG_ENTRIES_TOKEN,
+      json: true,
+      minLevel: 1,
+      timestamp: true,
+      withLevel: true,
+      withStack: true,
+    },
+    Sentry: {
+      dsn: process.env.SENTRY_DSN,
+      release: pkg.version,
+    },
   },
 };

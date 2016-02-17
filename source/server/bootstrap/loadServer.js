@@ -10,5 +10,5 @@ const server = http.createServer(koaApp.callback());
 createWebsocketServer(server);
 
 server.listen(10000, '0.0.0.0', () => {
-  logger.info('Server start listening on 0.0.0.0:10000');
+  logger.info('Server listening on 0.0.0.0:10000');
 });
