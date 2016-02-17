@@ -9,7 +9,7 @@ class Default extends Component {
         <DashboardContent />
         <AddTagModal />
       </div>
-    )
+    );
   }
 }
 
