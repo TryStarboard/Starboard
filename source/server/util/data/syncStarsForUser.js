@@ -55,7 +55,7 @@ function createDataSource(id) {
       let page = 1;
 
       // Let's only support 2000 stars for now, 1 page shows 100 repos
-      while (page <= 2 && !isStopped) {
+      while (page <= 20 && !isStopped) {
         const query = { per_page: 100, page };
         const [, repos, headers] = yield getStarred(client, query);
 
