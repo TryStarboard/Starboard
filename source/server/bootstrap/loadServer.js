@@ -1,3 +1,5 @@
+/*eslint no-process-exit:0*/
+
 import http from 'http';
 import createKoaServer from './createKoaServer';
 import { logger } from '../util/logging';
