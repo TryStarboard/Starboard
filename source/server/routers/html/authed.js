@@ -28,4 +28,8 @@ authedRoute.get('/logout', ensureAuthed, function *() {
   this.redirect('/login');
 });
 
+authedRoute.get('/UserProfile', ensureAuthed, function *(next) {
+  yield next;
+}, renderReact);
+
 export { authedRoute as default };
