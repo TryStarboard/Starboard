@@ -37,16 +37,19 @@ function authenticate(socket, next) {
 function handleSyncRepos(socket) {
   return function () {
     syncStarsForUser(socket.handshake.user.id)
-      .subscribe(({ type, data }) => {
-        if (type === 'PROGRESS') {
-          const { repos, tags } = data;
-          socket.emit(UPDATE_TAGS, tags);
-          socket.emit(UPDATE_SOME_REPOS, repos);
-        } else {
-          // DELETE
-          socket.emit(REMOVE_REPOS, data);
-        }
-      }, (err) => logger.error(err));
+      .subscribe(
+        ({ type, data }) => {
+          if (type === 'PROGRESS') {
+            const { repos, tags } = data;
+            socket.emit(UPDATE_TAGS, tags);
+            socket.emit(UPDATE_SOME_REPOS, repos);
+          } else {
+            // type === 'DELETE'
+            socket.emit(REMOVE_REPOS, data);
+          }
+        },
+        (error) => logger.error('sync-stars-error', { error })
+      );
   };
 }
 
