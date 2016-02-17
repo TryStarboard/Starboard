@@ -1,15 +1,13 @@
-/*eslint no-process-env:0*/
-
 import config from 'config';
 import koa from 'koa';
 import render from 'koa-ejs';
 import koaStatic from 'koa-static';
 import bodyParser from 'koa-bodyparser';
-import session from './util/session';
-import { logger, devLogging } from './util/logging';
-import { authInit, authSession } from './util/auth';
-import htmlRoute from './routers/html';
-import apiRoute from './routers/api';
+import session from '../util/session';
+import { logger, devLogging } from '../util/logging';
+import { authInit, authSession } from '../util/auth';
+import htmlRoute from '../routers/html';
+import apiRoute from '../routers/api';
 
 export default function createKoaServer() {
   const app = koa();
@@ -18,7 +16,7 @@ export default function createKoaServer() {
 
   app.use(koaStatic(config.get('koa.publicDir')));
 
-  if (process.env.NODE_ENV === 'development') {
+  if (config.get('isDev')) {
     app.use(function *(next) {
       try {
         yield next;
@@ -48,7 +46,7 @@ export default function createKoaServer() {
   app.use(apiRoute);
   app.use(htmlRoute);
 
-  if (process.env.NODE_ENV !== 'production') {
+  if (!config.get('isDev')) {
     app.on('error', function (err, ctx) {
       logger.error(err);
     });
