@@ -13,7 +13,6 @@ WORKDIR /home/app/webapp
 RUN npm install
 
 ADD build /home/app/webapp/build
-ADD build/server.js /home/app/webapp/build/app.js
 ADD config /home/app/webapp/config
 ADD template /home/app/webapp/template
 ADD public /home/app/webapp/public

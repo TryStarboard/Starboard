@@ -17,10 +17,10 @@ unauthedRoute.get('/login', ensureUnauthed, renderReact);
 unauthedRoute.get('/github-login', ensureUnauthed, passport.authenticate('github'));
 unauthedRoute.get('/github-back',
   ensureUnauthed,
-  passport.authenticate('github', {failureRedirect: '/login'}),
-  function *() {
-    this.redirect('/dashboard');
-  }
+  passport.authenticate('github', {
+    successRedirect: '/dashboard',
+    failureRedirect: '/login',
+  })
 );
 
 export { unauthedRoute as default };
