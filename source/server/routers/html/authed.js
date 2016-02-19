@@ -28,7 +28,7 @@ authedRoute.get('/logout', ensureAuthed, function *() {
   this.redirect('/login');
 });
 
-authedRoute.get('/UserProfile', ensureAuthed, function *(next) {
+authedRoute.get('/userprofile', ensureAuthed, function *(next) {
   yield next;
 }, renderReact);
 

@@ -26,6 +26,8 @@ export const handle = wrap(function *(accessToken, refreshToken, profile, done) 
         github_id: profile.id,
         email: path(['emails', 0, 'value'], profile),
         username: profile.username,
+        displayname: profile.displayName,
+        avatar: path(['photos', 0, 'value'], profile),
         access_token: accessToken,
         refresh_token: refreshToken,
       };
