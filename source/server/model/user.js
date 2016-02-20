@@ -34,31 +34,36 @@ import github from '../util/github';
 //   created_at: '2012-08-14T22:42:49Z',
 //   updated_at: '2016-02-20T03:02:44Z' }
 
-const createUserFromAccessToken = wrap(function *(access_token) {
-
+const fetchUserProfile = wrap(function *(access_token) {
   const client = github.client(access_token);
-
   const [, profile] = yield client.getAsync('/user');
+  return profile;
+});
 
-  const [ user ] = yield db
-    .select('id').from('users').where({ github_id: parseInt(profile.id) }).limit(1);
+const upsert = wrap(function *(data, access_token) {
+  let [ user ] = yield db
+    .select('id')
+    .from('users')
+    .where({ github_id: parseInt(data.id) })
+    .limit(1);
 
   if (user) {
     return user.id;
   }
 
-  const data = {
-    github_id: profile.id,
-    email: path(['emails', 0, 'value'], profile),
-    username: profile.username,
+  user = {
+    github_id: data.id,
+    email: path(['emails', 0, 'value'], data),
+    username: data.username,
     access_token,
   };
 
-  const [ id ] = yield db('users').insert(data, 'id');
+  const [ id ] = yield db('users').insert(user, 'id');
 
   return id;
 });
 
 export {
-  createUserFromAccessToken,
+  fetchUserProfile,
+  upsert,
 };

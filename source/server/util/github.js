@@ -9,12 +9,12 @@ const CLIENT_ID = config.get('github.clientID');
 const CLIENT_SECRET = config.get('github.clientSecret');
 const CALLBACK_URL = config.get('github.callbackURL');
 
+promisifyAll(Object.getPrototypeOf(github.client()), {multiArgs: true});
+
 github.auth.config({
   id: CLIENT_ID,
   secret: CLIENT_SECRET,
 });
-
-promisifyAll(Object.getPrototypeOf(github.client()), {multiArgs: true});
 
 function createLoginUrl() {
   const queryStr = stringify({
