@@ -1,6 +1,8 @@
 import Router from 'koa-router';
-import { passport } from '../../util/auth';
+import { fromCallback } from 'bluebird';
+import { createLoginUrl, handleLoginCallback } from '../../util/github';
 import renderReact from '../util/renderReact';
+import { createUserFromAccessToken } from '../../model/user';
 
 const unauthedRoute = new Router();
 
@@ -14,13 +16,24 @@ function *ensureUnauthed(next) {
 
 unauthedRoute.get('/login', ensureUnauthed, renderReact);
 
-unauthedRoute.get('/github-login', ensureUnauthed, passport.authenticate('github'));
+unauthedRoute.get(
+  '/github-login',
+  ensureUnauthed,
+  function *(next) {
+    this.redirect(createLoginUrl());
+  }
+);
+
 unauthedRoute.get('/github-back',
   ensureUnauthed,
-  passport.authenticate('github', {
-    successRedirect: '/dashboard',
-    failureRedirect: '/login',
-  })
+  function *(next) {
+    const access_token = yield handleLoginCallback(this.query);
+    const userId = yield createUserFromAccessToken(access_token);
+    yield fromCallback((done) => {
+      this.req.login({id: userId}, done);
+    });
+    this.redirect('/dashboard');
+  }
 );
 
 export { unauthedRoute as default };
