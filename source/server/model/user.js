@@ -41,26 +41,24 @@ const fetchUserProfile = wrap(function *(access_token) {
 });
 
 const upsert = wrap(function *(data, access_token) {
-  let [ user ] = yield db
-    .select('id')
-    .from('users')
-    .where({ github_id: parseInt(data.id) })
-    .limit(1);
 
-  if (user) {
-    return user.id;
-  }
-
-  user = {
+  const user = {
     github_id: data.id,
     email: path(['emails', 0, 'value'], data),
     username: data.username,
     access_token,
   };
 
-  const [ id ] = yield db('users').insert(user, 'id');
+  const { rows: [ userRecord ] } = yield db.raw(`
+    ? ON CONFLICT (github_id)
+    DO UPDATE SET
+      (email, username, access_token) =
+      (EXCLUDED.email, EXCLUDED.username, EXCLUDED.access_token)
+    RETURNING id`,
+    [ db('users').insert(user) ]
+  );
 
-  return id;
+  return userRecord.id;
 });
 
 export {
