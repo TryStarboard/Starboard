@@ -1,5 +1,4 @@
 import { wrap } from 'co';
-import { path } from 'ramda';
 import db from '../util/db';
 import github from '../util/github';
 
