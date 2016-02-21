@@ -79,13 +79,14 @@
     "file-loader": "0.8.5",
     "node-sass": "3.4.2",
     "nodemon": "1.8.1",
+    "onchange": "2.0.0",
     "socket.io-client": "1.4.5",
     "webpack": "1.12.13"
   },
   "scripts": {
     "clean": "rm -rf public build",
     "lint": "eslint --rulesdir eslint-rules source config script *.js migrations",
-    "watch:lint": "nodemon --exec 'npm run lint --silent' -w source -w config -w script -w migrations",
+    "watch:lint": "npm run lint -s && onchange 'source/*.js' 'config/*.js' 'migrations/*.js' '*.js' -v -- npm run lint -s",
     "test": "",
     "check": "npm run lint && npm test",
     "build:server": "webpack --config webpack.config.server.js",
