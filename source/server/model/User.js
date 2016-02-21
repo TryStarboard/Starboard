@@ -39,6 +39,23 @@ const fetchUserProfile = wrap(function *(access_token) {
   return profile;
 });
 
+const findById = wrap(function *(id) {
+  const [ user ] = yield db
+    .select('id', 'email', 'displayname', 'avatar')
+    .from('users')
+    .where('id', id);
+  return user;
+});
+
+const deleteUser = wrap(function *(id) {
+  yield [
+    db('repo_tags').where({user_id: id}).del(),
+    db('tags').where({user_id: id}).del(),
+    db('repos').where({user_id: id}).del(),
+    db('users').where({id}).del(),
+  ];
+});
+
 const upsert = wrap(function *(data, access_token) {
 
   const user = {
@@ -65,4 +82,6 @@ const upsert = wrap(function *(data, access_token) {
 export {
   fetchUserProfile,
   upsert,
+  findById,
+  deleteUser,
 };
