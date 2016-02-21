@@ -5,29 +5,10 @@ import koaStatic from 'koa-static';
 import bodyParser from 'koa-bodyparser';
 import koaLogger from 'koa-logger';
 import session from '../util/session';
-import { logger } from '../util/logging';
+import log from '../util/log';
 import { authInit, authSession } from '../util/auth';
 import htmlRoute from '../routers/html';
 import apiRoute from '../routers/api';
-
-function collectLogMeta(ctx, responseTime, error) {
-  return {
-    responseTime,
-    error,
-    req: {
-      httpVersion: ctx.request.httpVersion,
-      headers: ctx.headers,
-      url: ctx.url,
-      method: ctx.method,
-      originalUrl: ctx.originalUrl,
-      query: ctx.query,
-    },
-    res: {
-      status: ctx.status,
-    },
-    short: `${ctx.method} ${ctx.originalUrl} ${ctx.status}`,
-  };
-}
 
 export default function createKoaServer() {
 
@@ -53,13 +34,22 @@ export default function createKoaServer() {
     const t1 = Date.now();
     try {
       yield next;
-      logger.info('request', collectLogMeta(this, Date.now() - t1));
+      log.info({
+        req: this.request,
+        res: this.response,
+        responseTime: Date.now() - t1,
+      }, 'request');
     } catch (err) {
       this.status = 500;
       if (config.get('isDev')) {
         this.body = err.stack;
       }
-      logger.error('request-error', collectLogMeta(this, Date.now() - t1, err));
+      log.error({
+        req: this.request,
+        res: this.response,
+        responseTime: Date.now() - t1,
+        err,
+      }, 'request-error');
     }
   });
 

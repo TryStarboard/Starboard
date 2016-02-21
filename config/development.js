@@ -29,15 +29,4 @@ module.exports = {
     clientSecret: process.env.GITHUB_CLIENT_SECRET,
     callbackURL: 'http://localhost:10010/github-back'
   },
-  logging: {
-    Console: {
-      colorize: true,
-      timestamp: true,
-      prettyPrint: true,
-      humanReadableUnhandledException: true,
-      json: true,
-      showLevel: true,
-      handleExceptions: true,
-    }
-  },
 };
