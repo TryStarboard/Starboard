@@ -7,6 +7,7 @@ import { DEFAULT_TAG_COLORS } from '../../const/DEFAULT_TAG_COLORS';
 const reposSelector = (state) => state.repos;
 const tagsSelector = (state) => state.tags;
 const uiSelector = (state) => state.ui;
+const userSelector = (state) => state.user;
 
 const tagsWithColorsSelector = createSelector(
   tagsSelector,
@@ -46,4 +47,5 @@ export {
   tagsMapSelector,
   reposWithTagDetailSelector,
   uiSelector,
+  userSelector,
 };

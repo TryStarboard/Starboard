@@ -7,7 +7,7 @@ export function getAll(id) {
     .from('tags')
     .where('user_id', id)
     .orderBy('id', 'desc');
-}
+};
 
 export const addTag = wrap(function *(user_id, text) {
   const [ tag ] = yield db('tags').insert({ user_id, text }, '*');

@@ -6,8 +6,6 @@ exports.up = (knex, Promise) => {
     table.bigInteger('github_id');
     table.string('email');
     table.string('username');
-    table.string('displayname');
-    table.string('avatar');
     table.string('access_token');
     table.string('refresh_token');
     table.timestamps();

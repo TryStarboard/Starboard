@@ -13,7 +13,8 @@ import {
   endDragTag,
   deleteTag,
   removeRepoTag,
-  selectTag
+  selectTag,
+  deleteAccount,
 } from '../universal/actions';
 import { createSyncRepos } from '../universal/actionFactory';
 
@@ -32,6 +33,7 @@ export default class App extends Component {
     deleteTag: PropTypes.func.isRequired,
     removeRepoTag: PropTypes.func.isRequired,
     selectTag: PropTypes.func.isRequired,
+    deleteAccount: PropTypes.func.isRequired,
   };
 
   getChildContext() {
@@ -49,6 +51,7 @@ export default class App extends Component {
         deleteTag,
         removeRepoTag,
         selectTag,
+        deleteAccount,
       },
       this.props.store.dispatch);
   }

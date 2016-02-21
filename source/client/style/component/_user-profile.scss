@@ -1,0 +1,32 @@
+.userprofile {
+  margin-left: 64px;
+  position: relative;
+}
+
+.userprofile__avatar {
+  margin: 20px;
+  position: relative;
+}
+
+.userprofile__displayname {
+  margin-left: 20px;
+  position: relative;
+}
+
+.userprofile__email {
+  margin-left: 20px;
+  position: relative;
+}
+
+.userprofile__delete-button {
+  margin-left: 20px;
+  position: relative;
+  border: none;
+  color: #ffffff;
+  background-color: #ee3232;
+  display: block;
+  &:hover {
+    background-color: #ff1111;
+    color: #ffffff
+  }
+}
