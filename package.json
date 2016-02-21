@@ -1,6 +1,6 @@
 {
   "name": "github-starboard",
-  "version": "10.0.0",
+  "version": "11.0.0",
   "description": "",
   "author": "Daiwei Lu <daiweilu123@gmail.com> (http://daiwei.lu)",
   "license": "MIT",
@@ -12,12 +12,14 @@
   "dependencies": {
     "axios": "0.9.1",
     "bluebird": "3.3.1",
+    "bunyan": "1.6.0",
     "classnames": "2.2.3",
     "co": "4.6.0",
     "config": "1.19.0",
     "cookies": "0.5.1",
     "dotenv": "2.0.0",
     "ejs": "2.4.1",
+    "event-stream": "3.3.2",
     "history": "2.0.0",
     "ioredis": "1.15.0",
     "knex": "0.10.0",
@@ -49,14 +51,14 @@
     "redux-logger": "2.5.2",
     "redux-promise-middleware": "2.3.3",
     "redux-thunk": "1.0.3",
+    "request-promise": "2.0.1",
     "reselect": "2.0.3",
     "rx": "4.0.7",
     "socket.io": "1.4.5",
     "source-map-support": "0.4.0",
     "svg-react-loader": "0.3.2",
     "updeep": "0.13.0",
-    "validate.js": "0.9.0",
-    "winston": "2.1.1"
+    "validate.js": "0.9.0"
   },
   "devDependencies": {
     "babel-cli": "6.5.1",
