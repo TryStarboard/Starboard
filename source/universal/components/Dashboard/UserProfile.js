@@ -4,9 +4,11 @@ import { createSelector } from 'reselect';
 import { userSelector } from './mapStateToProps';
 
 class UserProfile extends Component {
+
   static contextTypes = {
     deleteAccount: PropTypes.func.isRequired,
   }
+
   render() {
     const {
       avatar,
@@ -23,12 +25,13 @@ class UserProfile extends Component {
       </div>
     );
   }
+
 }
 
 export default connect(
   createSelector(
     userSelector,
-    (user) => ({user})
+    (user) => ({ user })
   ),
   null,
   null,
