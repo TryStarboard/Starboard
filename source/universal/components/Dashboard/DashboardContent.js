@@ -9,7 +9,7 @@ import RepoTagDragLayer from './RepoTagDragLayer';
 class DashboardContent extends Component {
   render() {
     return (
-      <div className='dashboard'>
+      <div>
         <FilterBar/>
         <TagsSideBar/>
         <ReposList/>

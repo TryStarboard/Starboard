@@ -84,8 +84,8 @@
   },
   "scripts": {
     "clean": "rm -rf public build",
-    "lint": "eslint --rulesdir eslint-rules source config script *.js",
-    "watch:lint": "nodemon --exec 'npm run lint --silent' -w source -w config -w script",
+    "lint": "eslint --rulesdir eslint-rules source config script *.js migrations",
+    "watch:lint": "nodemon --exec 'npm run lint --silent' -w source -w config -w script -w migrations",
     "test": "",
     "check": "npm run lint && npm test",
     "build:server": "webpack --config webpack.config.server.js",

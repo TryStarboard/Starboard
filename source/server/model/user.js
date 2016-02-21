@@ -1,5 +1,4 @@
 import { wrap } from 'co';
-import { path } from 'ramda';
 import db from '../util/db';
 import github from '../util/github';
 
@@ -44,16 +43,18 @@ const upsert = wrap(function *(data, access_token) {
 
   const user = {
     github_id: data.id,
-    email: path(['emails', 0, 'value'], data),
+    email: data.email,
     username: data.username,
+    displayname: data.name,
+    avatar: data.avatar_url,
     access_token,
   };
 
   const { rows: [ userRecord ] } = yield db.raw(`
     ? ON CONFLICT (github_id)
     DO UPDATE SET
-      (email, username, access_token) =
-      (EXCLUDED.email, EXCLUDED.username, EXCLUDED.access_token)
+      (email, username, access_token, displayname, avatar) =
+      (EXCLUDED.email, EXCLUDED.username, EXCLUDED.access_token, EXCLUDED.displayname, EXCLUDED.avatar)
     RETURNING id`,
     [ db('users').insert(user) ]
   );

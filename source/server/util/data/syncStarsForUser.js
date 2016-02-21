@@ -139,7 +139,7 @@ export default function (id) {
         if (language == null) {
           return null;
         }
-        return { repo_id, tag_id: languageTagMap[language] };
+        return { repo_id, tag_id: languageTagMap[language], user_id: id };
       }));
 
       return db
