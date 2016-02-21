@@ -31,15 +31,12 @@ module.exports = {
   logging: {
     Logentries: {
       token: process.env.LOG_ENTRIES_TOKEN,
-      json: true,
-      minLevel: 1,
-      timestamp: true,
-      withLevel: true,
-      withStack: true,
     },
     Sentry: {
       dsn: process.env.SENTRY_DSN,
-      release: pkg.version,
+      options: {
+        release: pkg.version,
+      }
     },
   },
 };

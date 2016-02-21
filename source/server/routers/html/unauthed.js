@@ -1,7 +1,7 @@
 import Router from 'koa-router';
 import { fromCallback } from 'bluebird';
 import { createLoginUrl, handleLoginCallback } from '../../util/github';
-import { logger } from '../../util/logging';
+import log from '../../util/log';
 import { fetchUserProfile, upsert as upsertUser } from '../../model/user';
 import renderReact from '../util/renderReact';
 
@@ -29,9 +29,7 @@ unauthedRoute.get('/github-back', ensureUnauthed, function *(next) {
     yield fromCallback((done) => this.req.login({ id }, done));
     this.redirect('/dashboard');
   } catch (err) {
-    logger.error('github auth callback error', {
-      error: err,
-    });
+    log.error(err, 'github auth callback error');
     this.redirect('/login');
   }
 });

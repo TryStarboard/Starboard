@@ -1,10 +1,10 @@
-import { logger } from '../util/logging';
+import log from '../util/log';
 
 process.on('unhandledRejection', (reason, promise) => {
   // reason might be an instance of Error
-  logger.error('unhandledRejection', {error: reason});
+  log.error(reason, 'unhandledRejection');
 });
 
 process.on('uncaughtException', (error) => {
-  logger.error('uncaughtException', { error });
+  log.error(error, 'uncaughtException');
 });

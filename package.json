@@ -12,12 +12,14 @@
   "dependencies": {
     "axios": "0.9.1",
     "bluebird": "3.3.1",
+    "bunyan": "1.6.0",
     "classnames": "2.2.3",
     "co": "4.6.0",
     "config": "1.19.0",
     "cookies": "0.5.1",
     "dotenv": "2.0.0",
     "ejs": "2.4.1",
+    "event-stream": "3.3.2",
     "history": "2.0.0",
     "ioredis": "1.15.0",
     "knex": "0.10.0",
@@ -56,8 +58,7 @@
     "source-map-support": "0.4.0",
     "svg-react-loader": "0.3.2",
     "updeep": "0.13.0",
-    "validate.js": "0.9.0",
-    "winston": "2.1.1"
+    "validate.js": "0.9.0"
   },
   "devDependencies": {
     "babel-cli": "6.5.1",
