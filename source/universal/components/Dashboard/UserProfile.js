@@ -4,20 +4,16 @@ import { createSelector } from 'reselect';
 import { userSelector } from './mapStateToProps';
 
 class UserProfile extends Component {
-  
   static contextTypes = {
     deleteAccount: PropTypes.func.isRequired,
   }
-  
   render() {
     const {
       avatar,
       email,
       displayname
     } = this.props.user;
-    
     const { deleteAccount } = this.context;
-    
     return (
       <div className="userprofile">
         <img className="userprofile__avatar" src={avatar}></img>
@@ -32,7 +28,7 @@ class UserProfile extends Component {
 export default connect(
   createSelector(
     userSelector,
-    (user) => ({user: user})
+    (user) => ({user})
   ),
   null,
   null,

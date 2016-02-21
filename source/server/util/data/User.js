@@ -6,7 +6,6 @@ export const getUserDetail = wrap(function *(id) {
     .select('id', 'email', 'displayname', 'avatar')
     .from('users')
     .where('id', id);
-    
   return user;
 });
 

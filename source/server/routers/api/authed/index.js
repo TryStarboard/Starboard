@@ -45,7 +45,6 @@ authedRoute.delete('/repo_tags', ensureAuthed, function *() {
 
 authedRoute.delete('/account', ensureAuthed, function *() {
   this.body = yield deleteAccount(this.req.user.id);
-  console.log(this.body);
 });
 
 export { authedRoute as default };

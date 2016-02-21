@@ -32,7 +32,7 @@ authedRoute.get('/logout', ensureAuthed, function *() {
 authedRoute.get('/userprofile', ensureAuthed, function *(next) {
   this.reactState = yield {
     user: getUserDetail(this.req.user.id)
-  }
+  };
   yield next;
 }, renderReact);
 
