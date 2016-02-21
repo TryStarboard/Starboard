@@ -6,6 +6,7 @@ import { collect } from '../utils/form';
 
 export const LOGOUT = 'LOGOUT';
 export const GET_ALL_REPOS = 'GET_ALL_REPOS';
+export const GET_ALL_TAGS = 'GET_ALL_TAGS';
 export const CLOSE_ADD_TAG_MODAL = 'CLOSE_ADD_TAG_MODAL';
 export const OPEN_ADD_TAG_MODAL = 'OPEN_ADD_TAG_MODAL';
 export const ADD_TAG = 'ADD_TAG';
@@ -34,6 +35,15 @@ export function getAllRepos() {
     type: GET_ALL_REPOS,
     payload: {
       promise: axios.get('/api/v1/repos'),
+    }
+  };
+}
+
+export function getAllTags() {
+  return {
+    type: GET_ALL_TAGS,
+    payload: {
+      promise: axios.get('/api/v1/tags'),
     }
   };
 }

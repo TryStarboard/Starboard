@@ -1,9 +1,11 @@
 import reject from 'lodash/reject';
 import { UPDATE_TAGS } from '../../actions/serverActions';
-import { ADD_TAG, DELETE_TAG } from '../../actions';
+import { ADD_TAG, DELETE_TAG, GET_ALL_TAGS } from '../../actions';
 
 export default function (state = [], { type, payload }) {
   switch (type) {
+  case `${GET_ALL_TAGS}_FULFILLED`:
+    return payload.data;
   case `${ADD_TAG}_FULFILLED`:
     return [payload.data].concat(state);
   case UPDATE_TAGS:

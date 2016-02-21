@@ -23,7 +23,9 @@ class Repo extends Component {
           <a className="repo__name-link" target="_blank" href={html_url}>{full_name}</a>
         </div>
         <ul className="repo__tags">
-          {tags.map((tag) => <RepoTag {...tag} removeRepoTag={removeRepoTag} repo_id={id} key={tag.id}/>)}
+          {tags.filter((tag) => tag).map((tag) =>
+            <RepoTag {...tag} removeRepoTag={removeRepoTag} repo_id={id} key={tag.id}/>
+          )}
         </ul>
         <div className="repo__desc">{description}</div>
       </div>
