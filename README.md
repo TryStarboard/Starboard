@@ -11,15 +11,19 @@ A github stared repo management app
     - Node.js
     - Koa (http server)
     - React (server rendering)
+    - WebSocket
 - Browser
     - React
     - React Router
     - Redux
+    - WebSocket
 - Support
     - Docker
     - Webpack
     - Babel
     - Eslint
+- Deployment
+    - Kubernetes
 
 ## Development Setup
 
@@ -73,12 +77,22 @@ You will have to go to https://github.com/settings/developers to create a develo
 
 ### Database Schema
 
-Run following commands to migrate database to latest schema
+First, you have to ensure databases are running. (Make sure you have seen the [Docker section](#docker).)
+
+_It might take some time to run for the first time, since Docker has to pull down all the images for the first time._
+
+```sh
+npm run dev:databases
+```
+
+Then, in another shell session, run following commands to migrate database to latest schema
 
 ```sh
 # In shell
 knex migrate:latest
 ```
+
+You can stop databases after migration finished.
 
 ### Start Hacking
 
@@ -88,5 +102,3 @@ If you successfully reached here without any problem. Congratulation you might h
 # In shell
 npm run dev
 ```
-
-_It might take a little longer to run for the first time, due to Docker has to pull down all the images for the first time._
