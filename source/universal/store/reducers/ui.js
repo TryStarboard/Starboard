@@ -5,7 +5,7 @@ import {
   ADD_TAG_INVALID_INPUT,
   BEGIN_DRAG_TAG,
   END_DRAG_TAG
-} from '../../actions/index';
+} from '../../actions/creators';
 
 const DEFAULT_UI = {
   isAddTagModalOpen: false,

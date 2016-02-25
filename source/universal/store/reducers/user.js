@@ -1,4 +1,4 @@
-import { LOGOUT, DELETE_ACCOUNT } from '../../actions';
+import { LOGOUT, DELETE_ACCOUNT } from '../../actions/creators';
 
 export default function (state = null, { type, payload }) {
   switch (type) {
