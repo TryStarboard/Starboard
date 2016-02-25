@@ -9,7 +9,7 @@ import {
   DELETE_TAG,
   REMOVE_REPO_TAG,
   GET_ALL_REPOS
-} from '../../actions';
+} from '../../actions/creators';
 
 function mergeReposArray(currentArr, incomingArr) {
   const currentArrCopy = currentArr.slice(0);

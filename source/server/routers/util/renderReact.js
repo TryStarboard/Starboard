@@ -4,8 +4,10 @@ import { Provider } from 'react-redux';
 import { match, RouterContext } from 'react-router';
 import { fromCallback } from 'bluebird';
 import { noop } from 'lodash/fp';
+import { fromPairs } from 'ramda';
 import routes from '../../../universal/routes';
 import createStore from '../../../universal/store/createStore';
+import { creators } from '../../../universal/actions';
 
 function matchPath(url) {
   return fromCallback(
@@ -14,29 +16,18 @@ function matchPath(url) {
   );
 }
 
+const actionCreatorContextMap = {
+  ...(fromPairs(Object.keys(creators).map((key) => [key, PropTypes.func.isRequired]))),
+  syncRepos: PropTypes.func.isRequired,
+};
+
 function createApp(renderProps, state) {
+
   class App extends Component {
-
-    static childContextTypes = {
-      logout: PropTypes.func.isRequired,
-      syncRepos: PropTypes.func.isRequired,
-      addTag: PropTypes.func.isRequired,
-      openAddTagModal: PropTypes.func.isRequired,
-      closeAddTagModal: PropTypes.func.isRequired,
-      applyTagToRepo: PropTypes.func.isRequired,
-    };
-
+    static childContextTypes = actionCreatorContextMap;
     getChildContext() {
-      return {
-        logout: noop,
-        syncRepos: noop,
-        addTag: noop,
-        openAddTagModal: noop,
-        closeAddTagModal: noop,
-        applyTagToRepo: noop,
-      };
+      return fromPairs(Object.keys(actionCreatorContextMap).map((key) => [key, noop]));
     }
-
     render() {
       return (
         <Provider store={createStore(state)}>

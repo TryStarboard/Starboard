@@ -1,60 +1,23 @@
 import React, { Component, PropTypes } from 'react';
 import { Provider } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import { fromPairs } from 'ramda';
 import routes from '../universal/routes';
-import {
-  logout,
-  getAllTags,
-  getAllRepos,
-  openAddTagModal,
-  closeAddTagModal,
-  addTag,
-  applyTagToRepo,
-  beginDragTag,
-  endDragTag,
-  deleteTag,
-  removeRepoTag,
-  selectTag,
-  deleteAccount,
-} from '../universal/actions';
+import { creators } from '../universal/actions';
 import { createSyncRepos } from '../universal/actionFactory';
 
 export default class App extends Component {
 
   static childContextTypes = {
-    logout: PropTypes.func.isRequired,
-    getAllRepos: PropTypes.func.isRequired,
-    getAllTags: PropTypes.func.isRequired,
+    ...(fromPairs(Object.keys(creators).map((key) => [key, PropTypes.func.isRequired]))),
     syncRepos: PropTypes.func.isRequired,
-    openAddTagModal: PropTypes.func.isRequired,
-    closeAddTagModal: PropTypes.func.isRequired,
-    addTag: PropTypes.func.isRequired,
-    applyTagToRepo: PropTypes.func.isRequired,
-    beginDragTag: PropTypes.func.isRequired,
-    endDragTag: PropTypes.func.isRequired,
-    deleteTag: PropTypes.func.isRequired,
-    removeRepoTag: PropTypes.func.isRequired,
-    selectTag: PropTypes.func.isRequired,
-    deleteAccount: PropTypes.func.isRequired,
   };
 
   getChildContext() {
     return bindActionCreators(
       {
-        logout,
-        getAllTags,
-        getAllRepos,
-        syncRepos: createSyncRepos(this.props.socket, this.props.store),
-        openAddTagModal,
-        closeAddTagModal,
-        addTag,
-        applyTagToRepo,
-        beginDragTag,
-        endDragTag,
-        deleteTag,
-        removeRepoTag,
-        selectTag,
-        deleteAccount,
+        ...creators,
+        syncRepos: createSyncRepos(this.props.socket, this.props.store)
       },
       this.props.store.dispatch);
   }
