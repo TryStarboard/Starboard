@@ -9,6 +9,17 @@ import routilityRouterFactory from './routilityRouterFactory';
 
 export default routilityRouterFactory(routesDefinition, function *(next, routes) {
 
+  if (path(['root', 'login'], routes) && this.req.isAuthenticated()) {
+    this.redirect('/dashboard');
+    return;
+  } else if (
+    (path(['root', 'dashboard'], routes) || path(['root', 'user_profile'], routes))
+      && !this.req.isAuthenticated())
+  {
+    this.redirect('/login');
+    return;
+  }
+
   const state = yield {
     routes,
     user: (path(['root', 'dashboard'], routes) || path(['root', 'user_profile'], routes))
