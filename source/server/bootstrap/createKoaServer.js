@@ -8,6 +8,7 @@ import session from '../util/session';
 import log from '../util/log';
 import { authInit, authSession } from '../util/auth';
 import htmlRoute from '../routers/html';
+import unauthedRoute from '../routers/html/unauthed';
 import apiRoute from '../routers/api';
 
 export default function createKoaServer() {
@@ -59,6 +60,7 @@ export default function createKoaServer() {
   app.use(authSession);
   app.use(apiRoute);
   app.use(htmlRoute);
+  app.use(unauthedRoute.routes());
 
   return app;
 }

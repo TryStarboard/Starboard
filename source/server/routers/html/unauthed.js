@@ -3,7 +3,6 @@ import { fromCallback } from 'bluebird';
 import { createLoginUrl, handleLoginCallback } from '../../util/github';
 import log from '../../util/log';
 import { fetchUserProfile, upsert as upsertUser } from '../../model/User';
-import renderReact from '../util/renderReact';
 
 const unauthedRoute = new Router();
 
@@ -14,8 +13,6 @@ function *ensureUnauthed(next) {
     yield next;
   }
 }
-
-unauthedRoute.get('/login', ensureUnauthed, renderReact);
 
 unauthedRoute.get('/github-login', ensureUnauthed, function *(next) {
   this.redirect(createLoginUrl());

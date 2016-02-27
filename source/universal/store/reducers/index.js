@@ -4,6 +4,7 @@ import repos from './repos';
 import user from './user';
 import ui from './ui';
 import filters from './filters';
+import routes from './routes';
 
 export default combineReducers({
   ui,
@@ -11,4 +12,5 @@ export default combineReducers({
   repos,
   tags,
   filters,
+  routes,
 });
