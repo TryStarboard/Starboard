@@ -8,7 +8,7 @@ import RefreshIcon from '../../../client/img/refresh-icon.svg';
 const Sidebar = (props, {logout, syncRepos}) => (
   <nav className='nav'>
     <div className="nav__top">
-      <Link to="/userprofile" className='nav__btn'><UserIcon/></Link>
+      <Link to="/user-profile" className='nav__btn'><UserIcon/></Link>
       <Link to="/dashboard" className='nav__btn'><DashboardIcon/></Link>
       <button className='nav__btn' onClick={syncRepos}><RefreshIcon/></button>
     </div>
