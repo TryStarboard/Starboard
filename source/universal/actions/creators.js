@@ -1,10 +1,8 @@
 import axios from 'axios';
-import { browserHistory } from 'react-router';
 import validate from 'validate.js';
 import tap from 'lodash/fp/tap';
 import { collect } from '../utils/form';
 
-export const LOGOUT = 'LOGOUT';
 export const GET_ALL_REPOS = 'GET_ALL_REPOS';
 export const GET_ALL_TAGS = 'GET_ALL_TAGS';
 export const CLOSE_ADD_TAG_MODAL = 'CLOSE_ADD_TAG_MODAL';
@@ -17,18 +15,6 @@ export const END_DRAG_TAG = 'END_DRAG_TAG';
 export const DELETE_TAG = 'DELETE_TAG';
 export const REMOVE_REPO_TAG = 'REMOVE_REPO_TAG';
 export const SELECT_TAG = 'SELECT_TAG';
-export const DELETE_ACCOUNT = 'DELETE_ACCOUNT';
-
-export function logout() {
-  return {
-    type: LOGOUT,
-    payload: {
-      promise: axios.get('/api/v1/logout').then(() => {
-        browserHistory.push('/login');
-      }),
-    }
-  };
-}
 
 export function getAllRepos() {
   return {
@@ -134,16 +120,5 @@ export function selectTag(tag) {
   return {
     type: SELECT_TAG,
     payload: tag,
-  };
-}
-
-export function deleteAccount() {
-  return {
-    type: DELETE_ACCOUNT,
-    payload: {
-      promise: axios.delete('/api/v1/account').then(() => {
-        browserHistory.push('/login');
-      }),
-    }
   };
 }

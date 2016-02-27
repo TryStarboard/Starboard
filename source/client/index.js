@@ -8,11 +8,13 @@ import { routes } from '../universal/routes';
 
 const store = createStore(window.__data__);
 
-start(
+const navTo = start(
   routes,
   (state) => store.dispatch({ type: 'NEW_ROUTE', payload: state }),
   { browserHistory: true });
 
 connectSocket(store);
 
-render(<App store={store} socket={getClient()}/>, document.getElementById('app'));
+render(
+  <App store={store} socket={getClient()} navTo={navTo}/>,
+  document.getElementById('app'));
