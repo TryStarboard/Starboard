@@ -47,6 +47,7 @@
     "react-modal": "0.6.1",
     "react-redux": "4.4.0",
     "react-router": "2.0.0",
+    "react-switch-path": "^0.0.2",
     "redux": "3.3.1",
     "redux-logger": "2.5.2",
     "redux-promise-middleware": "2.3.3",
@@ -89,7 +90,7 @@
   "scripts": {
     "clean": "rm -rf public build",
     "lint": "eslint --rulesdir eslint-rules source config script *.js migrations",
-    "watch:lint": "npm run lint -s && onchange 'source/*.js' 'config/*.js' 'migrations/*.js' '*.js' -v -- npm run lint -s",
+    "watch:lint": "npm run lint -s && onchange 'source/**/*.js' 'config/*.js' 'migrations/*.js' '*.js' -v -- npm run lint -s",
     "test": "",
     "check": "npm run lint && npm test",
     "build:server": "webpack --config webpack.config.server.js",
