@@ -7,17 +7,6 @@ import Dashboard from './components/Dashboard';
 import { default as DefaultComp } from './components/Dashboard/Default';
 import UserProfile from './components/Dashboard/UserProfile';
 
-// export default (
-//   <Router history={browserHistory}>
-//     <Redirect from='/' to='/login'/>
-//     <Route path='/login' component={Login}/>
-//     <Route path='/dashboard' component={Dashboard}>
-//       <IndexRoute component={Default} />
-//       <Route path="/userprofile" component={UserProfile} />
-//     </Route>
-//   </Router>
-// );
-
 export const routes = (
   r('/', 'root', [
     redirect('/', '/login'),
