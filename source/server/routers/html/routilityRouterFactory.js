@@ -23,5 +23,5 @@ export default function routilityRouterFactory(routes, stateHandler) {
     }
 
     yield* stateHandler.call(this, next, state);
-  }
+  };
 }
