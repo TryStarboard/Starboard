@@ -1,15 +1,9 @@
 'use strict';
 
 const join = require('path').join;
-const base = require('./webpack.config.base');
 
-base.module.loaders[0].query.plugins =
-  base.module.loaders[0].query.plugins.concat(['transform-runtime']);
-
-base.module.loaders[0].query.presets.push('es2015');
-
-module.exports = Object.assign(base, {
-  entry: './source/client/index.js',
+module.exports = {
+  entry: './source/client/index.tsx',
 
   output: {
     filename: 'bundle.js',
@@ -17,4 +11,35 @@ module.exports = Object.assign(base, {
   },
 
   devtool: 'source-map',
-});
+
+  module: {
+    loaders: [
+      {
+        test: /\.(tsx|ts)$/,
+        exclude: /node_modules/,
+        loader: 'ts'
+      },
+      // {
+      //   test: /\.js$/,
+      //   exclude: /node_modules/,
+      //   loader: 'babel',
+      //   query: {
+      //     presets: ['react'],
+      //     plugins: [
+      //       'transform-function-bind',
+      //       'transform-class-properties',
+      //       'transform-object-rest-spread',
+      //     ],
+      //   }
+      // },
+      // {
+      //   test: /\.(jpg|png)$/,
+      //   loader: 'file',
+      // },
+      // {
+      //   test: /\.svg$/,
+      //   loader: 'babel?presets[]=react&presets[]=es2015!svg-react',
+      // },
+    ]
+  }
+};

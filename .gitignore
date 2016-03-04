@@ -6,3 +6,5 @@ local*
 *.log
 /secret
 /deployment
+/typings/main*
+/typings/browser*
