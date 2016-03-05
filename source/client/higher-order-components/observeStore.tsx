@@ -29,10 +29,9 @@ export default function<P> (
         if (transform) {
           observableMap = transform(observableMap);
         }
-        for (const key of Object.keys(observableMap)) {
-          const observable = observableMap[key];
-          observable.subscribe((val) => this.setState({ [key]: val }));
-        }
+        Object.keys(observableMap).forEach((key) => {
+          observableMap[key].subscribe((val) => this.setState({ [key]: val }));
+        });
         store.subscribe(() => {
           oop.update(store.getState());
         });
