@@ -10,12 +10,8 @@ module.exports = {
         exclude: /node_modules/,
         loader: 'babel',
         query: {
-          presets: ['react'],
-          plugins: [
-            'transform-function-bind',
-            'transform-class-properties',
-            'transform-object-rest-spread',
-          ],
+          presets: [],
+          plugins: [],
         }
       },
       {

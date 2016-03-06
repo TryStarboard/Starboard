@@ -12,26 +12,22 @@ module.exports = {
 
   devtool: 'source-map',
 
+  resolve: {
+    extensions: ['', '.js', '.ts', '.tsx']
+  },
+
   module: {
     loaders: [
       {
-        test: /\.(tsx|ts)$/,
+        test: /\.tsx?$/,
         exclude: /node_modules/,
-        loader: 'ts'
+        loader: 'babel?presets[]=es2015&presets[]=react!ts'
       },
-      // {
-      //   test: /\.js$/,
-      //   exclude: /node_modules/,
-      //   loader: 'babel',
-      //   query: {
-      //     presets: ['react'],
-      //     plugins: [
-      //       'transform-function-bind',
-      //       'transform-class-properties',
-      //       'transform-object-rest-spread',
-      //     ],
-      //   }
-      // },
+      {
+        test: /\.js$/,
+        exclude: /node_modules/,
+        loader: 'babel?presets[]=es2015&presets[]=react'
+      },
       // {
       //   test: /\.(jpg|png)$/,
       //   loader: 'file',
