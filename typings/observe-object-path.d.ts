@@ -7,7 +7,7 @@ declare module 'observe-object-path' {
       private observers;
       constructor(obj?: Object);
       update(newObj: Object): void;
-      observe(keypath: Keypath): Rx.Observable<any>;
+      observe<T>(keypath: Keypath): Rx.Observable<T>;
   }
 
   export type Keypath = (string | number)[];

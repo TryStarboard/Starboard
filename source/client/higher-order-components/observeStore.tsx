@@ -1,11 +1,21 @@
 import { ObserveObjectPath, Keypath } from 'observe-object-path';
-import { Observable } from 'rx';
+import { Observable, CompositeDisposable } from 'rx';
 import * as React from 'react';
 import { Component, ComponentClass } from 'react';
-import store from '../store.ts';
+import store from '../store';
 
 type KeypathMap = { [key: string]: Keypath };
 type ObservableMap = { [key: string]: Observable<any> };
+
+const oop = new ObserveObjectPath(store.getState());
+
+store.subscribe(() => {
+  oop.update(store.getState());
+});
+
+function entries(obj: { [key: string]: Keypath }) {
+   return Object.keys(obj).map((key) => [key, obj[key]]) as [string, Keypath][];
+}
 
 export default function<P> (
   getKeypath: (props: P) => KeypathMap,
@@ -13,32 +23,49 @@ export default function<P> (
 {
   return function (Comp: ComponentClass<any>): ComponentClass<P> {
     class StoreObserver extends Component<P, { [key: string]: any }> {
-      constructor() {
-        super();
+
+      private observableMap: ObservableMap;
+      private disposableBag: CompositeDisposable;
+
+      constructor(props) {
+        super(props);
         this.state = {};
+        this.observableMap = {};
+      }
+
+      private disposeStoreKeypathSubscription() {
+        if (this.disposableBag) {
+          this.disposableBag.dispose();
+          this.disposableBag = null;
+        }
+      }
+
+      private subscribeToStoreKeypath(props) {
+        this.disposeStoreKeypathSubscription();
+        const keypathMap = getKeypath(props);
+        for (const [key, keypath] of entries(keypathMap)) {
+          this.observableMap[key] = oop.observe(keypath);
+        }
+        if (transform) {
+          this.observableMap = transform(this.observableMap);
+        }
+        this.disposableBag = new CompositeDisposable();
+        Object.keys(this.observableMap).forEach((key) => {
+          const disposable = this.observableMap[key].subscribe((val) => this.setState({ [key]: val }));
+          this.disposableBag.add(disposable);
+        });
       }
 
       componentWillMount() {
-        const keypathMap = getKeypath(this.props);
-        const oop = new ObserveObjectPath(store.getState());
-        let observableMap: ObservableMap = {};
-        for (const key of Object.keys(keypathMap)) {
-          const keypath = keypathMap[key];
-          observableMap[key] = oop.observe(keypath);
-        }
-        if (transform) {
-          observableMap = transform(observableMap);
-        }
-        Object.keys(observableMap).forEach((key) => {
-          observableMap[key].subscribe((val) => this.setState({ [key]: val }));
-        });
-        store.subscribe(() => {
-          oop.update(store.getState());
-        });
+        this.subscribeToStoreKeypath(this.props);
+      }
+
+      componentWillReceiveProps(nextProps) {
+        this.subscribeToStoreKeypath(nextProps);
       }
 
       componentWillUnmount() {
-
+        this.disposeStoreKeypathSubscription();
       }
 
       render() {
