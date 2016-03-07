@@ -44,8 +44,6 @@
     "react-dnd-html5-backend": "2.1.2",
     "react-dom": "0.14.7",
     "react-modal": "0.6.1",
-    "react-redux": "4.4.0",
-    "react-switch-path": "^0.0.2",
     "redux": "3.3.1",
     "redux-logger": "2.5.2",
     "redux-promise-middleware": "2.3.3",
@@ -78,9 +76,10 @@
     "nodemon": "1.8.1",
     "observe-object-path": "^0.1.0",
     "onchange": "2.0.0",
+    "react-switch-path": "0.0.2",
     "socket.io-client": "1.4.5",
     "ts-loader": "^0.8.1",
-    "typescript": "^1.8.7",
+    "typescript": "~1.8.0",
     "typings": "^0.6.9",
     "webpack": "1.12.13"
   },
@@ -102,6 +101,7 @@
     "dev:server": "npm run watch:build:server & env NODE_ENV=development BLUEBIRD_WARNINGS=0 DEBUG='socket.io:*' nodemon -w build -w config -C build/server.js",
     "dev:client": "npm run watch:build:client:js & npm run watch:build:client:css",
     "dev:live-reload": "browser-sync start --config bs-config.js",
-    "dev": "npm run dev:databases & npm run dev:server & npm run dev:client & npm run dev:live-reload"
+    "dev": "npm run dev:databases & npm run dev:server & npm run dev:client & npm run dev:live-reload",
+    "dev-no-client": "npm run dev:databases & npm run dev:server & npm run dev:live-reload"
   }
 }
