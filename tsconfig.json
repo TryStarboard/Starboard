@@ -2,8 +2,8 @@
   "compilerOptions": {
     "removeComments": true,
     "sourceMap": true,
-    "module": "es2015",
-    "target": "es2015",
+    "module": "es6",
+    "target": "es6",
     "jsx": "preserve"
   },
   "exclude": [

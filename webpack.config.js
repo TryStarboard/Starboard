@@ -13,7 +13,11 @@ module.exports = {
   devtool: 'source-map',
 
   resolve: {
-    extensions: ['', '.js', '.ts', '.tsx']
+    extensions: ['', '.js', '.ts', '.tsx'],
+    alias: {
+      img: join(__dirname, './source/client/img'),
+      svg: join(__dirname, './source/client/svg'),
+    }
   },
 
   module: {
@@ -28,14 +32,14 @@ module.exports = {
         exclude: /node_modules/,
         loader: 'babel?presets[]=es2015&presets[]=react'
       },
-      // {
-      //   test: /\.(jpg|png)$/,
-      //   loader: 'file',
-      // },
-      // {
-      //   test: /\.svg$/,
-      //   loader: 'babel?presets[]=react&presets[]=es2015!svg-react',
-      // },
+      {
+        test: /\.(jpg|png)$/,
+        loader: 'file',
+      },
+      {
+        test: /\.svg$/,
+        loader: 'babel?presets[]=es2015&presets[]=react!svg-react',
+      },
     ]
   }
 };

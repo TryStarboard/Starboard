@@ -1,11 +1,11 @@
-import React from 'react';
+import * as React from 'react';
+import { StatelessComponent } from 'react';
 import { r, redirect } from 'routility';
 import { Switch, Case, Default } from 'react-switch-path';
-import { connect } from 'react-redux';
 import Login from './components/Login';
 import Dashboard from './components/Dashboard';
-import { default as DefaultComp } from './components/Dashboard/Default';
-import UserProfile from './components/Dashboard/UserProfile';
+// import { default as DefaultComp } from './components/Dashboard/Default';
+// import UserProfile from './components/Dashboard/UserProfile';
 
 export const routes = (
   r('/', 'root', [
@@ -16,16 +16,18 @@ export const routes = (
   ])
 );
 
-const Router = (props) => {
+interface RouterProps {
+  routes: any
+}
+
+export const Router: StatelessComponent<RouterProps> = (props) => {
+        // <Case path='dashboard' component={DefaultComp}/>
+        // <Case path='user_profile' component={UserProfile}/>
   return (
-    <Switch object={props.root}>
+    <Switch object={props.routes.root}>
       <Case path='login' component={Login}/>
       <Default component={Dashboard}>
-        <Case path='dashboard' component={DefaultComp}/>
-        <Case path='user_profile' component={UserProfile}/>
       </Default>
     </Switch>
   );
 };
-
-export const ConnectedRouter = connect((state) => state.routes)(Router);
