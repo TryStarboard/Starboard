@@ -1,13 +1,14 @@
 import * as React from 'react';
 import { Component } from 'react';
-import Sidebar from './Sidebar';
+import DashboardContent from './DashboardContent';
+// import AddTagModal from './AddTagModal';
 
-export default class Dashboard extends Component<any, void> {
+export default class Default extends Component<any, any> {
+        // <AddTagModal />
   render() {
     return (
-      <div>
-        <Sidebar />
-        {this.props.children}
+      <div className='dashboard'>
+        <DashboardContent />
       </div>
     );
   }

@@ -3,8 +3,8 @@ import { StatelessComponent } from 'react';
 import { r, redirect } from 'routility';
 import { Switch, Case, Default } from 'react-switch-path';
 import Login from './components/Login';
+import Inside from './components/Inside';
 import Dashboard from './components/Dashboard';
-// import { default as DefaultComp } from './components/Dashboard/Default';
 // import UserProfile from './components/Dashboard/UserProfile';
 
 export const routes = (
@@ -21,12 +21,12 @@ interface RouterProps {
 }
 
 export const Router: StatelessComponent<RouterProps> = (props) => {
-        // <Case path='dashboard' component={DefaultComp}/>
         // <Case path='user_profile' component={UserProfile}/>
   return (
     <Switch object={props.routes.root}>
       <Case path='login' component={Login}/>
-      <Default component={Dashboard}>
+      <Default component={Inside}>
+        <Case path='dashboard' component={Dashboard}/>
       </Default>
     </Switch>
   );
