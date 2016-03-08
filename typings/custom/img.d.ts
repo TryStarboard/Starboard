@@ -1,4 +1,4 @@
 declare module 'img/octocat.jpg' {
-    var r: string;
+    const r: string;
     export default r;
 }
