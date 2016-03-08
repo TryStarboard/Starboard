@@ -1,7 +1,7 @@
 import axios from 'axios';
 import validate from 'validate.js';
 import tap from 'lodash/fp/tap';
-import { collect } from '../utils/form';
+import { collect } from '../helpers/form';
 
 export const GET_ALL_REPOS = 'GET_ALL_REPOS';
 export const GET_ALL_TAGS = 'GET_ALL_TAGS';

@@ -1,11 +1,7 @@
 import { ObserveObjectPath, Keypath } from 'observe-object-path';
 import { Observable, CompositeDisposable } from 'rx';
-import * as React from 'react';
-import { Component, ComponentClass } from 'react';
-import store from '../store.ts';
-
-type KeypathMap = { [key: string]: Keypath };
-type ObservableMap = { [key: string]: Observable<any> };
+import React, { Component, ComponentClass } from 'react';
+import store from '../store';
 
 const oop = new ObserveObjectPath(store.getState());
 
@@ -13,34 +9,31 @@ store.subscribe(() => {
   oop.update(store.getState());
 });
 
-function entries(obj: { [key: string]: Keypath }) {
-   return Object.keys(obj).map((key) => [key, obj[key]]) as [string, Keypath][];
+function entries(obj) {
+   return Object.keys(obj).map((key) => [key, obj[key]]);
 }
 
-export default function<P> (
-  getKeypath: (props: P) => KeypathMap,
-  transform?: (observables: ObservableMap) => ObservableMap): (Comp: ComponentClass<any>) => ComponentClass<P>
-{
-  return function (Comp: ComponentClass<any>): ComponentClass<P> {
-    class StoreObserver extends Component<P, { [key: string]: any }> {
+export default function (getKeypath, transform) {
 
-      private observableMap: ObservableMap;
-      private disposableBag: CompositeDisposable;
+  return function (Comp) {
+
+    class StoreObserver extends Component {
 
       constructor(props) {
         super(props);
         this.state = {};
         this.observableMap = {};
+        this.disposableBag = null;
       }
 
-      private disposeStoreKeypathSubscription() {
+      disposeStoreKeypathSubscription() {
         if (this.disposableBag) {
           this.disposableBag.dispose();
           this.disposableBag = null;
         }
       }
 
-      private subscribeToStoreKeypath(props) {
+      subscribeToStoreKeypath(props) {
         this.disposeStoreKeypathSubscription();
         const keypathMap = getKeypath(props);
         for (const [key, keypath] of entries(keypathMap)) {

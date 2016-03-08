@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { Component } from 'react';
-import Sidebar from './Sidebar.tsx';
+import Sidebar from './Sidebar';
 
-export default class Dashboard extends Component<any, void> {
+export default class Dashboard extends Component {
   render() {
     return (
       <div>

@@ -1,11 +1,10 @@
 import * as React from 'react';
-import { StatelessComponent } from 'react';
 import { r, redirect } from 'routility';
 import { Switch, Case, Default } from 'react-switch-path';
-import Login from './components/Login.tsx';
-import Inside from './components/Inside.tsx';
-import Dashboard from './components/Dashboard.tsx';
-import UserProfile from './components/UserProfile.tsx';
+import Login from './components/Login';
+import Inside from './components/Inside';
+import Dashboard from './components/Dashboard';
+import UserProfile from './components/UserProfile';
 
 export const routes = (
   r('/', 'root', [
@@ -16,11 +15,7 @@ export const routes = (
   ])
 );
 
-interface RouterProps {
-  routes: any
-}
-
-export const Router: StatelessComponent<RouterProps> = (props) => {
+export const Router = (props) => {
   return (
     <Switch object={props.routes.root}>
       <Case path='login' component={Login}/>

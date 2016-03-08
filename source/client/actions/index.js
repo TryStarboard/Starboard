@@ -1,12 +1,6 @@
-import { Action } from 'redux';
+export const NEW_ROUTE = 'NEW_ROUTE';
 
-const NEW_ROUTE = 'NEW_ROUTE';
-
-interface NewRouteAction extends Action {
-  data: {}
-}
-
-export function newRoute(state: {}): NewRouteAction {
+export function newRoute(state) {
   return {
     type: NEW_ROUTE,
     data: state,

@@ -1,21 +1,24 @@
 import { createStore, combineReducers } from 'redux';
 import { start } from 'routility';
-import user from './reducers/user.ts';
-import routes from './reducers/routes.ts';
-import { routes as routesDefinition } from './routes.tsx';
-import { newRoute } from './actions/index.ts';
+import filters from './reducers/filters';
+import repos from './reducers/repos';
+import routes from './reducers/routes';
+import tags from './reducers/tags';
+import ui from './reducers/ui';
+import user from './reducers/user';
+import { routes as routesDefinition } from './routes';
+import { newRoute } from './actions/index';
 
-interface StoreShape {
-  user: {},
-  routes: {},
-}
-
-const store = createStore(combineReducers<StoreShape>({
-  user,
+const store = createStore(combineReducers({
+  filters,
+  repos,
   routes,
+  tags,
+  ui,
+  user,
 }));
 
-export const navTo: (path: string) => any = start(
+export const navTo = start(
   routesDefinition,
   (state) => store.dispatch(newRoute(state)),
   { browserHistory: true });

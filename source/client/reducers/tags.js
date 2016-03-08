@@ -1,6 +1,6 @@
 import reject from 'lodash/reject';
-import { UPDATE_TAGS } from '../../actions/serverActions';
-import { ADD_TAG, DELETE_TAG, GET_ALL_TAGS } from '../../actions/creators';
+import { UPDATE_TAGS } from '../actions/serverActions';
+import { ADD_TAG, DELETE_TAG, GET_ALL_TAGS } from '../actions/creators';
 
 export default function (state = [], { type, payload }) {
   switch (type) {

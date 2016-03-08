@@ -12,6 +12,13 @@ module.exports = {
 
   devtool: 'source-map',
 
+  resolve: {
+    alias: {
+      img: join(__dirname, 'source/client/img'),
+      svg: join(__dirname, 'source/client/svg'),
+    }
+  },
+
   module: {
     loaders: [
       {

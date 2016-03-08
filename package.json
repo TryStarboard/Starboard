@@ -90,7 +90,7 @@
     "test": "",
     "check": "npm run lint && npm test",
     "build:server": "webpack --config webpack.config.server.js",
-    "build:client:js": "webpack --config webpack.config.js",
+    "build:client:js": "webpack --config webpack.config.browser.js",
     "build:client:css": "node-sass --output-style expanded -o public source/client/style/index.scss",
     "build": "npm run build:server && npm run build:client:js && npm run build:client:css",
     "watch:build:server": "npm run build:server -- -w",

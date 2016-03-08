@@ -3,13 +3,13 @@ import orderBy from 'lodash/orderBy';
 import assign from 'lodash/fp/assign';
 import without from 'lodash/without';
 import differenceWith from 'lodash/differenceWith';
-import { UPDATE_SOME_REPOS, REMOVE_REPOS } from '../../actions/serverActions';
+import { UPDATE_SOME_REPOS, REMOVE_REPOS } from '../actions/serverActions';
 import {
   APPLY_TAG_TO_REPO,
   DELETE_TAG,
   REMOVE_REPO_TAG,
   GET_ALL_REPOS
-} from '../../actions/creators';
+} from '../actions/creators';
 
 function mergeReposArray(currentArr, incomingArr) {
   const currentArrCopy = currentArr.slice(0);
