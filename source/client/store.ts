@@ -1,9 +1,9 @@
 import { createStore, combineReducers } from 'redux';
 import { start } from 'routility';
-import user from './reducers/user';
-import routes from './reducers/routes';
-import { routes as routesDefinition } from './routes';
-import { newRoute } from './actions/index';
+import user from './reducers/user.ts';
+import routes from './reducers/routes.ts';
+import { routes as routesDefinition } from './routes.tsx';
+import { newRoute } from './actions/index.ts';
 
 interface StoreShape {
   user: {},

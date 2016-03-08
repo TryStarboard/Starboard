@@ -13,7 +13,6 @@ module.exports = {
   devtool: 'source-map',
 
   resolve: {
-    extensions: ['', '.js', '.ts', '.tsx'],
     alias: {
       img: join(__dirname, './source/client/img'),
       svg: join(__dirname, './source/client/svg'),

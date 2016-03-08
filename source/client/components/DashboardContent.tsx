@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Component } from 'react';
 // import { DragDropContext } from 'react-dnd';
 // import HTML5Backend from 'react-dnd-html5-backend';
-import TagsSideBar from './TagsSideBar';
+// import TagsSideBar from './TagsSideBar';
 // import ReposList from './ReposList';
 // import FilterBar from './FilterBar';
 // import RepoTagDragLayer from './RepoTagDragLayer';
@@ -11,10 +11,10 @@ class DashboardContent extends Component<any, any> {
         // <FilterBar />
         // <ReposList />
         // <RepoTagDragLayer />
+        // <TagsSideBar />
   render() {
     return (
       <div>
-        <TagsSideBar />
       </div>
     );
   }

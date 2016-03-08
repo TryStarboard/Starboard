@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { StatelessComponent } from 'react';
-import Link from './Link';
+import Link from './Link.tsx';
 import LogoutIcon from 'svg/logout-icon.svg';
 import UserIcon from 'svg/user-icon.svg';
 import DashboardIcon from 'svg/dashboard-icon.svg';

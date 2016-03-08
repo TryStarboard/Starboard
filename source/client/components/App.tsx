@@ -1,17 +1,12 @@
 import * as React from 'react';
 import { Component } from 'react';
-import observeStore from '../higher-order-components/observeStore';
-// import { Router } from '../routes';
+import observeStore from '../higher-order-components/observeStore.tsx';
+import { Router } from '../routes.tsx';
 
-// export default observeStore(() => ({ routes: ['routes'] }))
-// (class App extends Component<any, void> {
-//   render() {
-//     return <Router routes={this.props.routes} />;
-//   }
-// });
+const connect = observeStore(() => ({ routes: ['routes'] }));
 
-export default class App extends Component<any, void> {
+export default connect(class App extends Component<any, void> {
   render() {
-    return <div />;
+    return <Router routes={this.props.routes} />;
   }
-}
+});

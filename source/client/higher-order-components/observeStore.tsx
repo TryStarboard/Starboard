@@ -2,7 +2,7 @@ import { ObserveObjectPath, Keypath } from 'observe-object-path';
 import { Observable, CompositeDisposable } from 'rx';
 import * as React from 'react';
 import { Component, ComponentClass } from 'react';
-import store from '../store';
+import store from '../store.ts';
 
 type KeypathMap = { [key: string]: Keypath };
 type ObservableMap = { [key: string]: Observable<any> };
