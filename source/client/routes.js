@@ -17,11 +17,11 @@ export const routes = (
 
 export const Router = (props) => {
   return (
-    <Switch object={props.routes.root}>
-      <Case path='login' component={Login}/>
-      <Default component={Inside}>
-        <Case path='dashboard' component={Dashboard}/>
-        <Case path='user_profile' component={UserProfile}/>
+    <Switch object={ props.routes.root }>
+      <Case path='login' component={ Login }/>
+      <Default component={ Inside }>
+        <Case path='dashboard' component={ Dashboard }/>
+        <Case path='user_profile' component={ UserProfile }/>
       </Default>
     </Switch>
   );

@@ -7,7 +7,7 @@ export default class Dashboard extends Component {
     return (
       <div>
         <Sidebar />
-        {this.props.children}
+        { this.props.children }
       </div>
     );
   }
