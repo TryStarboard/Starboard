@@ -5,12 +5,12 @@ import co from 'co';
 import { client as redisClient } from './redis';
 import log from './log';
 import syncStarsForUser from './data/syncStarsForUser';
-import { SYNC_REPOS } from '../../universal/actionFactory';
+import { SYNC_REPOS } from '../../client/actions/factory';
 import {
   UPDATE_SOME_REPOS,
   REMOVE_REPOS,
   UPDATE_TAGS
-} from '../../universal/actions/serverActions';
+} from '../../client/actions/serverActions';
 
 const KEYS = config.get('cookie.keys');
 
