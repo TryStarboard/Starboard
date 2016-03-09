@@ -1,30 +1,31 @@
-import * as React from 'react';
-import { Component } from 'react';
-// import { createSelector } from 'reselect';
+import React, { Component } from 'react';
 import u from 'updeep';
 import { pipe, prop, contains, __, assoc } from 'ramda';
+import { getAllTags } from '../actions';
+import observeStore from '../higher-order-components/observeStore';
 import AddTag from './AddTag';
 import Tag from './Tag';
-import { tagsWithColorsSelector, uiSelector } from './mapStateToProps';
 
-export default class TagsSideBar extends Component<any, any> {
+const connect = observeStore(
+  () => ({ tags: ['tags'] })
+);
 
-  componentDidMount() {
-    // this.context.getAllTags();
+export default connect(
+  class TagsSideBar extends Component {
+    componentDidMount() {
+      getAllTags();
+    }
+
+    render() {
+      return (
+        <div className="dashboard__tags">
+          <AddTag />
+          { this.props.tags.map((tag) => <Tag { ...tag } key={ tag.id } />) }
+        </div>
+      );
+    }
   }
-
-  render() {
-    const { tags, ui } = this.props;
-
-    return (
-      <div className="dashboard__tags">
-        <AddTag onClick={'openAddTagModal'} ui={ui} deleteTag={'deleteTag'}/>
-        {tags.map((tag) => <Tag {...tag} {...{beginDragTag, endDragTag}} key={tag.id}/>)}
-      </div>
-    );
-  }
-
-}
+);
 
 // export default connect(
 //   createSelector(

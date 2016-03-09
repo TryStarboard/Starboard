@@ -3,20 +3,20 @@ import { DragSource } from 'react-dnd';
 
 class Tag extends Component {
 
-  static contextTypes = {
-    selectTag: PropTypes.func.isRequired,
-  };
+  // static contextTypes = {
+  //   selectTag: PropTypes.func.isRequired,
+  // };
 
-  static propTypes = {
-    text: PropTypes.string.isRequired,
-    isSelected: PropTypes.bool,
-    beginDragTag: PropTypes.func.isRequired,
-    endDragTag: PropTypes.func.isRequired,
+  // static propTypes = {
+  //   text: PropTypes.string.isRequired,
+  //   isSelected: PropTypes.bool,
+  //   beginDragTag: PropTypes.func.isRequired,
+  //   endDragTag: PropTypes.func.isRequired,
 
-    // Injected by React DnD
-    isDragging: PropTypes.bool.isRequired,
-    connectDragSource: PropTypes.func.isRequired,
-  };
+  //   // Injected by React DnD
+  //   isDragging: PropTypes.bool.isRequired,
+  //   connectDragSource: PropTypes.func.isRequired,
+  // };
 
   render() {
     const {
@@ -43,9 +43,9 @@ class Tag extends Component {
     return connectDragSource(
       <div
         className='tag'
-        style={style}
-        onClick={() => selectTag({id})}>
-        <div className="tag__text">{text}</div>
+        style={ style }
+        onClick={ () => selectTag({id}) }>
+        <div className="tag__text">{ text }</div>
       </div>
     );
   }
