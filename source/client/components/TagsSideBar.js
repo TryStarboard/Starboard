@@ -20,7 +20,7 @@ export default connect(
       return (
         <div className="dashboard__tags">
           <AddTag />
-          { this.props.tags.map((tag) => <Tag { ...tag } key={ tag.id } />) }
+          { this.props.tags.map((id) => <Tag id={ id } key={ id } />) }
         </div>
       );
     }

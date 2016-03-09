@@ -1,7 +1,12 @@
 import React, { Component, PropTypes } from 'react';
 import { DragSource } from 'react-dnd';
+import observeStore from '../higher-order-components/observeStore';
 
-class Tag extends Component {
+const connect = observeStore(
+  ({ id }) => ({ tag: ['tagsById', id] })
+);
+
+const ConnectedTag = connect(class Tag extends Component {
 
   // static contextTypes = {
   //   selectTag: PropTypes.func.isRequired,
@@ -20,18 +25,11 @@ class Tag extends Component {
 
   render() {
     const {
-      id,
-      text,
-      foreground_color,
-      background_color,
       isSelected,
       isDragging,
       connectDragSource,
+      tag: { id, text, foreground_color, background_color } = {}
     } = this.props;
-
-    const {
-      selectTag,
-    } = this.context;
 
     const style = {
       backgroundColor: background_color,
@@ -44,12 +42,12 @@ class Tag extends Component {
       <div
         className='tag'
         style={ style }
-        onClick={ () => selectTag({id}) }>
+        onClick={ () => null }>
         <div className="tag__text">{ text }</div>
       </div>
     );
   }
-}
+});
 
 export default DragSource(
   'TAG',
@@ -66,4 +64,4 @@ export default DragSource(
     connectDragSource: connect.dragSource(),
     isDragging: monitor.isDragging()
   })
-)(Tag);
+)(ConnectedTag);
