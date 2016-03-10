@@ -1,6 +1,6 @@
 import axios from 'axios';
 import validate from 'validate.js';
-import tap from 'lodash/fp/tap';
+import { tap } from 'ramda';
 import { collect } from '../helpers/form';
 
 export const GET_ALL_REPOS = 'GET_ALL_REPOS';

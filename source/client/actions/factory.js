@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { tap } from 'ramda';
 
 export const SYNC_REPOS = 'SYNC_REPOS';
 export const LOGOUT = 'LOGOUT';
@@ -18,7 +19,7 @@ export function createLogout(navTo) {
     return {
       type: LOGOUT,
       payload: {
-        promise: axios.get('/api/v1/logout').then(() => navTo('/login')),
+        promise: axios.get('/api/v1/logout').then(tap(() => navTo('/login'))),
       }
     };
   };
