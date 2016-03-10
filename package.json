@@ -78,9 +78,6 @@
     "onchange": "2.0.0",
     "react-switch-path": "0.0.2",
     "socket.io-client": "1.4.5",
-    "ts-loader": "^0.8.1",
-    "typescript": "~1.8.0",
-    "typings": "^0.7.3",
     "webpack": "1.12.13"
   },
   "scripts": {
