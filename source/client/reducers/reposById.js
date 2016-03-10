@@ -1,9 +1,10 @@
-import findIndex from 'lodash/findIndex';
-import orderBy from 'lodash/orderBy';
-import assign from 'lodash/fp/assign';
-import without from 'lodash/without';
-import differenceWith from 'lodash/differenceWith';
-import { indexBy, prop } from 'ramda';
+// import findIndex from 'lodash/findIndex';
+// import orderBy from 'lodash/orderBy';
+// import assign from 'lodash/fp/assign';
+// import without from 'lodash/without';
+// import differenceWith from 'lodash/differenceWith';
+import { indexBy, prop, append } from 'ramda';
+import u from 'updeep';
 import { UPDATE_SOME_REPOS, REMOVE_REPOS } from '../actions/serverActions';
 import {
   APPLY_TAG_TO_REPO,
@@ -28,13 +29,13 @@ import {
 //   return incomingArrCopy.concat(currentArrCopy);
 // }
 
-// function applyTagToRepo(state, payload) {
-//   const copy = state.slice(0);
-//   const repoIndex = findIndex(copy, ['id', payload.repo_id]);
-//   const repo = copy[repoIndex];
-//   copy.splice(repoIndex, 1, assign(repo, {tags: repo.tags.concat([payload.tag_id])}));
-//   return copy;
-// }
+function applyTagToRepo(state, payload) {
+  return u({
+    [payload.repo_id]: {
+      tags: append(payload.tag_id)
+    }
+  }, state);
+}
 
 // function removeTagFromRepo(state, payload) {
 //   const copy = state.slice(0);
@@ -52,8 +53,8 @@ export default function (state = {}, { type, payload }) {
   //   return orderBy(mergeReposArray(state, payload), ['starred_at'], ['desc']);
   // case REMOVE_REPOS:
   //   return differenceWith(state, payload, (repo, id) => repo.id === id);
-  // case `${APPLY_TAG_TO_REPO}_PENDING`:
-  //   return applyTagToRepo(state, payload);
+  case `${APPLY_TAG_TO_REPO}_PENDING`:
+    return applyTagToRepo(state, payload);
   // case `${DELETE_TAG}_PENDING`:
   //   return state.map((repo) => {
   //     return assign(repo, {tags: without(repo.tags, payload.id)});
