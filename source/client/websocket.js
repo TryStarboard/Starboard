@@ -3,36 +3,31 @@ import {
   UPDATE_SOME_REPOS,
   REMOVE_REPOS,
   UPDATE_TAGS,
+} from './actions-server/creators';
+import {
   updateSomeRepos,
   removeRepos,
   updateTags
-} from '../universal/actions/serverActions';
+} from './actions-server';
 
-let socket;
+const socket = io();
 
-export function connectSocket(store) {
+// TODO: handle event emitting when connection is not ready yet
 
-  socket = io();
+socket.on(UPDATE_SOME_REPOS, function (repos) {
+  updateSomeRepos(repos);
+});
 
-  // TODO: handle event emitting when connection is not ready yet
+// TODO: bacause "repos" is using "tags" to get color data,
+// when they arrive in different order, rendering "repos" can throw error due
+// to new "tags" is not pushed to store yet
 
-  socket.on(UPDATE_SOME_REPOS, function (repos) {
-    store.dispatch(updateSomeRepos(repos));
-  });
+socket.on(REMOVE_REPOS, function (deletedRepoIds) {
+  removeRepos(deletedRepoIds);
+});
 
-  // TODO: bacause "repos" is using "tags" to get color data,
-  // when they arrive in different order, rendering "repos" can throw error due
-  // to new "tags" is not pushed to store yet
+socket.on(UPDATE_TAGS, function (tags) {
+  updateTags(tags);
+});
 
-  socket.on(REMOVE_REPOS, function (deletedRepoIds) {
-    store.dispatch(removeRepos(deletedRepoIds));
-  });
-
-  socket.on(UPDATE_TAGS, function (tags) {
-    store.dispatch(updateTags(tags));
-  });
-}
-
-export function getClient() {
-  return socket;
-}
+export { socket as default };

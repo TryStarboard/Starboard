@@ -5,7 +5,7 @@
 // import differenceWith from 'lodash/differenceWith';
 import { indexBy, prop, append, reject, equals } from 'ramda';
 import u from 'updeep';
-import { UPDATE_SOME_REPOS, REMOVE_REPOS } from '../actions/serverActions';
+import { UPDATE_SOME_REPOS, REMOVE_REPOS } from '../actions-server/creators';
 import {
   APPLY_TAG_TO_REPO,
   DELETE_TAG,

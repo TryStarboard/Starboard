@@ -30,7 +30,7 @@ export function createDeleteAccount(navTo) {
     return {
       type: DELETE_ACCOUNT,
       payload: {
-        promise: axios.delete('/api/v1/account').then(() => navTo('/login')),
+        promise: axios.delete('/api/v1/account').then(tap(() => navTo('/login'))),
       }
     };
   };

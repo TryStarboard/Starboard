@@ -10,7 +10,7 @@ import {
   UPDATE_SOME_REPOS,
   REMOVE_REPOS,
   UPDATE_TAGS
-} from '../../client/actions/serverActions';
+} from '../../client/actions-server/creators';
 
 const KEYS = config.get('cookie.keys');
 

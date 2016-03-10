@@ -3,6 +3,7 @@ import validate from 'validate.js';
 import { tap } from 'ramda';
 import { collect } from '../helpers/form';
 
+export const GET_CURRENT_USER = 'GET_CURRENT_USER';
 export const GET_ALL_REPOS = 'GET_ALL_REPOS';
 export const GET_ALL_TAGS = 'GET_ALL_TAGS';
 export const CLOSE_ADD_TAG_MODAL = 'CLOSE_ADD_TAG_MODAL';
@@ -15,6 +16,15 @@ export const END_DRAG_TAG = 'END_DRAG_TAG';
 export const DELETE_TAG = 'DELETE_TAG';
 export const REMOVE_REPO_TAG = 'REMOVE_REPO_TAG';
 export const SELECT_TAG = 'SELECT_TAG';
+
+export function getCurrentUser() {
+  return {
+    type: GET_CURRENT_USER,
+    payload: {
+      promise: axios.get('/api/v1/me'),
+    }
+  };
+}
 
 export function getAllRepos() {
   return {

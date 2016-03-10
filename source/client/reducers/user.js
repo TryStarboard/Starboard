@@ -1,17 +1,13 @@
-import { Reducer } from 'redux';
+import { GET_CURRENT_USER, LOGOUT, DELETE_ACCOUNT } from '../actions/creators';
 
-// import { LOGOUT, DELETE_ACCOUNT } from '../../actions/creators';
-
-interface UserState {
-  id: number,
-}
-
-export default function (state: UserState = null, { type, user }): UserState {
+export default function (state = {}, { type, payload }) {
   switch (type) {
-  // case `${LOGOUT}_FULFILLED`:
-  //   return null;
-  // case `${DELETE_ACCOUNT}_FULFILLED`:
-  //   return null;
+  case `${GET_CURRENT_USER}_FULFILLED`:
+    return payload.data;
+  case `${LOGOUT}_FULFILLED`:
+    return null;
+  case `${DELETE_ACCOUNT}_FULFILLED`:
+    return null;
   default:
     return state;
   }
