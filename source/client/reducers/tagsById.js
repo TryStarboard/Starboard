@@ -9,8 +9,8 @@ export default function (state = {}, { type, payload }) {
   case `${ADD_TAG}_FULFILLED`:
     const newTag = payload.data;
     return assoc(newTag.id, newTag, state);
-  // case UPDATE_TAGS:
-  //   return payload;
+  case UPDATE_TAGS:
+    return payload;
   case `${DELETE_TAG}_PENDING`:
     return omit([ payload.tagId.toString() ], state);
   default:

@@ -1,4 +1,4 @@
-import { indexBy, prop, append, reject, equals, merge, pipe, contains, __ } from 'ramda';
+import { indexBy, prop, append, reject, equals, merge, pipe, contains, __, map } from 'ramda';
 import u from 'updeep';
 import { UPDATE_SOME_REPOS, REMOVE_REPOS } from '../actions-server/creators';
 import {
@@ -35,10 +35,12 @@ export default function (state = {}, { type, payload }) {
     return reject(pipe(prop('id'), contains(__, payload)), state);
   case `${APPLY_TAG_TO_REPO}_PENDING`:
     return applyTagToRepo(state, payload);
-  // case `${DELETE_TAG}_PENDING`:
-  //   return state.map((repo) => {
-  //     return assign(repo, {tags: without(repo.tags, payload.id)});
-  //   });
+  case `${DELETE_TAG}_PENDING`:
+    return map(
+      u({
+        tags: reject(equals(payload.tagId))
+      }),
+      state);
   case `${REMOVE_REPO_TAG}_PENDING`:
     return removeTagFromRepo(state, payload);
   default:
