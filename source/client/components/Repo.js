@@ -24,7 +24,7 @@ const ConnectedRepo = connect(
             <a className="repo__name-link" target="_blank" href={ html_url }>{ full_name }</a>
           </div>
           <ul className="repo__tags">
-            {tags && tags.map((id) => <RepoTag id={ id } key={ id }/> )}
+            {tags && tags.map((id) => <RepoTag id={ id } key={ id } />)}
           </ul>
           <div className="repo__desc">{ description }</div>
         </div>

@@ -38,7 +38,6 @@ const _getState = store.getState;
 store.getState = function () {
   const state = _getState.call(store);
   const transformedState = stateSelector(state);
-  console.log(transformedState);
   return transformedState;
 };
 

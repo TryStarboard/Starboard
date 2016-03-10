@@ -1,6 +1,7 @@
 import { ObserveObjectPath, Keypath } from 'observe-object-path';
 import { Observable, CompositeDisposable } from 'rx';
 import React, { Component, ComponentClass } from 'react';
+import { map, merge } from 'ramda';
 import store from '../store';
 
 const oop = new ObserveObjectPath(store.getState());
@@ -21,7 +22,7 @@ export default function (getKeypath, transform) {
 
       constructor(props) {
         super(props);
-        this.state = {};
+        this.state = map((keypath) => oop.get(keypath), getKeypath(props));
         this.observableMap = {};
         this.disposableBag = null;
       }
@@ -49,7 +50,7 @@ export default function (getKeypath, transform) {
         });
       }
 
-      componentWillMount() {
+      componentDidMount() {
         this.subscribeToStoreKeypath(this.props);
       }
 
@@ -62,7 +63,8 @@ export default function (getKeypath, transform) {
       }
 
       render() {
-        return Object.keys(this.state).length ? <Comp {...this.state} {...this.props} /> : null;
+        const props = merge(this.props, this.state);
+        return <Comp {...props} />;
       }
     }
 

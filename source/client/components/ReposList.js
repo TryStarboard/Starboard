@@ -11,13 +11,13 @@ const connect = observeStore(
 export default connect(
   class ReposList extends Component {
     componentDidMount() {
-      // getAllRepos();
+      getAllRepos();
     }
 
     render() {
       return (
         <div className="dashboard__repos">
-          {this.props.repos.map((id) => <Repo id={ id } key={ id } /> )}
+          { this.props.repos.map((id) => <Repo id={ id } key={ id } />) }
         </div>
       );
     }
