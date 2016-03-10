@@ -3,7 +3,7 @@
 // import assign from 'lodash/fp/assign';
 // import without from 'lodash/without';
 // import differenceWith from 'lodash/differenceWith';
-import { indexBy, prop, append } from 'ramda';
+import { indexBy, prop, append, reject, equals } from 'ramda';
 import u from 'updeep';
 import { UPDATE_SOME_REPOS, REMOVE_REPOS } from '../actions/serverActions';
 import {
@@ -37,13 +37,13 @@ function applyTagToRepo(state, payload) {
   }, state);
 }
 
-// function removeTagFromRepo(state, payload) {
-//   const copy = state.slice(0);
-//   const repoIndex = findIndex(copy, ['id', payload.repo_id]);
-//   const repo = copy[repoIndex];
-//   copy.splice(repoIndex, 1, assign(repo, {tags: without(repo.tags, payload.tag_id)}));
-//   return copy;
-// }
+function removeTagFromRepo(state, payload) {
+  return u({
+    [payload.repo_id]: {
+      tags: reject(equals(payload.tag_id))
+    }
+  }, state);
+}
 
 export default function (state = {}, { type, payload }) {
   switch (type) {
@@ -59,8 +59,8 @@ export default function (state = {}, { type, payload }) {
   //   return state.map((repo) => {
   //     return assign(repo, {tags: without(repo.tags, payload.id)});
   //   });
-  // case `${REMOVE_REPO_TAG}_PENDING`:
-  //   return removeTagFromRepo(state, payload);
+  case `${REMOVE_REPO_TAG}_PENDING`:
+    return removeTagFromRepo(state, payload);
   default:
     return state;
   }

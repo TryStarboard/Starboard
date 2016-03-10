@@ -1,23 +1,23 @@
 import React, { Component, PropTypes } from 'react';
 import { DragLayer } from 'react-dnd';
-import TrashCanIcon from '../../../client/img/trash-can-icon.svg';
+import TrashCanIcon from 'svg/trash-can-icon.svg';
 
 const { pow, sqrt } = Math;
 
 class RepoTagDragLayer extends Component {
 
-  static propTypes = {
-    itemType: PropTypes.string,
-    currentOffset: PropTypes.shape({
-      x: PropTypes.number.isRequired,
-      y: PropTypes.number.isRequired
-    }),
-    differenceFromInitialOffset: PropTypes.shape({
-      x: PropTypes.number.isRequired,
-      y: PropTypes.number.isRequired
-    }),
-    isDragging: PropTypes.bool.isRequired,
-  };
+  // static propTypes = {
+  //   itemType: PropTypes.string,
+  //   currentOffset: PropTypes.shape({
+  //     x: PropTypes.number.isRequired,
+  //     y: PropTypes.number.isRequired
+  //   }),
+  //   differenceFromInitialOffset: PropTypes.shape({
+  //     x: PropTypes.number.isRequired,
+  //     y: PropTypes.number.isRequired
+  //   }),
+  //   isDragging: PropTypes.bool.isRequired,
+  // };
 
   render() {
     const {
@@ -43,7 +43,7 @@ class RepoTagDragLayer extends Component {
     };
 
     return (
-      <div className='dashboard__repo-tag-drag-layer' style={style}>
+      <div className='dashboard__repo-tag-drag-layer' style={ style }>
         <TrashCanIcon/>
       </div>
     );

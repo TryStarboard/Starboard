@@ -106,12 +106,12 @@ export function deleteTag({ tagId }) {
   };
 }
 
-export function removeRepoTag(tag) {
+export function removeRepoTag(repoTag) {
   return {
     type: REMOVE_REPO_TAG,
     payload: {
-      data: tag,
-      promise: axios.delete(`/api/v1/repo_tags`, {data: tag}),
+      data: repoTag,
+      promise: axios.delete(`/api/v1/repo_tags`, { data: repoTag }),
     }
   };
 }
