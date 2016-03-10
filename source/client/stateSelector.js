@@ -1,5 +1,5 @@
 import { createSelector } from 'reselect';
-import { prop, values, map, tap, pipe, merge, identity, sortBy, reverse, fromPairs } from 'ramda';
+import { prop, values, map, tap, pipe, merge, identity, sortBy, reverse, fromPairs, contains, filter, any, __ } from 'ramda';
 import u from 'updeep';
 import { DEFAULT_TAG_COLORS } from './const/DEFAULT_TAG_COLORS';
 
@@ -14,6 +14,29 @@ const assignDefaultColorToTag = (tag) => {
   });
 };
 
+const selectRepos = createSelector(
+  prop('filters'),
+  prop('reposById'),
+  (filters, reposById) => {
+    if (filters.length) {
+      return pipe(
+        values,
+        filter(pipe(prop('tags'), any(contains(__, filters)))),
+        sortBy(prop('starred_at')),
+        reverse,
+        map(prop('id'))
+      )(reposById);
+    }
+
+    return pipe(
+      values,
+      sortBy(prop('starred_at')),
+      reverse,
+      map(prop('id'))
+    )(reposById);
+  }
+)
+
 const updateTagsStateAffectedByFilter = createSelector(
   prop('filters'),
   prop('tagsById'),
@@ -26,7 +49,7 @@ const updateTagsStateAffectedByFilter = createSelector(
 export default createSelector(
   prop('filters'), // filters
   prop('reposById'), // reposById
-  pipe(prop('reposById'), values, sortBy(prop('starred_at')), reverse, map(prop('id'))), // repos
+  selectRepos, // repos
   prop('routes'),
   pipe(updateTagsStateAffectedByFilter, map(assignDefaultColorToTag)), // tagsById
   pipe(prop('tagsById'), values, sortBy(prop('id')), reverse, map(prop('id'))), // tags
