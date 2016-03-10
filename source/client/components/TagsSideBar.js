@@ -26,25 +26,3 @@ export default connect(
     }
   }
 );
-
-// export default connect(
-//   createSelector(
-//     tagsWithColorsSelector,
-//     uiSelector,
-//     (state) => state.filters,
-//     (tags, ui, filters) => {
-//       return {
-//         ui,
-//         tags: tags.map(u(
-//           u.if(
-//             pipe(prop('id'), contains(__, filters)),
-//             assoc('isSelected', true)
-//           )
-//         ))
-//       };
-//     }
-//   ),
-//   null,
-//   null,
-//   {pure: true}
-// )(TagsSideBar);

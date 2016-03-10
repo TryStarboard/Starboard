@@ -23,27 +23,3 @@ export default connect(
     }
   }
 );
-
-// export default connect(
-//   createSelector(
-//     reposWithTagDetailSelector,
-//     (state) => state.filters,
-//     (repos, filters) => {
-//       if (!filters.length) {
-//         return { repos };
-//       }
-
-//       return {
-//         repos: repos.filter((repo) => {
-//           return all(
-//             contains(__, pluck('id', repo.tags)),
-//             filters
-//           );
-//         }),
-//       };
-//     }
-//   ),
-//   null,
-//   null,
-//   {pure: true}
-// )(ReposList);
