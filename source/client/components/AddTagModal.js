@@ -1,18 +1,18 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
 import Modal from 'react-modal';
 import classnames from 'classnames';
 import observeStore from '../higher-order-components/observeStore';
 import MODAL_STYLES from '../const/MODAL_STYLES';
 import { closeAddTagModal, addTag } from '../actions';
 
-const connect = observeStore(
+const createObserveComponent = observeStore(
   () => ({
     isAddTagModalOpen: ['ui', 'isAddTagModalOpen'],
     addTagModalErrorMsg: ['ui', 'addTagModalErrorMsg'],
   })
 );
 
-export default connect(({ isAddTagModalOpen, addTagModalErrorMsg }) => {
+export default createObserveComponent(({ isAddTagModalOpen, addTagModalErrorMsg }) => {
 
   const labelClassname = classnames(
     'add-tag-modal__label',

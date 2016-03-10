@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
 import { DropTarget } from 'react-dnd';
 import classnames from 'classnames';
-import findIndex from 'lodash/findIndex';
 import observeStore from '../higher-order-components/observeStore';
 import { applyTagToRepo } from '../actions';
 import RepoTag from './RepoTag';
 
-const connect = observeStore(
+const createObserveComponent = observeStore(
   ({ id }) => ({ repo: ['reposById', id] })
 );
 
@@ -33,7 +32,7 @@ class Repo extends Component {
   }
 }
 
-export default connect(DropTarget(
+export default createObserveComponent(DropTarget(
   'TAG',
   {
     canDrop(props, monitor) {

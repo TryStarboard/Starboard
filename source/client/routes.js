@@ -1,4 +1,3 @@
-import React from 'react';
 import { r, redirect, start } from 'routility';
 import store from './store';
 

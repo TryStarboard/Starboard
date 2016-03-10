@@ -6,7 +6,7 @@ import TrashCanIcon from 'svg/trash-can-icon.svg';
 import observeStore from '../higher-order-components/observeStore';
 import { openAddTagModal, deleteTag } from '../actions';
 
-const connect = observeStore(
+const createObserveComponent = observeStore(
   () => ({ isDraggingTag: ['ui', 'isDraggingTag'] })
 );
 
@@ -31,7 +31,7 @@ class AddTag extends Component {
   }
 }
 
-export default connect(DropTarget(
+export default createObserveComponent(DropTarget(
   'TAG',
   {
     drop(props, monitor) {

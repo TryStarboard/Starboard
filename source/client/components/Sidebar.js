@@ -1,5 +1,4 @@
-import * as React from 'react'
-import { StatelessComponent } from 'react';
+import React from 'react';
 import LogoutIcon from 'svg/logout-icon.svg';
 import UserIcon from 'svg/user-icon.svg';
 import DashboardIcon from 'svg/dashboard-icon.svg';

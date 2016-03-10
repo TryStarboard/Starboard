@@ -1,5 +1,3 @@
-extends: ../universal/components/.eslintrc.yml
-
 env:
   browser: true
   node: false

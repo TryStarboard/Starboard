@@ -1,10 +1,10 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
 import { DragSource } from 'react-dnd';
 import classnames from 'classnames';
 import observeStore from '../higher-order-components/observeStore';
 import { removeRepoTag } from '../actions';
 
-const connect = observeStore(
+const createObserveComponent = observeStore(
   ({ tagId }) => ({ tag: ['tagsById', tagId] })
 );
 
@@ -33,7 +33,7 @@ class RepoTag extends Component {
 
 const { pow, sqrt } = Math;
 
-export default connect(DragSource(
+export default createObserveComponent(DragSource(
   'REPO_TAG',
   {
     beginDrag({ tagId, repoId }) {

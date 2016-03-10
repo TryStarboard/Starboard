@@ -1,16 +1,14 @@
 import React, { Component } from 'react';
-import u from 'updeep';
-import { pipe, prop, contains, __, assoc } from 'ramda';
 import observeStore from '../higher-order-components/observeStore';
 import { getAllTags } from '../actions';
 import AddTag from './AddTag';
 import Tag from './Tag';
 
-const connect = observeStore(
+const createObserveComponent = observeStore(
   () => ({ tags: ['tags'] })
 );
 
-export default connect(
+export default createObserveComponent(
   class TagsSideBar extends Component {
     componentDidMount() {
       getAllTags();

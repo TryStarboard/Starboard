@@ -2,11 +2,11 @@ import React, { Component } from 'react';
 import observeStore from '../higher-order-components/observeStore';
 import { deleteAccount } from '../actions';
 
-const connect = observeStore(
+const createObserveComponent = observeStore(
   () => ({ user: ['user'] })
 );
 
-export default connect(
+export default createObserveComponent(
   class UserProfile extends Component {
     render() {
       const {

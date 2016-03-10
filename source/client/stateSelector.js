@@ -1,5 +1,5 @@
 import { createSelector } from 'reselect';
-import { prop, values, map, tap, pipe, merge, identity, sortBy, reverse, fromPairs, contains, filter, any, __ } from 'ramda';
+import { prop, values, map, pipe, merge, sortBy, reverse, fromPairs, contains, filter, any, __ } from 'ramda';
 import u from 'updeep';
 import { DEFAULT_TAG_COLORS } from './const/DEFAULT_TAG_COLORS';
 
@@ -35,7 +35,7 @@ const selectRepos = createSelector(
       map(prop('id'))
     )(reposById);
   }
-)
+);
 
 const updateTagsStateAffectedByFilter = createSelector(
   prop('filters'),
@@ -44,7 +44,7 @@ const updateTagsStateAffectedByFilter = createSelector(
     const updates = fromPairs(filters.map((tagId) => [tagId, { isSelected: true }]));
     return u(updates, tagsById);
   }
-)
+);
 
 export default createSelector(
   prop('filters'), // filters

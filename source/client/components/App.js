@@ -6,11 +6,11 @@ import Inside from './Inside';
 import Dashboard from './Dashboard';
 import UserProfile from './UserProfile';
 
-const connect = observeStore(
+const createObserveComponent = observeStore(
   () => ({ routes: ['routes'] })
 );
 
-export default connect(
+export default createObserveComponent(
   class App extends Component {
     render() {
       return (

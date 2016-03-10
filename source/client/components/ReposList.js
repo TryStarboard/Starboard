@@ -1,14 +1,13 @@
-import React, { Component, PropTypes } from 'react';
-import { contains, __, all, pluck } from 'ramda';
+import React, { Component } from 'react';
 import observeStore from '../higher-order-components/observeStore';
 import { getAllRepos } from '../actions';
 import Repo from './Repo';
 
-const connect = observeStore(
+const createObserveComponent = observeStore(
   () => ({ repos: ['repos'] })
 );
 
-export default connect(
+export default createObserveComponent(
   class ReposList extends Component {
     componentDidMount() {
       getAllRepos();

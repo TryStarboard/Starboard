@@ -2,11 +2,11 @@ import React, { Component } from 'react';
 import observeStore from '../higher-order-components/observeStore';
 import Filter from './Filter';
 
-const connect = observeStore(
+const createObserveComponent = observeStore(
   () => ({ filters: ['filters'] })
 );
 
-export default connect(
+export default createObserveComponent(
   class FilterBar extends Component {
     render() {
       return (

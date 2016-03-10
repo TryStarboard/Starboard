@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
 import { DragLayer } from 'react-dnd';
 import TrashCanIcon from 'svg/trash-can-icon.svg';
 

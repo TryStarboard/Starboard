@@ -1,6 +1,6 @@
-import { ObserveObjectPath, Keypath } from 'observe-object-path';
-import { Observable, CompositeDisposable } from 'rx';
-import React, { Component, ComponentClass } from 'react';
+import { ObserveObjectPath } from 'observe-object-path';
+import { CompositeDisposable } from 'rx';
+import React, { Component } from 'react';
 import { map, merge } from 'ramda';
 import store from '../store';
 
@@ -11,7 +11,7 @@ store.subscribe(() => {
 });
 
 function entries(obj) {
-   return Object.keys(obj).map((key) => [key, obj[key]]);
+  return Object.keys(obj).map((key) => [key, obj[key]]);
 }
 
 export default function (getKeypath, transform) {

@@ -1,9 +1,9 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
 import { DragSource } from 'react-dnd';
 import observeStore from '../higher-order-components/observeStore';
 import { beginDragTag, endDragTag, selectTag } from '../actions';
 
-const connect = observeStore(
+const createObserveComponent = observeStore(
   ({ id }) => ({ tag: ['tagsById', id] })
 );
 
@@ -34,7 +34,7 @@ class Tag extends Component {
   }
 }
 
-export default connect(DragSource(
+export default createObserveComponent(DragSource(
   'TAG',
   {
     beginDrag(props) {

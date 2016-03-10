@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import observeStore from '../higher-order-components/observeStore';
 
-const connect = observeStore(
+const createObserveComponent = observeStore(
   ({ tagId }) => ({ tag: ['tagsById', tagId] })
 );
 
-export default connect(
+export default createObserveComponent(
   class FilterBar extends Component {
     render() {
       const {
