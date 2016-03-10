@@ -96,12 +96,12 @@ export function endDragTag() {
   };
 }
 
-export function deleteTag(tag) {
+export function deleteTag({ tagId }) {
   return {
     type: DELETE_TAG,
     payload: {
-      data: tag,
-      promise: axios.delete(`/api/v1/tags/${tag.id}`),
+      data: { tagId },
+      promise: axios.delete(`/api/v1/tags/${tagId}`),
     }
   };
 }

@@ -2,6 +2,7 @@ import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
 import promiseMiddleware from 'redux-promise-middleware';
 import thunk from 'redux-thunk';
 import createLogger from 'redux-logger';
+import { identity } from 'ramda';
 import stateSelector from './stateSelector';
 
 import filters   from './reducers/filters';

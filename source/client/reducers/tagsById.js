@@ -1,4 +1,4 @@
-import { indexBy, prop, assoc } from 'ramda';
+import { indexBy, prop, assoc, omit } from 'ramda';
 import { UPDATE_TAGS } from '../actions/serverActions';
 import { ADD_TAG, DELETE_TAG, GET_ALL_TAGS } from '../actions/creators';
 
@@ -11,8 +11,8 @@ export default function (state = {}, { type, payload }) {
     return assoc(newTag.id, newTag, state);
   // case UPDATE_TAGS:
   //   return payload;
-  // case `${DELETE_TAG}_PENDING`:
-  //   return reject(state, ['id', payload.id]);
+  case `${DELETE_TAG}_PENDING`:
+    return omit([ payload.tagId.toString() ], state);
   default:
     return state;
   }

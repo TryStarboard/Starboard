@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import u from 'updeep';
 import { pipe, prop, contains, __, assoc } from 'ramda';
-import { getAllTags } from '../actions';
 import observeStore from '../higher-order-components/observeStore';
+import { getAllTags } from '../actions';
 import AddTag from './AddTag';
 import Tag from './Tag';
 

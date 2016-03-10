@@ -1,46 +1,45 @@
 import React, { Component } from 'react';
-// import { DropTarget } from 'react-dnd';
+import { DropTarget } from 'react-dnd';
 import classnames from 'classnames';
 import PlusIcon from 'svg/add-tag-icon.svg';
 import TrashCanIcon from 'svg/trash-can-icon.svg';
-import { openAddTagModal } from '../actions';
+import observeStore from '../higher-order-components/observeStore';
+import { openAddTagModal, deleteTag } from '../actions';
 
-export default class AddTag extends Component {
+const connect = observeStore(
+  () => ({ isDraggingTag: ['ui', 'isDraggingTag'] })
+);
+
+class AddTag extends Component {
   render() {
-    // const {
-    //   onClick,
-    //   ui: {isDraggingTag},
-    //   connectDropTarget,
-    //   isOver,
-    // } = this.props;
+    const {
+      isDraggingTag,
+      connectDropTarget,
+      isOver,
+    } = this.props;
 
-    // return connectDropTarget(
-    // return (
-    //   <button
-    //     className={classnames('tag', 'tag--btn', { 'tag--delete-active': isOver })}
-    //     onClick={onClick}>
-    //     {isDraggingTag ? <TrashCanIcon/> : <PlusIcon/>}
-    //   </button>
-    // );
-    return (
+    const buttonClassname =
+      classnames('tag', 'tag--btn', { 'tag--delete-active': isOver });
+
+    return connectDropTarget(
       <button
-        className={ classnames('tag', 'tag--btn') }
+        className={ buttonClassname }
         onClick={ openAddTagModal }>
-        <PlusIcon />
+        { isDraggingTag ? <TrashCanIcon /> : <PlusIcon /> }
       </button>
     );
   }
 }
 
-// export default DropTarget(
-//   'TAG',
-//   {
-//     drop(props, monitor) {
-//       props.deleteTag(monitor.getItem());
-//     }
-//   },
-//   (connect, monitor) => ({
-//     connectDropTarget: connect.dropTarget(),
-//     isOver: monitor.isOver(),
-//   })
-// )(AddTag);
+export default connect(DropTarget(
+  'TAG',
+  {
+    drop(props, monitor) {
+      deleteTag(monitor.getItem());
+    }
+  },
+  (connect, monitor) => ({
+    connectDropTarget: connect.dropTarget(),
+    isOver: monitor.isOver(),
+  })
+)(AddTag));

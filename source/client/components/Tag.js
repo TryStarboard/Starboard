@@ -1,28 +1,13 @@
 import React, { Component, PropTypes } from 'react';
 import { DragSource } from 'react-dnd';
 import observeStore from '../higher-order-components/observeStore';
+import { beginDragTag, endDragTag } from '../actions';
 
 const connect = observeStore(
   ({ id }) => ({ tag: ['tagsById', id] })
 );
 
-const ConnectedTag = connect(class Tag extends Component {
-
-  // static contextTypes = {
-  //   selectTag: PropTypes.func.isRequired,
-  // };
-
-  // static propTypes = {
-  //   text: PropTypes.string.isRequired,
-  //   isSelected: PropTypes.bool,
-  //   beginDragTag: PropTypes.func.isRequired,
-  //   endDragTag: PropTypes.func.isRequired,
-
-  //   // Injected by React DnD
-  //   isDragging: PropTypes.bool.isRequired,
-  //   connectDragSource: PropTypes.func.isRequired,
-  // };
-
+class Tag extends Component {
   render() {
     const {
       isSelected,
@@ -47,16 +32,16 @@ const ConnectedTag = connect(class Tag extends Component {
       </div>
     );
   }
-});
+}
 
-export default DragSource(
+export default connect(DragSource(
   'TAG',
   {
-    beginDrag({id, beginDragTag}) {
+    beginDrag(props) {
       beginDragTag();
-      return {id};
+      return { tagId: props.id };
     },
-    endDrag({endDragTag}) {
+    endDrag() {
       endDragTag();
     },
   },
@@ -64,4 +49,4 @@ export default DragSource(
     connectDragSource: connect.dragSource(),
     isDragging: monitor.isDragging()
   })
-)(ConnectedTag);
+)(Tag));
