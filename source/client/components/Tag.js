@@ -11,10 +11,9 @@ class Tag extends Component {
   render() {
     const {
       id,
-      isSelected,
       isDragging,
       connectDragSource,
-      tag: { text, foreground_color, background_color } = {}
+      tag: { text, foreground_color, background_color, isSelected } = {}
     } = this.props;
 
     const style = {
