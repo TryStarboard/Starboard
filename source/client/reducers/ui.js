@@ -1,4 +1,4 @@
-import assign from 'lodash/fp/assign';
+import { merge } from 'ramda';
 import {
   OPEN_ADD_TAG_MODAL,
   CLOSE_ADD_TAG_MODAL,
@@ -16,15 +16,15 @@ const DEFAULT_UI = {
 export default function (state = DEFAULT_UI, { type, payload }) {
   switch (type) {
   case OPEN_ADD_TAG_MODAL:
-    return assign(state, {isAddTagModalOpen: true});
+    return merge(state, {isAddTagModalOpen: true});
   case CLOSE_ADD_TAG_MODAL:
-    return assign(state, {isAddTagModalOpen: false, addTagModalErrorMsg: null});
+    return merge(state, {isAddTagModalOpen: false, addTagModalErrorMsg: null});
   case ADD_TAG_INVALID_INPUT:
-    return assign(state, {addTagModalErrorMsg: payload});
+    return merge(state, {addTagModalErrorMsg: payload});
   case BEGIN_DRAG_TAG:
-    return assign(state, {isDraggingTag: true});
+    return merge(state, {isDraggingTag: true});
   case END_DRAG_TAG:
-    return assign(state, {isDraggingTag: false});
+    return merge(state, {isDraggingTag: false});
   default:
     return state;
   }
