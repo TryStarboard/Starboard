@@ -10,8 +10,7 @@ const node_modules = fs.readdirSync('node_modules')
 
 base.module.loaders[0].query.plugins =
   base.module.loaders[0].query.plugins.concat([
-    'transform-react-constant-elements',
-    'transform-react-inline-elements'
+    'transform-function-bind',
   ]);
 
 base.module.loaders[0].query.presets.push('es2015-node5');

@@ -2,7 +2,7 @@ import Router from 'koa-router';
 import { getAll as getAllRepos } from '../../../util/data/Repos';
 import { getAll as getAllTags, addTag, deleteTag } from '../../../util/data/Tags';
 import { addRepoTag, deleteRepoTag } from '../../../util/data/RepoTags';
-import { deleteUser } from '../../../model/User';
+import { findById as findUserById, deleteUser } from '../../../model/User';
 
 function *ensureAuthed(next) {
   if (this.req.isAuthenticated()) {
@@ -17,6 +17,10 @@ const authedRoute = new Router();
 authedRoute.get('/logout', ensureAuthed, function *() {
   this.req.logout();
   this.status = 200;
+});
+
+authedRoute.get('/me', ensureAuthed, function *() {
+  this.body = yield findUserById(this.req.user.id);
 });
 
 authedRoute.get('/repos', ensureAuthed, function *() {
