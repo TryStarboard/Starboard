@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import classnames from 'classnames';
 import PlusIcon from 'svg/add-tag-icon.svg';
 import TrashCanIcon from 'svg/trash-can-icon.svg';
+import { openAddTagModal } from '../actions';
 
 export default class AddTag extends Component {
   render() {
@@ -22,7 +23,9 @@ export default class AddTag extends Component {
     //   </button>
     // );
     return (
-      <button className={ classnames('tag', 'tag--btn') }>
+      <button
+        className={ classnames('tag', 'tag--btn') }
+        onClick={ openAddTagModal }>
         <PlusIcon />
       </button>
     );
