@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { DragSource } from 'react-dnd';
 import observeStore from '../higher-order-components/observeStore';
-import { beginDragTag, endDragTag } from '../actions';
+import { beginDragTag, endDragTag, selectTag } from '../actions';
 
 const connect = observeStore(
   ({ id }) => ({ tag: ['tagsById', id] })
@@ -10,10 +10,11 @@ const connect = observeStore(
 class Tag extends Component {
   render() {
     const {
+      id,
       isSelected,
       isDragging,
       connectDragSource,
-      tag: { id, text, foreground_color, background_color } = {}
+      tag: { text, foreground_color, background_color } = {}
     } = this.props;
 
     const style = {
@@ -27,7 +28,7 @@ class Tag extends Component {
       <div
         className='tag'
         style={ style }
-        onClick={ () => null }>
+        onClick={ () => selectTag(id) }>
         <div className="tag__text">{ text }</div>
       </div>
     );

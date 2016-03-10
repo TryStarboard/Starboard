@@ -126,9 +126,9 @@ export function removeRepoTag(repoTag) {
   };
 }
 
-export function selectTag(tag) {
+export function selectTag(tagId) {
   return {
     type: SELECT_TAG,
-    payload: tag,
+    payload: { tagId },
   };
 }

@@ -7,11 +7,12 @@ export default function (state = [], { type, payload }) {
   case SELECT_TAG:
     return u(
       u.ifElse(
-        contains(payload.id),
-        without([payload.id]),
-        append(payload.id)
+        contains(payload.tagId),
+        without([payload.tagId]),
+        append(payload.tagId)
       ),
-      state);
+      state
+    );
   default:
     return state;
   }
