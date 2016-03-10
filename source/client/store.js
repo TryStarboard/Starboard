@@ -4,12 +4,12 @@ import thunk from 'redux-thunk';
 import createLogger from 'redux-logger';
 import stateSelector from './stateSelector';
 
-import filters  from './reducers/filters';
-import repos    from './reducers/repos';
-import routes   from './reducers/routes';
-import tagsById from './reducers/tagsById';
-import ui       from './reducers/ui';
-import user     from './reducers/user';
+import filters   from './reducers/filters';
+import reposById from './reducers/reposById';
+import routes    from './reducers/routes';
+import tagsById  from './reducers/tagsById';
+import ui        from './reducers/ui';
+import user      from './reducers/user';
 
 const middleware = applyMiddleware(
   promiseMiddleware(),
@@ -24,7 +24,7 @@ const createStoreWithMiddleware = compose(middleware, reduxDevtool)(createStore)
 
 const store = createStoreWithMiddleware(combineReducers({
   filters,
-  repos,
+  reposById,
   routes,
   tagsById,
   ui,
@@ -37,7 +37,9 @@ const _getState = store.getState;
 
 store.getState = function () {
   const state = _getState.call(store);
-  return stateSelector(state);
+  const transformedState = stateSelector(state);
+  console.log(transformedState);
+  return transformedState;
 };
 
 export { store as default };

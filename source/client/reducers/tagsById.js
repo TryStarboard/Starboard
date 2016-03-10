@@ -1,4 +1,3 @@
-import reject from 'lodash/reject';
 import { indexBy, prop } from 'ramda';
 import { UPDATE_TAGS } from '../actions/serverActions';
 import { ADD_TAG, DELETE_TAG, GET_ALL_TAGS } from '../actions/creators';

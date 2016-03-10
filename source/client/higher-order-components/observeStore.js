@@ -62,9 +62,7 @@ export default function (getKeypath, transform) {
       }
 
       render() {
-        return (
-          <Comp {...this.state} {...this.props} />
-        );
+        return Object.keys(this.state).length ? <Comp {...this.state} {...this.props} /> : null;
       }
     }
 

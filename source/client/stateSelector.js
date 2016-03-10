@@ -15,14 +15,15 @@ const assignDefaultColorToTag = (tag) => {
 
 export default createSelector(
   prop('filters'),
-  prop('repos'),
+  prop('reposById'),
+  pipe(prop('reposById'), values, sortBy(prop('starred_at')), reverse, map(prop('id'))),
   prop('routes'),
   pipe(prop('tagsById'), map(assignDefaultColorToTag)),
   pipe(prop('tagsById'), values, sortBy(prop('id')), reverse, map(prop('id'))),
   prop('ui'),
   prop('user'),
-  (filters, repos, routes, tagsById, tags, ui, user) =>
-    ({ filters, repos, routes, tagsById, tags, ui, user })
+  (filters, reposById, repos, routes, tagsById, tags, ui, user) =>
+    ({ filters, reposById, repos, routes, tagsById, tags, ui, user })
 );
 
 /**
