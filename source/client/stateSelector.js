@@ -1,7 +1,20 @@
 import { createSelector } from 'reselect';
-import { prop, values, map, pipe, merge, sortBy, reverse, fromPairs, contains, filter, any, __ } from 'ramda';
+import {
+  prop, values, map, pipe, merge, sortBy, reverse, toPairs, fromPairs,
+  contains, filter, all, __
+} from 'ramda';
 import u from 'updeep';
 import { DEFAULT_TAG_COLORS } from './const/DEFAULT_TAG_COLORS';
+
+// Helpers
+//
+function createStateTransformer(transforms) {
+  const transformPairs = toPairs(transforms);
+  return function (state) {
+    const newStatePairs = transformPairs.map(([ key, transform ]) => [ key, transform(state) ]);
+    return fromPairs(newStatePairs);
+  };
+}
 
 const assignDefaultColorToTag = (tag) => {
   const colors = DEFAULT_TAG_COLORS[tag.text.toLowerCase()];
@@ -18,18 +31,12 @@ const selectRepos = createSelector(
   prop('filters'),
   prop('reposById'),
   (filters, reposById) => {
-    if (filters.length) {
-      return pipe(
-        values,
-        filter(pipe(prop('tags'), any(contains(__, filters)))),
-        sortBy(prop('starred_at')),
-        reverse,
-        map(prop('id'))
-      )(reposById);
-    }
-
     return pipe(
       values,
+      filter(pipe(
+        prop('tags'),
+        (tags) => all(contains(__, tags), filters)
+      )),
       sortBy(prop('starred_at')),
       reverse,
       map(prop('id'))
@@ -46,19 +53,6 @@ const updateTagsStateAffectedByFilter = createSelector(
   }
 );
 
-export default createSelector(
-  prop('filters'), // filters
-  prop('reposById'), // reposById
-  selectRepos, // repos
-  prop('routes'),
-  pipe(updateTagsStateAffectedByFilter, map(assignDefaultColorToTag)), // tagsById
-  pipe(prop('tagsById'), values, sortBy(prop('id')), reverse, map(prop('id'))), // tags
-  prop('ui'), // ui
-  prop('user'), // user
-  (filters, reposById, repos, routes, tagsById, tags, ui, user) =>
-    ({ filters, reposById, repos, routes, tagsById, tags, ui, user })
-);
-
 /**
 interface ComputedStoreShape {
   filters: number[];
@@ -70,4 +64,15 @@ interface ComputedStoreShape {
   ui: UIShape;
   user: UserShape;
 }
- */
+*/
+
+export default createStateTransformer({
+  filters: prop('filters'),
+  reposById: prop('reposById'),
+  repos: selectRepos,
+  routes: prop('routes'),
+  tagsById: pipe(updateTagsStateAffectedByFilter, map(assignDefaultColorToTag)),
+  tags: pipe(prop('tagsById'), values, sortBy(prop('id')), reverse, map(prop('id'))),
+  ui: prop('ui'),
+  user: prop('user'),
+});
