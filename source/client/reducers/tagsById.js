@@ -10,7 +10,7 @@ export default function (state = {}, { type, payload }) {
     const newTag = payload.data;
     return assoc(newTag.id, newTag, state);
   case UPDATE_TAGS:
-    return payload;
+    return indexBy(prop('id'), payload);
   case `${DELETE_TAG}_PENDING`:
     return omit([ payload.tagId.toString() ], state);
   default:
