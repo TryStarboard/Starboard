@@ -1,8 +1,13 @@
+/*eslint no-process-env:0*/
+
 'use strict';
 
 const join = require('path').join;
+const webpack = require('webpack');
+const env = process.env.NODE_ENV || 'development';
+const isProd = env === 'production';
 
-module.exports = {
+const config = {
   entry: './source/client/index.js',
 
   output: {
@@ -35,5 +40,28 @@ module.exports = {
         loader: 'babel?presets[]=es2015&presets[]=react!svg-react',
       },
     ]
-  }
+  },
+
+  plugins: [
+    new webpack.optimize.OccurenceOrderPlugin(),
+    new webpack.DefinePlugin({
+      'process.env.NODE_ENV': JSON.stringify(env)
+    })
+  ]
 };
+
+if (isProd) {
+  config.plugins.push(
+    new webpack.optimize.UglifyJsPlugin({
+      compressor: {
+        pure_getters: true,
+        unsafe: true,
+        unsafe_comps: true,
+        screw_ie8: true,
+        warnings: false
+      }
+    })
+  );
+}
+
+module.exports = config;

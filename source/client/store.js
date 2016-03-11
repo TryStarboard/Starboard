@@ -1,7 +1,8 @@
+/*eslint no-process-env:0*/
+
 import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
 import promiseMiddleware from 'redux-promise-middleware';
 import thunk from 'redux-thunk';
-import createLogger from 'redux-logger';
 import { identity } from 'ramda';
 import stateSelector from './stateSelector';
 
@@ -12,16 +13,24 @@ import tagsById  from './reducers/tagsById';
 import ui        from './reducers/ui';
 import user      from './reducers/user';
 
-const middleware = applyMiddleware(
-  promiseMiddleware(),
-  thunk,
-  createLogger()
-);
+const middlewares = [ promiseMiddleware(), thunk ];
 
-const reduxDevtool = typeof window.devToolsExtension !== 'undefined' ?
-  window.devToolsExtension() : identity;
+if (process.env.NODE_ENV !== 'production') {
+  middlewares.push(require('redux-logger')());
+}
 
-const createStoreWithMiddleware = compose(middleware, reduxDevtool)(createStore);
+const middleware = applyMiddleware.apply(this, middlewares);
+
+let createStoreWithMiddleware;
+
+if (process.env.NODE_ENV !== 'production') {
+  const reduxDevtool =
+    typeof window.devToolsExtension !== 'undefined' ?
+      window.devToolsExtension() : identity;
+  createStoreWithMiddleware = compose(middleware, reduxDevtool)(createStore);
+} else {
+  createStoreWithMiddleware = compose(middleware)(createStore);
+}
 
 const store = createStoreWithMiddleware(combineReducers({
   filters,
