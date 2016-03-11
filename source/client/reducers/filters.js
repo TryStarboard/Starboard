@@ -1,6 +1,6 @@
 import u from 'updeep';
-import { contains, append, without } from 'ramda';
-import { SELECT_TAG } from '../actions/creators';
+import { contains, append, without, reject, equals } from 'ramda';
+import { SELECT_TAG, DELETE_TAG } from '../actions/creators';
 
 export default function (state = [], { type, payload }) {
   switch (type) {
@@ -13,6 +13,8 @@ export default function (state = [], { type, payload }) {
       ),
       state
     );
+  case `${DELETE_TAG}_PENDING`:
+    return reject(equals(payload.tagId), state);
   default:
     return state;
   }
