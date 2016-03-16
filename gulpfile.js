@@ -68,7 +68,7 @@ gulp.task('deploy', wrap(function *() {
     yield fromCallback((done) => {
       const rollingUpdate = spawn(
         'kubectl',
-        [ 'create', currentCtrlName, '-f', '-' ],
+        [ 'create', '-f', '-' ],
         { stdio: [ 'pipe', 'inherit', 'inherit' ] });
       rollingUpdate.on('close', done);
       rollingUpdate.stdin.write(newRc);
