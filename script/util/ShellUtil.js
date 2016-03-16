@@ -10,7 +10,7 @@ function exec(cmd, opts) {
     const args = cmd.split(' ');
     const child = spawn(args[0], args.slice(1), {
       cwd: join(__dirname, '../..'),
-      stdio: opts.wantReturns ? ['inherit', 'pipe', 'inherit'] : 'inherit',
+      stdio: opts && opts.wantReturns ? ['inherit', 'pipe', 'inherit'] : 'inherit',
     });
     let response = '';
     child.stdout.on('data', function (buffer) {
