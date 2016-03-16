@@ -49,4 +49,5 @@ co(function *() {
   } else {
     yield exec(`kubectl rolling-update ${currentCtrlName} -f ${newRcFilePath}`);
   }
-});
+})
+.catch(console.error);
