@@ -10,7 +10,7 @@ const exec = require('./util/ShellUtil').exec;
 co(function *() {
   yield exec('npm version major');
 
-  const pkg = require('./package.json');
+  const pkg = require('../package.json');
   const version = `v${pkg.version.split('.')[0]}`;
 
   yield exec('env NODE_ENV=production npm run build');
