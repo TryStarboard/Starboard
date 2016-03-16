@@ -31,7 +31,7 @@ co(function *() {
 
   yield fs.writeFileAsync(newRcFilePath, newRc, 'utf8');
 
-  const output = yield exec('kubectl get rc -o=json');
+  const output = yield exec('kubectl get rc -o=json', {wantReturns: true});
   const controllers = JSON.parse(output);
 
   let currentCtrlName;

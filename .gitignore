@@ -9,3 +9,4 @@ local*
 /typings/main*
 /typings/browser*
 /.idea
+/_build-artifacts
