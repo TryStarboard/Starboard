@@ -7,6 +7,7 @@ script
 secret
 source
 .git
+.idea
 .DS_Store
 .dockerignore
 .eslintrc.yml
