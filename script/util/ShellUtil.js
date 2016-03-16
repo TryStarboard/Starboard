@@ -12,10 +12,13 @@ function exec(cmd, opts) {
       cwd: join(__dirname, '../..'),
       stdio: opts && opts.wantReturns ? ['inherit', 'pipe', 'inherit'] : 'inherit',
     });
-    let response = '';
-    child.stdout.on('data', function (buffer) {
-      response += buffer.toString();
-    });
+    let response;
+    if (opts && opts.wantReturns) {
+      response = '';
+      child.stdout.on('data', function (buffer) {
+        response += buffer.toString();
+      });
+    }
     child.on('exit', function (code, signal) {
       if (code === 0 || code == null) {
         resolve(response);
