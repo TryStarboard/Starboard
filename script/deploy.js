@@ -15,7 +15,7 @@ co(function *() {
 
   yield exec('env NODE_ENV=production npm run build');
   yield exec(`docker build -t us.gcr.io/starboard-1224/starboard:${version} --no-cache .`);
-  yield exec(`gcloud docker push -t us.gcr.io/starboard-1224/starboard:${version}`);
+  yield exec(`gcloud docker push us.gcr.io/starboard-1224/starboard:${version}`);
 
   const rcTmpl = yield fs.readFileAsync(join(__dirname, '../starboard-replication-controller.yml'), 'utf8');
   const newRc = template(rcTmpl)({ version });
