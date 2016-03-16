@@ -64,17 +64,26 @@ gulp.task('deploy', wrap(function *() {
   }
 
   if (!currentCtrlName) {
-    throw new Error('cannot find starboard replication controller');
+    console.log('cannot find starboard replication controller, creating one');
+    yield fromCallback((done) => {
+      const rollingUpdate = spawn(
+        'kubectl',
+        [ 'create', currentCtrlName, '-f', '-' ],
+        { stdio: [ 'pipe', 'inherit', 'inherit' ] });
+      rollingUpdate.on('close', done);
+      rollingUpdate.stdin.write(newRc);
+      rollingUpdate.stdin.end();
+    });
+  } else {
+    yield fromCallback((done) => {
+      const rollingUpdate = spawn(
+        'kubectl',
+        [ 'rolling-update', currentCtrlName, '-f', '-' ],
+        { stdio: [ 'pipe', 'inherit', 'inherit' ] });
+      rollingUpdate.on('close', done);
+      rollingUpdate.stdin.write(newRc);
+      rollingUpdate.stdin.end();
+    });
   }
-
-  yield fromCallback((done) => {
-    const rollingUpdate = spawn(
-      'kubectl',
-      [ 'rolling-update', currentCtrlName, '-f', '-' ],
-      { stdio: [ 'pipe', 'inherit', 'inherit' ] });
-    rollingUpdate.on('close', done);
-    rollingUpdate.stdin.write(newRc);
-    rollingUpdate.stdin.end();
-  });
 
 }));
