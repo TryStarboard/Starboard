@@ -61,6 +61,7 @@
     "eslint": "1.10.3",
     "eslint-plugin-react": "4.2.1",
     "file-loader": "0.8.5",
+    "mixpanel-browser": "^2.7.2",
     "node-sass": "3.4.2",
     "nodemon": "1.8.1",
     "observe-object-path": "0.3.0",

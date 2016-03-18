@@ -1,7 +1,7 @@
 import axios from 'axios';
 import validate from 'validate.js';
 import { tap } from 'ramda';
-import mixpanel from 'mixpanel';
+import mixpanel from '../mixpanel';
 import { collect } from '../helpers/form';
 
 export const GET_CURRENT_USER = 'GET_CURRENT_USER';
@@ -18,13 +18,15 @@ export const DELETE_TAG = 'DELETE_TAG';
 export const REMOVE_REPO_TAG = 'REMOVE_REPO_TAG';
 export const SELECT_TAG = 'SELECT_TAG';
 
-mixpanel.track('test');
-
 export function getCurrentUser() {
   return {
     type: GET_CURRENT_USER,
     payload: {
-      promise: axios.get('/api/v1/me'),
+      promise: axios.get('/api/v1/me')
+        .then(({data: user}) => {
+          mixpanel.identify(user.id);
+          return user;
+        }),
     }
   };
 }

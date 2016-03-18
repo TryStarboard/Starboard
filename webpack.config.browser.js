@@ -4,6 +4,7 @@
 
 const join = require('path').join;
 const webpack = require('webpack');
+const configModule = require('config');
 const env = process.env.NODE_ENV || 'development';
 const isProd = env === 'production';
 
@@ -22,10 +23,6 @@ const config = {
       img: join(__dirname, 'source/client/img'),
       svg: join(__dirname, 'source/client/svg'),
     }
-  },
-
-  externals: {
-    mixpanel: 'window.mixpanel',
   },
 
   module: {
@@ -49,7 +46,8 @@ const config = {
   plugins: [
     new webpack.optimize.OccurenceOrderPlugin(),
     new webpack.DefinePlugin({
-      'process.env.NODE_ENV': JSON.stringify(env)
+      'process.env.NODE_ENV': JSON.stringify(env),
+      'MIXPANEL_TOKEN': JSON.stringify(configModule.get('mixpanel.token')),
     })
   ]
 };
