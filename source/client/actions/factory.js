@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { tap } from 'ramda';
 import mixpanel from '../mixpanel';
 import {
   SYNC_REPOS,
@@ -19,10 +18,11 @@ export function createSyncRepos(socket, store) {
 
 export function createLogout(navTo) {
   return function logout() {
+    mixpanel.track(LOGOUT);
     return {
       type: LOGOUT,
       payload: {
-        promise: axios.get('/api/v1/logout').then(tap(() => navTo('/login'))),
+        promise: axios.get('/api/v1/logout').tap(() => navTo('/login')),
       }
     };
   };
@@ -30,10 +30,11 @@ export function createLogout(navTo) {
 
 export function createDeleteAccount(navTo) {
   return function deleteAccount() {
+    mixpanel.track(DELETE_ACCOUNT);
     return {
       type: DELETE_ACCOUNT,
       payload: {
-        promise: axios.delete('/api/v1/account').then(tap(() => navTo('/login'))),
+        promise: axios.delete('/api/v1/account').tap(() => navTo('/login')),
       }
     };
   };

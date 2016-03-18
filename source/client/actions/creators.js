@@ -1,6 +1,5 @@
 import axios from 'axios';
 import validate from 'validate.js';
-import { tap } from 'ramda';
 import mixpanel from '../mixpanel';
 import { collect } from '../helpers/form';
 
@@ -47,12 +46,14 @@ export function getAllTags() {
 }
 
 export function openAddTagModal() {
+  mixpanel.track(OPEN_ADD_TAG_MODAL);
   return {
     type: OPEN_ADD_TAG_MODAL,
   };
 }
 
 export function closeAddTagModal() {
+  mixpanel.track(CLOSE_ADD_TAG_MODAL);
   return {
     type: CLOSE_ADD_TAG_MODAL,
   };
@@ -76,17 +77,19 @@ export function addTag(event) {
   }
 
   return function (dispatch) {
+    mixpanel.track(ADD_TAG);
     dispatch({
       type: ADD_TAG,
       payload: {
         promise: axios.post('/api/v1/tags', { name: inputs.tag_text })
-          .then(tap( (data) => dispatch(closeAddTagModal()) )),
+          .tap((data) => dispatch(closeAddTagModal())),
       },
     });
   };
 }
 
 export function applyTagToRepo(tag_id, repo_id) {
+  mixpanel.track(APPLY_TAG_TO_REPO);
   return {
     type: APPLY_TAG_TO_REPO,
     payload: {
@@ -97,18 +100,21 @@ export function applyTagToRepo(tag_id, repo_id) {
 }
 
 export function beginDragTag() {
+  mixpanel.track(BEGIN_DRAG_TAG);
   return {
     type: BEGIN_DRAG_TAG,
   };
 }
 
 export function endDragTag() {
+  mixpanel.track(END_DRAG_TAG);
   return {
     type: END_DRAG_TAG,
   };
 }
 
 export function deleteTag({ tagId }) {
+  mixpanel.track(DELETE_TAG);
   return {
     type: DELETE_TAG,
     payload: {
@@ -119,6 +125,7 @@ export function deleteTag({ tagId }) {
 }
 
 export function removeRepoTag(repoTag) {
+  mixpanel.track(REMOVE_REPO_TAG);
   return {
     type: REMOVE_REPO_TAG,
     payload: {
@@ -129,6 +136,7 @@ export function removeRepoTag(repoTag) {
 }
 
 export function selectTag(tagId) {
+  mixpanel.track(SELECT_TAG);
   return {
     type: SELECT_TAG,
     payload: { tagId },
