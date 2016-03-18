@@ -5,34 +5,63 @@ const Bluebird = require('bluebird');
 const fs = Bluebird.promisifyAll(require('fs'));
 const co = require('co');
 const template = require('lodash/template');
+const program = require('commander');
 const exec = require('./util/ShellUtil').exec;
 
+const DCONFIG_PATH = 'config/deployment.json';
+
+program
+  .option('--build-node', 'Build node, node_modules and app, then deploy')
+  .option('--build-node-modules', 'Build node_modules and app, then deploy')
+  .option('--create-rc', 'Create RC if not exist')
+  .parse(process.argv);
+
+const buildImage = co.wrap(function *(imageconfig) {
+  const {name, version, dockerfile, isTemplate} = imageconfig;
+  let dfpath;
+  if (isTemplate) {
+    dfpath = `_build-tmp/${dockerfile}`;
+    yield renderTmplToFile(dockerfile, {base_image_version: version}, dfpath);
+  } else {
+    dfpath = dockerfile;
+  }
+  const image = `${name}:${version}`;
+  yield exec(`docker build -f ${dfpath} -t ${image} --no-cache .`);
+  yield exec(`gcloud docker push ${image}`);
+});
+
 co(function *() {
-  yield exec('npm version major');
-
-  const pkg = require('../package.json');
-  const version = `v${pkg.version.split('.')[0]}`;
-
-  yield exec('env NODE_ENV=production npm run build');
-  yield exec(`docker build -t us.gcr.io/starboard-1224/starboard:${version} --no-cache .`);
-  yield exec(`gcloud docker push us.gcr.io/starboard-1224/starboard:${version}`);
-
-  const rcTmpl = yield fs.readFileAsync(join(__dirname, '../starboard-replication-controller.yml'), 'utf8');
-  const newRc = template(rcTmpl)({ version });
-
   try {
-    yield fs.mkdirAsync(join(__dirname, '../_build-artifacts'));
+    yield fs.mkdir(join(__dirname, '../_build-tmp'));
   } catch (err) {
-    // if (err.code !== )
-    console.error(err.code);
+    console.log(err);
   }
 
-  const newRcFilePath = join(__dirname, '../_build-artifacts/starboard-replication-controller.yml');
+  const dconfig = yield readJson(DCONFIG_PATH);
 
-  yield fs.writeFileAsync(newRcFilePath, newRc, 'utf8');
+  if (program.buildNode) {
+    dconfig.images[0].version += 1;
+    yield buildImage(dconfig.images[0]);
+    yield writeJson(DCONFIG_PATH, dconfig);
+  }
 
-  const output = yield exec('kubectl get rc -o=json', {wantReturns: true});
-  const controllers = JSON.parse(output);
+  if (program.buildNodeModules) {
+    dconfig.images[1].version += 1;
+    yield buildImage(dconfig.images[1]);
+    yield writeJson(DCONFIG_PATH, dconfig);
+  }
+
+  yield exec('npm version major');
+  yield exec('env NODE_ENV=production npm run build');
+
+  dconfig.images[2].version += 1;
+  yield buildImage(dconfig.images[2]);
+  yield writeJson(DCONFIG_PATH, dconfig);
+
+  const {version} = dconfig.images[2];
+
+  const rcoutput = yield exec('kubectl get rc -o=json', {wantReturns: true});
+  const controllers = JSON.parse(rcoutput);
 
   let currentCtrlName;
 
@@ -43,11 +72,43 @@ co(function *() {
     }
   }
 
+  const newRcFilePath = '_build-tmp/starboard-replication-controller.yml';
+  yield renderTmplToFile(
+    'starboard-replication-controller.yml.tmpl',
+    {version},
+    newRcFilePath);
+
   if (!currentCtrlName) {
-    console.log('cannot find starboard replication controller, creating one');
-    yield exec(`kubectl create -f ${newRcFilePath}`);
+    if (program.createRc) {
+      console.log('cannot find "starboard" replication controller, creating one');
+      yield exec(`kubectl create -f ${newRcFilePath}`);
+    } else {
+      throw new Error('cannot find "starboard" replication controller');
+    }
   } else {
     yield exec(`kubectl rolling-update ${currentCtrlName} -f ${newRcFilePath}`);
   }
 })
-.catch(console.error);
+.catch((err) => {
+  console.error(err);
+  console.error(err.stack);
+});
+
+function readJson(fpath) {
+  return fs.readFileAsync(join(__dirname, '..', fpath), 'utf8')
+    .then(JSON.parse);
+}
+
+function writeJson(fpath, obj) {
+  const content = JSON.stringify(obj, null, 2);
+  return fs.writeFileAsync(join(__dirname, '..', fpath), content, 'utf8');
+}
+
+function renderTmplToFile(tpath, locals, dpath) {
+  return fs.readFileAsync(join(__dirname, '..', tpath), 'utf8')
+    .then((fcontent) => fs.writeFileAsync(
+      join(__dirname, '..', dpath),
+      template(fcontent)(locals),
+      'utf8'
+    ));
+}

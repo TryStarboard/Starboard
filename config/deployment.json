@@ -1,0 +1,21 @@
+{
+  "images": [
+    {
+      "name": "us.gcr.io/starboard-1224/starboard-node",
+      "dockerfile": "Dockerfile-node",
+      "version": 0
+    },
+    {
+      "name": "us.gcr.io/starboard-1224/starboard-node-modules",
+      "dockerfile": "Dockerfile-node-modules.tmpl",
+      "isTemplate": true,
+      "version": 0
+    },
+    {
+      "name": "us.gcr.io/starboard-1224/starboard",
+      "dockerfile": "Dockerfile.tmpl",
+      "isTemplate": true,
+      "version": 0
+    }
+  ]
+}
