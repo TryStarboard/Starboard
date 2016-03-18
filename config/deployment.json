@@ -15,7 +15,7 @@
       "name": "us.gcr.io/starboard-1224/starboard",
       "dockerfile": "Dockerfile",
       "isTemplate": true,
-      "version": 4
+      "version": 5
     }
   ]
 }
