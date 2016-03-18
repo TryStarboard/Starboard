@@ -16,12 +16,12 @@ program
   .option('--create-rc', 'Create RC if not exist')
   .parse(process.argv);
 
-const buildImage = co.wrap(function *(imageconfig) {
+const buildImage = co.wrap(function *(imageconfig, baseImageVersion) {
   const {name, version, dockerfile, isTemplate} = imageconfig;
   let dfpath;
   if (isTemplate) {
     dfpath = `_build-tmp/${dockerfile}`;
-    yield renderTmplToFile(dockerfile, {base_image_version: version}, dfpath);
+    yield renderTmplToFile(`${dockerfile}.tmpl`, {base_image_version: baseImageVersion}, dfpath);
   } else {
     dfpath = dockerfile;
   }
@@ -32,9 +32,11 @@ const buildImage = co.wrap(function *(imageconfig) {
 
 co(function *() {
   try {
-    yield fs.mkdir(join(__dirname, '../_build-tmp'));
+    yield fs.mkdirAsync(join(__dirname, '../_build-tmp'));
   } catch (err) {
-    console.log(err);
+    if (err.code !== 'EEXIST') {
+      throw err;
+    }
   }
 
   const dconfig = yield readJson(DCONFIG_PATH);
@@ -45,17 +47,16 @@ co(function *() {
     yield writeJson(DCONFIG_PATH, dconfig);
   }
 
-  if (program.buildNodeModules) {
+  if (program.buildNode || program.buildNodeModules) {
     dconfig.images[1].version += 1;
-    yield buildImage(dconfig.images[1]);
+    yield buildImage(dconfig.images[1], dconfig.images[0].version);
     yield writeJson(DCONFIG_PATH, dconfig);
   }
 
-  yield exec('npm version major');
   yield exec('env NODE_ENV=production npm run build');
 
   dconfig.images[2].version += 1;
-  yield buildImage(dconfig.images[2]);
+  yield buildImage(dconfig.images[2], dconfig.images[1].version);
   yield writeJson(DCONFIG_PATH, dconfig);
 
   const {version} = dconfig.images[2];
@@ -75,7 +76,7 @@ co(function *() {
   const newRcFilePath = '_build-tmp/starboard-replication-controller.yml';
   yield renderTmplToFile(
     'starboard-replication-controller.yml.tmpl',
-    {version},
+    {version: `v${version}`},
     newRcFilePath);
 
   if (!currentCtrlName) {

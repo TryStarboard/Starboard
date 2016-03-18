@@ -1,3 +1,6 @@
+.git
+.idea
+_build-tmp
 config/local*
 design
 eslint-rules
@@ -6,8 +9,6 @@ node_modules
 script
 secret
 source
-.git
-.idea
 .DS_Store
 .dockerignore
 .eslintrc.yml
