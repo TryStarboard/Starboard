@@ -1,9 +1,9 @@
 import config from 'config';
 import koa from 'koa';
-import render from 'koa-ejs';
 import koaStatic from 'koa-static';
 import bodyParser from 'koa-bodyparser';
 import koaLogger from 'koa-logger';
+import views from 'koa-views';
 import session from '../util/session';
 import log from '../util/log';
 import { authInit, authSession } from '../util/auth';
@@ -17,15 +17,11 @@ export default function createKoaServer() {
 
   app.keys = config.get('cookie.keys');
 
-  render(app, {
-    root: config.get('koa.templateDir'),
-    layout: false,
-    viewExt: 'ejs',
-    cache: false,
-    debug: true,
-  });
-
   app.use(koaStatic(config.get('koa.publicDir')));
+
+  app.use(views(config.get('koa.templateDir'), {
+    extension: 'ejs',
+  }));
 
   if (config.get('isDev')) {
     app.use(koaLogger());
