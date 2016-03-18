@@ -29,7 +29,7 @@ module.exports = {
     callbackURL: process.env.GITHUB_CALLBACK_URL,
   },
   mixpanel: {
-    token: process.env.MIXPANEL_TOKEN,
+    token: null,
   },
   logging: {
     Logentries: {
