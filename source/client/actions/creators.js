@@ -23,10 +23,7 @@ export function getCurrentUser() {
     type: GET_CURRENT_USER,
     payload: {
       promise: axios.get('/api/v1/me')
-        .then(({data: user}) => {
-          mixpanel.identify(user.id);
-          return user;
-        }),
+        .tap(({data: user}) => mixpanel.identify(user.id)),
     }
   };
 }
