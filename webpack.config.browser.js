@@ -24,6 +24,10 @@ const config = {
     }
   },
 
+  externals: {
+    mixpanel: 'window.mixpanel',
+  },
+
   module: {
     loaders: [
       {

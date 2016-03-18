@@ -29,4 +29,7 @@ module.exports = {
     clientSecret: process.env.GITHUB_CLIENT_SECRET,
     callbackURL: 'http://localhost:10010/github-back'
   },
+  mixpanel: {
+    token: null,
+  },
 };

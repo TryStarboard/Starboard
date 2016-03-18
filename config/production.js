@@ -28,6 +28,9 @@ module.exports = {
     clientSecret: process.env.GITHUB_CLIENT_SECRET,
     callbackURL: process.env.GITHUB_CALLBACK_URL,
   },
+  mixpanel: {
+    token: process.env.MIXPANEL_TOKEN,
+  },
   logging: {
     Logentries: {
       token: process.env.LOG_ENTRIES_TOKEN,
