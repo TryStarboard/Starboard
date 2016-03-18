@@ -5,7 +5,7 @@ import co from 'co';
 import { client as redisClient } from './redis';
 import log from './log';
 import syncStarsForUser from './data/syncStarsForUser';
-import { SYNC_REPOS } from '../../client/actions/factory';
+import { SYNC_REPOS } from '../../shared/action-types';
 import {
   UPDATE_SOME_REPOS,
   REMOVE_REPOS,
