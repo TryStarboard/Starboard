@@ -3,20 +3,20 @@ apiVersion: v1
 kind: ReplicationController
 
 metadata:
-  name: starboard-rc-<%= version %>-production
+  name: starboard-rc-v<%= version %>-production
 
 spec:
   replicas: 1
   selector:
     app: starboard
-    deployment: <%= version %>
+    deployment: v<%= version %>
     environment: production
 
   template:
     metadata:
       labels:
         app: starboard
-        deployment: <%= version %>
+        deployment: v<%= version %>
         environment: production
 
     spec:

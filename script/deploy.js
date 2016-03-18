@@ -76,7 +76,7 @@ co(function *() {
   const newRcFilePath = '_build-tmp/starboard-replication-controller.yml';
   yield renderTmplToFile(
     'starboard-replication-controller.yml.tmpl',
-    {version: `v${version}`},
+    {version},
     newRcFilePath);
 
   if (!currentCtrlName) {
