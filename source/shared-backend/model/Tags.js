@@ -1,5 +1,5 @@
 import { wrap } from 'co';
-import db from '../db';
+import db       from '../db';
 
 export function getAll(id) {
   return db

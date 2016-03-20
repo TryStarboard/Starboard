@@ -1,6 +1,6 @@
 import { wrap } from 'co';
-import db from '../util/db';
-import github from '../util/github';
+import db       from '../db';
+import github   from '../github';
 
 // { login: 'd6u',
 //   id: 1234,
