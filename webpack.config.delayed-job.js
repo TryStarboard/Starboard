@@ -5,7 +5,7 @@ const join = require('path').join;
 
 module.exports = {
   target: 'node',
-  entry: './source/server/index.js',
+  entry: './source/delayed-job/index.js',
   externals: fs.readdirSync(join(__dirname, 'node_modules'))
     .filter((x) => x !== '.bin')
     .map((x) => new RegExp(`^${x}`)),
@@ -19,7 +19,7 @@ module.exports = {
     setImmediate: false,
   },
   output: {
-    filename: 'server.js',
+    filename: 'delayed-job.js',
     path: join(__dirname, 'build'),
     libraryTarget: 'commonjs2',
   },
