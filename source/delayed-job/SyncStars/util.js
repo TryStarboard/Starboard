@@ -1,4 +1,4 @@
-import { curry, pick, map, omit } from 'ramda';
+import { curry, pick, map, omit, pipe, path, defaultTo } from 'ramda';
 import co from 'co';
 import { Observable } from 'rx';
 import parseLinkHeader from 'parse-link-header';
@@ -34,7 +34,11 @@ export function getStarred(client, query) {
       }
     },
     query
-  );
+  )
+    .then(function ([, repos, headers]) {
+      const {lastPage, nextPage} = getLinkHeaderInfo(headers.link);
+      return {repos, lastPage, nextPage};
+    });
 }
 
 export function transformReposForInsertion(repos) {
@@ -49,7 +53,8 @@ export function transformReposForInsertion(repos) {
 /**
  * Data source from Github, emit fetched data from github
  *
- * @param {number} id Local User ID
+ * @param {number} user_id Local User ID
+ * @param {Object} client Github client to make API requests
  *
  * @return {Observable} Emit two types of item
  *                      interface ReposItem {
@@ -61,53 +66,56 @@ export function transformReposForInsertion(repos) {
  *                      	total_page: number,
  *                      }
  */
-export function createDataSource(id) {
+function createDataSource(user_id, client) {
+  const transformRepos = map(transformRepo(user_id));
+
   return Observable.create((observer) => {
-    let isStopped = false;
-
     co(function *() {
-      const transformRepos = map(transformRepo(id));
-      const [{ access_token }] = yield db('users').select('access_token').where({ id });
-      const client = github.client(access_token);
-
-      let page = 1;
       let gotTotalPage = false;
 
-      // Let's only support 2000 stars for now, 1 page shows 100 repos
-      while (page <= 20 && !isStopped) {
-        const query = { per_page: 100, page };
-        const [, repos, headers] = yield getStarred(client, query);
-
-        const linkHeader = parseLinkHeader(headers.link);
+      // Let's only support 2000 stars for now, 1 page contains 100 repos
+      for (let page = 1; page <= 20; page += 1) {
+        const query = {per_page: 100, page};
+        const {repos, lastPage, nextPage} = yield getStarred(client, query);
 
         // Report total page number for tracking progress
         //
-        if (!gotTotalPage && linkHeader && linkHeader.last) {
+        if (!gotTotalPage && lastPage !== null) {
           gotTotalPage = true;
-          observer.onNext({
-            type: 'SUMMARY_ITEM',
-            total_page: parseInt(linkHeader.last.page),
-          });
+          observer.onNext({type: 'SUMMARY_ITEM', total_page: lastPage});
         }
 
-        observer.onNext({
-          type: 'REPOS_ITEM',
-          repos: transformRepos(repos),
-        });
-
-        if (!linkHeader || !linkHeader.next) {
+        observer.onNext({type: 'REPOS_ITEM', repos: transformRepos(repos)});
+        if (nextPage === null) {
           break;
         }
-
-        page = linkHeader.next.page;
+        page = nextPage;
       }
 
       observer.onCompleted();
     })
     .catch(::observer.onError);
-
-    return () => {
-      isStopped = true;
-    };
   });
+}
+
+function getLinkHeaderInfo(linkHeader) {
+  const data = parseLinkHeader(linkHeader);
+  return {
+    lastPage: pipe(path(['last', 'page']), parseInt, defaultTo(null))(data),
+    nextPage: pipe(path(['next', 'page']), parseInt, defaultTo(null))(data),
+  };
+}
+
+export function createRepoSource(user_id) {
+  return getGithubClientForUser(user_id)
+    .then(function (client) {
+      return createDataSource(user_id, client);
+    });
+}
+
+function getGithubClientForUser(user_id) {
+  return db('users').select('access_token').where({ id: user_id })
+    .then(function ([{ access_token }]) {
+      return github.client(access_token);
+    });
 }

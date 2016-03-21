@@ -2,7 +2,7 @@ import { wrap                                         } from 'co';
 import { map, uniq, compact                           } from 'lodash';
 import { Observable, Subject                          } from 'rx';
 import db                                               from '../../shared-backend/db';
-import { transformReposForInsertion, createDataSource } from './util';
+import { transformReposForInsertion, createRepoSource } from './util';
 
 /**
  * Data source from Github, emit fetched data from github
@@ -26,7 +26,7 @@ import { transformReposForInsertion, createDataSource } from './util';
 export default function (id) {
   const IDs = [];
   const progressSubject = new Subject();
-  const source = createDataSource(id);
+  const source = createRepoSource(id);
 
   const reposSelector = wrap(function *(repos) {
     const [githubIdLangMap, transformedRepos] = transformReposForInsertion(repos);
