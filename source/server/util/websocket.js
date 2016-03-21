@@ -4,7 +4,7 @@ import Cookies from 'cookies';
 import co from 'co';
 import { client as redisClient } from './redis';
 import log from './log';
-// import syncStarsForUser from './data/syncStarsForUser';
+import { enqueueSyncStarsJob } from './JobQueue';
 import { SYNC_REPOS } from '../../shared/action-types';
 import {
   UPDATE_SOME_REPOS,
@@ -36,20 +36,24 @@ function authenticate(socket, next) {
 
 function handleSyncRepos(socket) {
   return function () {
-    // syncStarsForUser(socket.handshake.user.id)
-    //   .subscribe(
-    //     ({ type, data }) => {
-    //       if (type === 'PROGRESS') {
-    //         const { repos, tags } = data;
-    //         socket.emit(UPDATE_TAGS, tags);
-    //         socket.emit(UPDATE_SOME_REPOS, repos);
-    //       } else {
-    //         // type === 'DELETE'
-    //         socket.emit(REMOVE_REPOS, data);
-    //       }
-    //     },
-    //     (error) => log.error('sync-stars-error', { error })
-    //   );
+    enqueueSyncStarsJob(socket.handshake.user.id)
+      .subscribe(
+        (event) => {
+          switch (event.type) {
+          case 'PROGRESS':
+            const {tags, repos} = event.data;
+            socket.emit(UPDATE_TAGS, tags);
+            socket.emit(UPDATE_SOME_REPOS, repos);
+            break;
+          case 'DELETE':
+            socket.emit(REMOVE_REPOS, event.data);
+            break;
+          default:
+            // No additional case
+          }
+        },
+        (error) => log.error('sync-stars-error', { error })
+      );
   };
 }
 
