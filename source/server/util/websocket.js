@@ -1,11 +1,11 @@
-import config from 'config';
-import socketio from 'socket.io';
-import Cookies from 'cookies';
-import co from 'co';
+import config                    from 'config';
+import socketio                  from 'socket.io';
+import Cookies                   from 'cookies';
+import co                        from 'co';
+import log                       from '../../shared-backend/log';
+import { SYNC_REPOS            } from '../../shared/action-types';
 import { client as redisClient } from './redis';
-import log from './log';
-import { enqueueSyncStarsJob } from './JobQueue';
-import { SYNC_REPOS } from '../../shared/action-types';
+import { enqueueSyncStarsJob   } from './JobQueue';
 import {
   UPDATE_SOME_REPOS,
   REMOVE_REPOS,
