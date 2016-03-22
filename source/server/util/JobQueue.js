@@ -16,38 +16,50 @@ const queue = kue.createQueue({
   }
 });
 
+const sub = new Redis(REDIS_CONFIG);
+
 export function enqueueSyncStarsJob(user_id) {
   const job = queue.create('sync-stars', {user_id});
-  const source = Observable.create((observer) => {
-    /**
-    * progress: number, percentage
-    * data: Object
-    */
-    job.on('progress', (progress, event) => {
-      switch (event.type) {
-      case 'PROGRESS':
-        props({
-          repos: getReposWithIds(event.repo_ids),
-          tags: getAllTags(user_id),
-        })
-        .then((data) => {
-          observer.onNext({type: 'PROGRESS', progress, data});
-        });
-        break;
-      case 'DELETE':
-        observer.onNext({type: 'DELETE', progress, data: event.deleted_repo_ids});
-        break;
-      default:
-        // No additional case
-      }
-    });
+  const channelName = `sync-stars:user_id:${user_id}`;
 
-    job.save((err) => {
-      if (err) {
-        observer.onError(err);
-      }
-    });
-  });
+  sub.subscribe(channelName, (err, count) => {});
+  sub.unsubscribe(channelName, (err, count) => {});
 
-  return {job, source};
+  sub.on('message', console.log);
+  sub.removeEventListener('message', console.log);
+
+  job.save();
+
+  // const source = Observable.create((observer) => {
+  //   /**
+  //   * progress: number, percentage
+  //   * data: Object
+  //   */
+  //   job.on('progress', (progress, event) => {
+  //     switch (event.type) {
+  //     case 'PROGRESS':
+  //       props({
+  //         repos: getReposWithIds(event.repo_ids),
+  //         tags: getAllTags(user_id),
+  //       })
+  //       .then((data) => {
+  //         observer.onNext({type: 'PROGRESS', progress, data});
+  //       });
+  //       break;
+  //     case 'DELETE':
+  //       observer.onNext({type: 'DELETE', progress, data: event.deleted_repo_ids});
+  //       break;
+  //     default:
+  //       // No additional case
+  //     }
+  //   });
+
+  //   job.save((err) => {
+  //     if (err) {
+  //       observer.onError(err);
+  //     }
+  //   });
+  // });
+
+  // return source;
 }

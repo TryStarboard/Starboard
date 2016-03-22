@@ -14,6 +14,8 @@ const queue = kue.createQueue({
   }
 });
 
+const pub = new Redis(REDIS_CONFIG);
+
 queue.process('sync-stars', 5, function (job, done) {
   const data = job.data;
   let total;
@@ -28,12 +30,11 @@ queue.process('sync-stars', 5, function (job, done) {
       total = event.total_page + 1;
       break;
     case 'UPDATED_ITEM':
-      i += 1;
-      job.progress(i, total);
-      break;
+      // Fallthrough
     case 'DELETED_ITEM':
       i += 1;
       job.progress(i, total);
+      pub.publish(`sync-stars:user_id:${data.user_id}`, JSON.stringify(event));
       break;
     default:
       // No additional case
