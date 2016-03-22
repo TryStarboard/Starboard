@@ -41,14 +41,15 @@ export default function (user_id) {
 
   const reposSource = reposItemsSource
     .flatMapWithMaxConcurrent(1, reposSelector)
-    .share();
+    .shareReplay();
   const tagsSource = reposItemsSource
     .flatMapWithMaxConcurrent(1, tagsSelector(user_id));
 
-  Observable.merge(
+  // Use "concat" because we want to make sure DELETED_ITEM comes last
+  Observable.concat(
     Observable
       .zip(reposSource, tagsSource)
-      .flatMap(reposAndLanguageTagMapSelector(user_id))
+      .flatMapWithMaxConcurrent(1, reposAndLanguageTagMapSelector(user_id))
       .doOnNext(emitProgressItem),
     reposSource
       .map(pluck('id'))
