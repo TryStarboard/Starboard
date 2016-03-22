@@ -1,5 +1,7 @@
-import { curry, pick, map, omit, pipe, path, defaultTo } from 'ramda';
-import co from 'co';
+import {
+  curry, curryN, pluck, filter, identity, uniq, pick, map,
+  omit, pipe, path, defaultTo } from 'ramda';
+import co, { wrap } from 'co';
 import { Observable } from 'rx';
 import parseLinkHeader from 'parse-link-header';
 
@@ -142,3 +144,74 @@ function getGithubClientForUser(user_id) {
       return github.client(access_token);
     });
 }
+
+/**
+ * @param {Object[]} repos Raw star object from github
+ *
+ * @yield {Promise<{id: number; language: string;}>} Resolve
+ */
+export const reposSelector = wrap(function *(repos) {
+  const [githubIdLangMap, transformedRepos] = transformReposForInsertion(repos);
+
+  const transformInsertedRepos = map(function ({id: repo_id, github_id}) {
+    return {id: repo_id, language: githubIdLangMap[github_id]};
+  });
+
+  const {rows} = yield db.raw(
+    '? ON CONFLICT (user_id, github_id) ' +
+    'DO UPDATE SET (full_name, description, homepage, html_url, forks_count, stargazers_count) = ' +
+    '(' +
+      'EXCLUDED.full_name, EXCLUDED.description, EXCLUDED.homepage, ' +
+      'EXCLUDED.html_url, EXCLUDED.forks_count, EXCLUDED.stargazers_count' +
+    ') ' +
+    'RETURNING id, github_id',
+    [db('repos').insert(transformedRepos)]
+  );
+
+  return transformInsertedRepos(rows);
+});
+
+export const tagsSelector = curryN(2, wrap(function *(user_id, repos) {
+  const tags = pipe(
+    pluck('language'),
+    filter(identity),
+    uniq,
+    map((text) => ({user_id, text}))
+  )(repos);
+
+  const sql = db('tags').insert(tags);
+  yield db.raw('? ON CONFLICT DO NOTHING', [sql]);
+  const allTags = yield db('tags').select('id', 'text').where({user_id});
+
+  const languageTagMap = {};
+
+  for (const {id: tag_id, text} of allTags) {
+    languageTagMap[text] = tag_id;
+  }
+
+  return languageTagMap;
+}));
+
+export const reposAndLanguageTagMapSelector = curryN(2, wrap(function *(user_id, [repos, languageTagMap]) {
+  const entries = pipe(
+    map(({id: repo_id, language}) => {
+      if (language == null) {
+        return null;
+      }
+      return {user_id, repo_id, tag_id: languageTagMap[language]};
+    }),
+    filter(identity)
+  )(repos);
+
+  yield db.raw('? ON CONFLICT DO NOTHING', [db('repo_tags').insert(entries)]);
+
+  return pluck('id', repos);
+}));
+
+export const deleteRepos = curry((user_id, ids) => {
+  return db('repos')
+    .where('user_id', user_id)
+    .whereNotIn('id', ids)
+    .del()
+    .returning('id');
+});
