@@ -98,19 +98,44 @@ function createDataSource(user_id, client) {
   });
 }
 
+/**
+  enum ParsedLinkHeaderRel {
+    Next = 'next',
+    Last = 'last',
+    First = 'first',
+    Prev = 'prev',
+  }
+
+  interface ParsedLinkHeaderItem {
+    per_page: string;
+    page: string;
+    access_token: string;
+    rel: ParsedLinkHeaderRel;
+    url: string;
+  }
+
+  interface ParsedLinkHeader {
+    next?: ParsedLinkHeaderItem;
+    last?: ParsedLinkHeaderItem;
+    first?: ParsedLinkHeaderItem;
+    prev?: ParsedLinkHeaderItem;
+  }
+
+ * @param  {string} linkHeader "link" property from Headers
+ * @return {Object} {lastPage?: number, nextPage?: number}
+ */
 function getLinkHeaderInfo(linkHeader) {
-  const data = parseLinkHeader(linkHeader);
+  const parsed = parseLinkHeader(linkHeader); // ParsedLinkHeader
   return {
-    lastPage: pipe(path(['last', 'page']), parseInt, defaultTo(null))(data),
-    nextPage: pipe(path(['next', 'page']), parseInt, defaultTo(null))(data),
+    lastPage: pipe(path(['last', 'page']), parseInt, defaultTo(null))(parsed),
+    nextPage: pipe(path(['next', 'page']), parseInt, defaultTo(null))(parsed),
   };
 }
 
 export function createRepoSource(user_id) {
-  return getGithubClientForUser(user_id)
-    .then(function (client) {
-      return createDataSource(user_id, client);
-    });
+  return Observable
+    .fromPromise(getGithubClientForUser(user_id))
+    .flatMap((client) => createDataSource(user_id, client));
 }
 
 function getGithubClientForUser(user_id) {
