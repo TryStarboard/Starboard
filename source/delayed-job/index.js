@@ -1,6 +1,7 @@
 import kue            from 'kue';
 import config         from 'config';
 import Redis          from 'ioredis';
+import log            from '../shared-backend/log';
 import startSyncStars from './SyncStars';
 
 const REDIS_CONFIG = config.get('redis');
@@ -18,26 +19,29 @@ queue.process('sync-stars', 5, function (job, done) {
   let total;
   let i = 0;
 
-  startSyncStars(data.user_id).subscribe(
-    (event) => {
-      switch (event.type) {
-      case 'SUMMARY':
-        // Plus one because we have to an additional delete step after all pages
-        total = event.total_page + 1;
-        break;
-      case 'PROGRESS':
-        i += 1;
-        job.progress(i, total, {type: 'PROGRESS', repo_ids: event.repo_ids});
-        break;
-      case 'DELETE':
-        i += 1;
-        job.progress(i, total, {type: 'DELETE', deleted_repo_ids: event.deleted_repo_ids});
-        break;
-      default:
-        // No additional case
-      }
+  startSyncStars(data.user_id).subscribe(onNext, onError, done);
+
+  function onNext(event) {
+    switch (event.type) {
+    case 'SUMMARY_ITEM':
+      // Plus one because we have to an additional delete step after all pages
+      total = event.total_page + 1;
+      break;
+    case 'UPDATED_ITEM':
+      i += 1;
+      job.progress(i, total);
+      break;
+    case 'DELETED_ITEM':
+      i += 1;
+      job.progress(i, total);
+      break;
+    default:
+      // No additional case
     }
-    // },
-    // (error) => log.error('sync-stars-error', { error })
-  );
+  }
+
+  function onError(err) {
+    log.error('sync-stars-error', {err});
+    done(err);
+  }
 });
