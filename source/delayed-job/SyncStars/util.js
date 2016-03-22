@@ -72,9 +72,10 @@ function createDataSource(user_id, client) {
   return Observable.create((observer) => {
     co(function *() {
       let gotTotalPage = false;
+      let page = 1;
 
       // Let's only support 2000 stars for now, 1 page contains 100 repos
-      for (let page = 1; page <= 20; page += 1) {
+      while (page !== null && page <= 20) {
         const query = {per_page: 100, page};
         const {repos, lastPage, nextPage} = yield getStarred(client, query);
 
@@ -86,9 +87,6 @@ function createDataSource(user_id, client) {
         }
 
         observer.onNext({type: 'REPOS_ITEM', repos: transformRepos(repos)});
-        if (nextPage === null) {
-          break;
-        }
         page = nextPage;
       }
 

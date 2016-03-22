@@ -1,125 +1,127 @@
 import { wrap                                         } from 'co';
 import { map, uniq, compact                           } from 'lodash';
 import { Observable, Subject                          } from 'rx';
+import { propEq, map as Rmap, concat, curry, curryN, prop } from 'ramda';
 import db                                               from '../../shared-backend/db';
 import { transformReposForInsertion, createRepoSource } from './util';
 
 /**
+ * @param {Object[]} repos Raw star object from github
+ *
+ * @yield {Promise<{id: number; language: string;}>} Resolve
+ */
+const reposSelector = wrap(function *(repos) {
+  const [githubIdLangMap, transformedRepos] = transformReposForInsertion(repos);
+
+  const transformInsertedRepos = Rmap(function ({id: repo_id, github_id}) {
+    return {id: repo_id, language: githubIdLangMap[github_id]};
+  });
+
+  const {rows} = yield db.raw(
+    '? ON CONFLICT (user_id, github_id) ' +
+    'DO UPDATE SET (full_name, description, homepage, html_url, forks_count, stargazers_count) = ' +
+    '(' +
+      'EXCLUDED.full_name, EXCLUDED.description, EXCLUDED.homepage, ' +
+      'EXCLUDED.html_url, EXCLUDED.forks_count, EXCLUDED.stargazers_count' +
+    ') ' +
+    'RETURNING id, github_id',
+    [db('repos').insert(transformedRepos)]
+  );
+
+  return transformInsertedRepos(rows);
+});
+
+const tagsSelector = curryN(2, wrap(function *(user_id, repos) {
+  const languages = uniq(compact(map(repos, 'language')));
+  const sql = db('tags').insert(languages.map((lang) => ({user_id, text: lang})));
+  yield db.raw('? ON CONFLICT DO NOTHING', [sql]);
+  const tags = yield db('tags').select('id', 'text').where({user_id});
+
+  const languageTagMap = {};
+
+  for (const {id: tag_id, text} of tags) {
+    languageTagMap[text] = tag_id;
+  }
+
+  return languageTagMap;
+}));
+
+const reposAndLanguageTagMapSelector = curryN(2, wrap(function *(user_id, [repos, languageTagMap]) {
+  const entries = compact(repos.map(({id: repo_id, language}) => {
+    if (language == null) {
+      return null;
+    }
+    return {repo_id, tag_id: languageTagMap[language], user_id};
+  }));
+
+  yield db.raw('? ON CONFLICT DO NOTHING', [db('repo_tags').insert(entries)]);
+
+  return map(repos, 'id');
+}));
+
+const deleteRepos = curry((user_id, ids) => {
+  return db('repos')
+    .where('user_id', user_id)
+    .whereNotIn('id', ids)
+    .del()
+    .returning('id');
+});
+
+/**
  * Data source from Github, emit fetched data from github
  *
- * @param {number} id Local User ID
+ * @param {number} user_id Local User ID
  *
  * @return {Observable} Emit two types of item
  *                      interface SummaryItem {
- *                      	type: 'SUMMARY',
+ *                      	type: 'SUMMARY_ITEM',
  *                      	total_page: number,
  *                      }
- *                      interface ProgressItem {
- *                      	type: 'PROGRESS',
+ *                      interface UpdatedItem {
+ *                      	type: 'UPDATED_ITEM',
  *                      	repo_ids: number[],
  *                      }
- *                      interface DeleteItem {
- *                      	type: 'DELETE',
+ *                      interface DeletedItem {
+ *                      	type: 'DELETED_ITEM',
  *                      	deleted_repo_ids: number[],
  *                      }
  */
-export default function (id) {
-  const IDs = [];
-  const progressSubject = new Subject();
-  const source = createRepoSource(id);
+export default function (user_id) {
+  const returnSubject = new Subject();
 
-  const reposSelector = wrap(function *(repos) {
-    const [githubIdLangMap, transformedRepos] = transformReposForInsertion(repos);
+  const reposSharedSource = createRepoSource(user_id).share();
 
-    const { rows } = yield db.raw(
-      '? ON CONFLICT (user_id, github_id) ' +
-      'DO UPDATE SET (full_name, description, homepage, html_url, forks_count, stargazers_count) = ' +
-      '(' +
-        'EXCLUDED.full_name, EXCLUDED.description, EXCLUDED.homepage, ' +
-        'EXCLUDED.html_url, EXCLUDED.forks_count, EXCLUDED.stargazers_count' +
-      ') ' +
-      'RETURNING id, github_id',
-      [ db('repos').insert(transformedRepos) ]
-    );
+  reposSharedSource
+    .filter(propEq('type', 'SUMMARY_ITEM'))
+    .subscribe(::returnSubject.onNext, ::returnSubject.onError);
+  const reposItemsSource = reposSharedSource
+    .filter(propEq('type', 'REPOS_ITEM'))
+    .map(prop('repos'))
+    .share();
 
-    return rows.map(({ id: repo_id, github_id }) => {
-      IDs.push(repo_id);
-      return {id: repo_id, language: githubIdLangMap[github_id]};
-    });
-  });
+  const reposSource = reposItemsSource.flatMapWithMaxConcurrent(1, reposSelector);
+  const tagsSource = reposItemsSource.flatMapWithMaxConcurrent(1, tagsSelector(user_id));
 
-  const tagsSelector = wrap(function *(repos) {
-    const languages = uniq(compact(map(repos, 'language')));
-    const sql = db('tags').insert(languages.map((lang) => ({user_id: id, text: lang})));
-    yield db.raw('? ON CONFLICT DO NOTHING', [sql]);
-    const tags = yield db('tags').select('id', 'text').where({user_id: id});
+  Observable.merge(
+    Observable
+      .zip(reposSource, tagsSource)
+      .flatMap(reposAndLanguageTagMapSelector(user_id))
+      .doOnNext(emitProgressItem),
+    reposSource
+      .map(Rmap(prop(['id'])))
+      .reduce(concat)
+      .flatMap(deleteRepos(user_id))
+      .doOnNext(emitDeleteItem)
+  )
+  .subscribe(() => {}, ::returnSubject.onError, ::returnSubject.onCompleted);
 
-    const languageTagMap = {};
+  function emitProgressItem(repoIds) {
+    returnSubject.onNext({type: 'UPDATED_ITEM', repo_ids: repoIds});
+  }
 
-    for (const {id: tag_id, text} of tags) {
-      languageTagMap[text] = tag_id;
-    }
+  function emitDeleteItem(deletedRepoIds) {
+    returnSubject.onNext({type: 'DELETED_ITEM', deleted_repo_ids: deletedRepoIds});
+  }
 
-    return languageTagMap;
-  });
-
-  const reposAndLanguageTagMapSelector = wrap(function *([ repos, languageTagMap ]) {
-    const entries = compact(repos.map(({ id: repo_id, language }) => {
-      if (language == null) {
-        return null;
-      }
-      return { repo_id, tag_id: languageTagMap[language], user_id: id };
-    }));
-
-    yield db.raw('? ON CONFLICT DO NOTHING', [ db('repo_tags').insert(entries) ]);
-
-    return map(repos, 'id');
-  });
-
-  const reposSource = source
-    .filter((item) => {
-      switch (item.type) {
-      case 'SUMMARY_ITEM':
-        progressSubject.onNext({
-          type: 'SUMMARY',
-          total_page: item.total_page,
-        });
-        return false;
-      case 'REPOS_ITEM':
-        return true;
-      default:
-        // No additional case
-      }
-    })
-    .flatMapWithMaxConcurrent(1, reposSelector);
-  const tagsSource = source.flatMapWithMaxConcurrent(1, tagsSelector);
-
-  Observable
-    .zip(reposSource, tagsSource)
-    .flatMap(reposAndLanguageTagMapSelector)
-    .subscribe(
-      (repoIds) => {
-        progressSubject.onNext({
-          type: 'PROGRESS',
-          repo_ids: repoIds
-        });
-      },
-      (err) => progressSubject.onError(err),
-      () => {
-        db('repos')
-          .where('user_id', id)
-          .whereNotIn('id', IDs)
-          .del()
-          .returning('id')
-          .then((deletedRepoIds) => {
-            progressSubject.onNext({
-              type: 'DELETE',
-              deleted_repo_ids: deletedRepoIds,
-            });
-            progressSubject.onCompleted();
-          });
-      }
-    );
-
-  return progressSubject;
+  return returnSubject;
 }
