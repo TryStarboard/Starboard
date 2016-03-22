@@ -1,7 +1,7 @@
 import { wrap                                         } from 'co';
-import { map, uniq, compact                           } from 'lodash';
 import { Observable, Subject                          } from 'rx';
-import { propEq, map as Rmap, concat, curry, curryN, prop } from 'ramda';
+import { pipe, propEq, map, concat, curry, curryN,
+  prop, uniq, identity, pluck, filter                 } from 'ramda';
 import db                                               from '../../shared-backend/db';
 import { transformReposForInsertion, createRepoSource } from './util';
 
@@ -13,7 +13,7 @@ import { transformReposForInsertion, createRepoSource } from './util';
 const reposSelector = wrap(function *(repos) {
   const [githubIdLangMap, transformedRepos] = transformReposForInsertion(repos);
 
-  const transformInsertedRepos = Rmap(function ({id: repo_id, github_id}) {
+  const transformInsertedRepos = map(function ({id: repo_id, github_id}) {
     return {id: repo_id, language: githubIdLangMap[github_id]};
   });
 
@@ -32,14 +32,20 @@ const reposSelector = wrap(function *(repos) {
 });
 
 const tagsSelector = curryN(2, wrap(function *(user_id, repos) {
-  const languages = uniq(compact(map(repos, 'language')));
-  const sql = db('tags').insert(languages.map((lang) => ({user_id, text: lang})));
+  const tags = pipe(
+    pluck('language'),
+    filter(identity),
+    uniq,
+    map((text) => ({user_id, text}))
+  )(repos);
+
+  const sql = db('tags').insert(tags);
   yield db.raw('? ON CONFLICT DO NOTHING', [sql]);
-  const tags = yield db('tags').select('id', 'text').where({user_id});
+  const allTags = yield db('tags').select('id', 'text').where({user_id});
 
   const languageTagMap = {};
 
-  for (const {id: tag_id, text} of tags) {
+  for (const {id: tag_id, text} of allTags) {
     languageTagMap[text] = tag_id;
   }
 
@@ -47,16 +53,19 @@ const tagsSelector = curryN(2, wrap(function *(user_id, repos) {
 }));
 
 const reposAndLanguageTagMapSelector = curryN(2, wrap(function *(user_id, [repos, languageTagMap]) {
-  const entries = compact(repos.map(({id: repo_id, language}) => {
-    if (language == null) {
-      return null;
-    }
-    return {repo_id, tag_id: languageTagMap[language], user_id};
-  }));
+  const entries = pipe(
+    map(({id: repo_id, language}) => {
+      if (language == null) {
+        return null;
+      }
+      return {user_id, repo_id, tag_id: languageTagMap[language]};
+    }),
+    filter(identity)
+  )(repos);
 
   yield db.raw('? ON CONFLICT DO NOTHING', [db('repo_tags').insert(entries)]);
 
-  return map(repos, 'id');
+  return pluck('id', repos);
 }));
 
 const deleteRepos = curry((user_id, ids) => {
@@ -108,7 +117,7 @@ export default function (user_id) {
       .flatMap(reposAndLanguageTagMapSelector(user_id))
       .doOnNext(emitProgressItem),
     reposSource
-      .map(Rmap(prop(['id'])))
+      .map(pluck('id'))
       .reduce(concat)
       .flatMap(deleteRepos(user_id))
       .doOnNext(emitDeleteItem)
