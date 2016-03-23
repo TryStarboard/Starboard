@@ -1,6 +1,6 @@
 {
   "us.gcr.io/starboard-1224/starboard-node": {
-    "version": 3,
+    "version": 4,
     "dockerfile": "Dockerfile-node"
   },
   "us.gcr.io/starboard-1224/starboard-node-modules": {

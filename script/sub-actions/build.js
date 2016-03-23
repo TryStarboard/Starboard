@@ -1,7 +1,7 @@
 'use strict';
 
 const co = require('co');
-const u = require('updeep');
+const u = require('updeep').default; // Babel transpiled
 
 const exec             = require('../util/ShellUtil').exec;
 const readJson         = require('../util/FSUtil').readJson;
