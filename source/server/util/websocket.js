@@ -16,7 +16,8 @@ import { enqueueSyncStarsJob      } from './JobQueue';
 import {
   UPDATE_SOME_REPOS,
   REMOVE_REPOS,
-  UPDATE_TAGS
+  UPDATE_TAGS,
+  UPDATE_PROGRESS
 } from '../../client/actions-server/creators';
 
 const COOKIE_KEYS = config.get('cookie.keys');
@@ -61,6 +62,9 @@ const handleChannelMessage = curry((socket, user_id, channelName, channel, messa
     break;
   case 'DELETED_ITEM':
     socket.emit(REMOVE_REPOS, event.deleted_repo_ids);
+    break;
+  case 'PROGRESS_DATA_ITEM':
+    socket.emit(UPDATE_PROGRESS, event.progress);
     break;
   default:
     // No additional case

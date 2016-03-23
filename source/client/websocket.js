@@ -3,11 +3,13 @@ import {
   UPDATE_SOME_REPOS,
   REMOVE_REPOS,
   UPDATE_TAGS,
+  UPDATE_PROGRESS
 } from './actions-server/creators';
 import {
   updateSomeRepos,
   removeRepos,
-  updateTags
+  updateTags,
+  updateProgress
 } from './actions-server';
 
 const socket = io();
@@ -28,6 +30,10 @@ socket.on(REMOVE_REPOS, function (deletedRepoIds) {
 
 socket.on(UPDATE_TAGS, function (tags) {
   updateTags(tags);
+});
+
+socket.on(UPDATE_PROGRESS, function (progress) {
+  updateProgress(progress);
 });
 
 export { socket as default };
