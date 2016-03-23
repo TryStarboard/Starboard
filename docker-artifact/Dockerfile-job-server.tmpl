@@ -3,7 +3,9 @@ FROM us.gcr.io/starboard-1224/starboard-job-server-node-modules:v<%= baseimage_v
 ENV NODE_ENV production
 
 # Add application code
-ADD build /job-server
-ADD config /job-server
+ADD build /job-server/build
+ADD config /job-server/config
+
+WORKDIR /job-server
 
 CMD ["node", "build/delayed-job.js"]
