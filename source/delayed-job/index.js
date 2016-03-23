@@ -21,7 +21,9 @@ queue.process('sync-stars', 5, function (job, done) {
   let total;
   let i = 0;
 
-  startSyncStars(data.user_id).subscribe(onNext, onError, done);
+  log.info({user_id: data.user_id, job_type: 'sync-stars'}, 'JOB_STARTED');
+
+  startSyncStars(data.user_id).subscribe(onNext, onError, onCompleted);
 
   function onNext(event) {
     switch (event.type) {
@@ -44,5 +46,10 @@ queue.process('sync-stars', 5, function (job, done) {
   function onError(err) {
     log.error('sync-stars-error', {err});
     done(err);
+  }
+
+  function onCompleted() {
+    log.info({user_id: data.user_id, job_type: 'sync-stars'}, 'JOB_COMPLETED');
+    done();
   }
 });
