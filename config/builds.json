@@ -1,0 +1,18 @@
+{
+  "us.gcr.io/starboard-1224/starboard-node": {
+    "version": 3,
+    "dockerfile": "Dockerfile-node"
+  },
+  "us.gcr.io/starboard-1224/starboard-node-modules": {
+    "version": 3,
+    "dockerfile": "Dockerfile-node-modules",
+    "isTemplate": true,
+    "baseimage": "us.gcr.io/starboard-1224/starboard-node"
+  },
+  "us.gcr.io/starboard-1224/starboard": {
+    "version": 6,
+    "dockerfile": "Dockerfile",
+    "isTemplate": true,
+    "baseimage": "us.gcr.io/starboard-1224/starboard"
+  }
+}

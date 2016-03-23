@@ -2,12 +2,17 @@
 
 const join = require('path').join;
 const Bluebird = require('bluebird');
-const fs = Bluebird.promisifyAll(require('fs'));
+const fs = require('mz/fs');
 const co = require('co');
-const template = require('lodash/template');
 const program = require('commander');
-const exec = require('./util/ShellUtil').exec;
 
+const exec = require('./util/ShellUtil').exec;
+const readJson = require('./util/FSUtil').readJson;
+const writeJson = require('./util/FSUtil').writeJson;
+const renderTmplToFile = require('./util/FSUtil').renderTmplToFile;
+const mkdir = require('./util/FSUtil').mkdir;
+
+const BUILDS_CONF_PATH = 'config/builds.json';
 const DCONFIG_PATH = 'config/deployment.json';
 
 program
@@ -31,13 +36,7 @@ const buildImage = co.wrap(function *(imageconfig, baseImageVersion) {
 });
 
 co(function *() {
-  try {
-    yield fs.mkdirAsync(join(__dirname, '../_build-tmp'));
-  } catch (err) {
-    if (err.code !== 'EEXIST') {
-      throw err;
-    }
-  }
+  yield mkdir(join(__dirname, '../_build-tmp'));
 
   const dconfig = yield readJson(DCONFIG_PATH);
 
@@ -94,22 +93,3 @@ co(function *() {
   console.error(err);
   console.error(err.stack);
 });
-
-function readJson(fpath) {
-  return fs.readFileAsync(join(__dirname, '..', fpath), 'utf8')
-    .then(JSON.parse);
-}
-
-function writeJson(fpath, obj) {
-  const content = JSON.stringify(obj, null, 2);
-  return fs.writeFileAsync(join(__dirname, '..', fpath), content, 'utf8');
-}
-
-function renderTmplToFile(tpath, locals, dpath) {
-  return fs.readFileAsync(join(__dirname, '..', tpath), 'utf8')
-    .then((fcontent) => fs.writeFileAsync(
-      join(__dirname, '..', dpath),
-      template(fcontent)(locals),
-      'utf8'
-    ));
-}
