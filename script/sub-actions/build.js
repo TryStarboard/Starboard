@@ -3,6 +3,7 @@
 const co = require('co');
 const u = require('updeep').default; // Babel transpiled
 const R = require('ramda');
+const basename = require('path').basename;
 
 const exec             = require('../util/ShellUtil').exec;
 const readJson         = require('../util/FSUtil').readJson;
@@ -21,8 +22,14 @@ function getImageConf(name) {
     });
 }
 
-const buildImage = co.wrap(function *(dfpath, tag) {
-  yield exec(`docker build -f ${dfpath} -t ${tag} --no-cache .`);
+const buildImage = co.wrap(function *(dfpath, tag, opts) {
+  const cmd = opts.useCache ?
+    `docker build -f ${dfpath} -t ${tag} .` :
+    `docker build -f ${dfpath} -t ${tag} --no-cache .`;
+  yield exec(cmd);
+  if (opts.skipPush) {
+    return;
+  }
   yield exec(`gcloud docker push ${tag}`);
 });
 
@@ -37,7 +44,7 @@ const findChildImages = co.wrap(function *(parentName) {
 
 const renderDockerfile = co.wrap(function *({version, dockerfile, baseimage}) {
   const baseimageConf = yield getImageConf(baseimage);
-  const renderedDockerfilePath = `_build-tmp/${dockerfile}`;
+  const renderedDockerfilePath = `_build-tmp/${basename(dockerfile)}`;
   yield renderTmplToFile(
     `${dockerfile}.tmpl`,
     {baseimage_version: baseimageConf.version},
@@ -46,7 +53,17 @@ const renderDockerfile = co.wrap(function *({version, dockerfile, baseimage}) {
   return renderedDockerfilePath;
 });
 
-const build = co.wrap(function *(targetImageName) {
+/**
+ * Build image
+ *
+ * @param {string}  targetImageName The image name without version
+ * @param {Object}  opts            Options
+ * @param {boolean} opts.skipPush   If true, do not push to registry
+ * @param {boolean} opts.useCache   If true, do not use --no-cache flag
+ *
+ * @return {Promise} Resolve
+ */
+const build = co.wrap(function *(targetImageName, opts) {
   console.log(`\n\n--> building ${targetImageName}\n`);
 
   yield mkdir('_build-tmp');
@@ -63,7 +80,7 @@ const build = co.wrap(function *(targetImageName) {
     dockerfilePath = dockerfile;
   }
 
-  yield buildImage(dockerfilePath, imageTag);
+  yield buildImage(dockerfilePath, imageTag, opts);
 
   const conf = yield readJson('config/builds.json');
 
@@ -81,7 +98,7 @@ const build = co.wrap(function *(targetImageName) {
 
   const childImageNames = yield findChildImages(targetImageName);
   for (const childImageName of childImageNames) {
-    yield build(childImageName);
+    yield build(childImageName, opts);
   }
 });
 

@@ -9,6 +9,8 @@ const build = require('./sub-actions/build');
 program
   .option('--list', 'Show images available to build')
   .option('--build <image-name>', 'Build specified image')
+  .option('--skip-push', 'Do not push to registry')
+  .option('--use-cache', 'Do not use --no-cache flag')
   .parse(process.argv);
 
 if (program.list) {
@@ -21,7 +23,7 @@ if (program.list) {
     console.error(err.stack);
   });
 } else if (program.build) {
-  build(program.build)
+  build(program.build, {skipPush: program.skipPush, useCache: program.useCache})
   .catch((err) => {
     console.error(err);
     console.error(err.stack);
