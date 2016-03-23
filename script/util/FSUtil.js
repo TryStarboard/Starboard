@@ -17,7 +17,7 @@ function writeJson(fpath, obj) {
 function renderTmplToFile(tpath, locals, dpath) {
   return fs.readFile(join(__dirname, '../..', tpath), 'utf8')
     .then((fcontent) => fs.writeFile(
-      join(__dirname, '..', dpath),
+      join(__dirname, '../..', dpath),
       template(fcontent)(locals),
       'utf8'
     ));

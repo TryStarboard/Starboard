@@ -40,7 +40,7 @@ const renderDockerfile = co.wrap(function *({version, dockerfile, baseimage}) {
   const renderedDockerfilePath = `_build-tmp/${dockerfile}`;
   yield renderTmplToFile(
     `${dockerfile}.tmpl`,
-    {base_image_version: baseimageConf.version},
+    {baseimage_version: baseimageConf.version},
     renderedDockerfilePath
   );
   return renderedDockerfilePath;
