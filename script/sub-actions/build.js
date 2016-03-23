@@ -2,6 +2,7 @@
 
 const co = require('co');
 const u = require('updeep').default; // Babel transpiled
+const R = require('ramda');
 
 const exec             = require('../util/ShellUtil').exec;
 const readJson         = require('../util/FSUtil').readJson;
@@ -25,6 +26,15 @@ const buildImage = co.wrap(function *(dfpath, tag) {
   yield exec(`gcloud docker push ${tag}`);
 });
 
+const findChildImages = co.wrap(function *(parentName) {
+  const conf = yield readJson('config/builds.json');
+  const confPairs = R.toPairs(conf);
+  return R.pipe(
+    R.filter(R.pathEq([1, 'baseimage'], parentName)),
+    R.pluck(0)
+  )(confPairs);
+});
+
 const renderDockerfile = co.wrap(function *({version, dockerfile, baseimage}) {
   const baseimageConf = yield getImageConf(baseimage);
   const renderedDockerfilePath = `_build-tmp/${dockerfile}`;
@@ -36,7 +46,9 @@ const renderDockerfile = co.wrap(function *({version, dockerfile, baseimage}) {
   return renderedDockerfilePath;
 });
 
-module.exports = co.wrap(function *(targetImageName) {
+const build = co.wrap(function *(targetImageName) {
+  console.log(`\n\n--> building ${targetImageName}\n`);
+
   yield mkdir('_build-tmp');
   const targetImageConf = yield getImageConf(targetImageName);
 
@@ -66,7 +78,14 @@ module.exports = co.wrap(function *(targetImageName) {
       conf
     )
   );
+
+  const childImageNames = yield findChildImages(targetImageName);
+  for (const childImageName of childImageNames) {
+    yield build(childImageName);
+  }
 });
+
+module.exports = build;
 
 // co(function *() {
 //   if (program.buildNode) {
