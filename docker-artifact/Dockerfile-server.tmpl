@@ -1,0 +1,17 @@
+FROM us.gcr.io/starboard-1224/starboard-node-modules:v<%= baseimage_version %>
+
+# Enable nginx
+RUN rm -f /etc/service/nginx/down
+
+ADD docker-artifact/gzip_max.conf /etc/nginx/conf.d/gzip_max.conf
+ADD docker-artifact/env.conf /etc/nginx/main.d/env.conf
+ADD docker-artifact/passenger.conf /etc/nginx/conf.d/passenger.conf
+
+ADD docker-artifact/webapp.conf /etc/nginx/sites-enabled/webapp.conf
+RUN rm /etc/nginx/sites-enabled/default
+
+# Add application code
+ADD build /home/app/webapp/build
+ADD config /home/app/webapp/config
+ADD template /home/app/webapp/template
+ADD public /home/app/webapp/public
