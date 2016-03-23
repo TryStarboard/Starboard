@@ -20,6 +20,36 @@ import {
 const COOKIE_KEYS = config.get('cookie.keys');
 
 const sub = new Redis(config.get('redis'));
+const subCounters = new Map();
+
+function subscribeRedis(channelName) {
+  const current = subCounters.get(channelName);
+  if (!current) {
+    subCounters.set(channelName, 1);
+  } else {
+    subCounters.set(channelName, current + 1);
+  }
+}
+
+function unsubscribeRedis(channelName) {
+  const current = subCounters.get(channelName);
+
+  if (!current) {
+    throw new Error(`subCounters key "${channelName}" cannot be "${current}"`);
+  }
+
+  if (current > 1) {
+    subCounters.set(channelName, current - 1);
+    return;
+  }
+
+  subCounters.set(channelName, 0);
+  sub.unsubscribe(channelName, (err) => {
+    if (err) {
+      log.error(err, 'UNSUBSCRIBE_SYNC_STARS_CHANNEL_ERROR');
+    }
+  });
+}
 
 function authenticate(socket, next) {
   co(function *() {
@@ -41,7 +71,11 @@ function authenticate(socket, next) {
   }).catch(next);
 }
 
-const handleChannelMessage = curry((socket, user_id, channel, message) => {
+const handleChannelMessage = curry((socket, user_id, channelName, channel, message) => {
+  if (channel !== channelName) {
+    return;
+  }
+
   const event = JSON.parse(message);
 
   switch (event.type) {
@@ -65,20 +99,18 @@ const handleChannelMessage = curry((socket, user_id, channel, message) => {
 
 function handleConnection(socket) {
   const user_id = socket.handshake.user.id;
+  const channelName = `sync-stars:user_id:${user_id}`;
+  const messageHandler = handleChannelMessage(socket, user_id, channelName);
 
-  sub.subscribe(`sync-stars:user_id:${user_id}`, (err) => {
-    if (err) {
-      log.error('SUBSCRIBE_SYNC_STARS_CHANNEL_ERROR', err);
-    }
-  });
-
-  sub.on('message', handleChannelMessage(socket, user_id));
-
+  sub.on('message', messageHandler);
+  subscribeRedis(channelName);
   socket.on(SYNC_REPOS, () => enqueueSyncStarsJob(user_id));
 
-  // TODO: cleanup
-  // sub.unsubscribe(channelName, (err, count) => {});
-  // sub.removeEventListener('message', console.log);
+  // Clean up
+  socket.on('disconnect', () => {
+    unsubscribeRedis(channelName);
+    sub.removeListener('message', messageHandler);
+  });
 }
 
 export function createWebsocketServer(server) {

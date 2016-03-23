@@ -1,6 +1,6 @@
-import kue                      from 'kue';
-import config                   from 'config';
-import Redis                    from 'ioredis';
+import kue    from 'kue';
+import config from 'config';
+import Redis  from 'ioredis';
 
 const REDIS_CONFIG = config.get('redis');
 
