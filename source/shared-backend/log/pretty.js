@@ -5,12 +5,10 @@ const pretty = es.map((data, cb) => {
   const transformed = transformLogData(data);
   const {req, err, msg} = transformed;
 
-  if (err) {
-    cb(null, `${msg}:${err}\n`);
-  } else if (req) {
+  if (req && !err) {
     cb(null, `${msg}:${req.url}\n`);
   } else {
-    cb(null, `${JSON.stringify(transformLogData(data), null, 4)}\n`);
+    cb(null, `${JSON.stringify(transformed, null, 4)}\n`);
   }
 });
 
