@@ -3,6 +3,7 @@ import { fromCallback } from 'bluebird';
 import log                                        from '../../../shared-backend/log';
 import { createLoginUrl, handleLoginCallback    } from '../../../shared-backend/github';
 import { fetchUserProfile, upsert as upsertUser } from '../../../shared-backend/model/User';
+import { enqueueSyncStarsJob                    } from '../../util/JobQueue';
 
 const unauthedRoute = new Router();
 
@@ -24,6 +25,7 @@ unauthedRoute.get('/github-back', ensureUnauthed, function *(next) {
     const user = yield fetchUserProfile(access_token);
     const id = yield upsertUser(user, access_token);
     yield fromCallback((done) => this.req.login({ id }, done));
+    enqueueSyncStarsJob(id);
     this.redirect('/dashboard');
   } catch (err) {
     log.error(err, 'github auth callback error');
