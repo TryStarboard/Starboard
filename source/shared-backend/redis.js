@@ -1,7 +1,7 @@
 import config   from 'config';
 import Redis    from 'ioredis';
 import throttle from 'lodash/throttle';
-import log      from '../../shared-backend/log';
+import log      from './log';
 
 const throttleLog = throttle((err) => log.error(err), 1000, { trailing: false });
 

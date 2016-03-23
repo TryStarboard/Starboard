@@ -1,8 +1,9 @@
-import kue            from 'kue';
-import config         from 'config';
-import Redis          from 'ioredis';
-import log            from '../shared-backend/log';
-import startSyncStars from './SyncStars';
+import kue                     from 'kue';
+import config                  from 'config';
+import Redis                   from 'ioredis';
+import log                     from '../shared-backend/log';
+import {client as redisClient} from '../shared-backend/redis';
+import startSyncStars          from './SyncStars';
 
 const REDIS_CONFIG = config.get('redis');
 
@@ -18,12 +19,13 @@ const pub = new Redis(REDIS_CONFIG);
 
 queue.process('sync-stars', 5, function (job, done) {
   const data = job.data;
+  const {user_id} = data;
   let total;
   let i = 0;
 
-  log.info({user_id: data.user_id, job_type: 'sync-stars'}, 'JOB_STARTED');
+  log.info({user_id, job_type: 'sync-stars'}, 'JOB_STARTED');
 
-  startSyncStars(data.user_id).subscribe(onNext, onError, onCompleted);
+  startSyncStars(user_id).subscribe(onNext, onError, onCompleted);
 
   function onNext(event) {
     switch (event.type) {
@@ -36,7 +38,7 @@ queue.process('sync-stars', 5, function (job, done) {
     case 'DELETED_ITEM':
       i += 1;
       job.progress(i, total);
-      pub.publish(`sync-stars:user_id:${data.user_id}`, JSON.stringify(event));
+      pub.publish(`sync-stars:user_id:${user_id}`, JSON.stringify(event));
       break;
     default:
       // No additional case
@@ -44,12 +46,14 @@ queue.process('sync-stars', 5, function (job, done) {
   }
 
   function onError(err) {
-    log.error('sync-stars-error', {err});
+    log.error({err, user_id, job_type: 'sync-stars'}, 'JOB_ERROR');
+    redisClient.set(`{uniq-job:sync-stars}:user_id:${user_id}`, 'idle');
     done(err);
   }
 
   function onCompleted() {
-    log.info({user_id: data.user_id, job_type: 'sync-stars'}, 'JOB_COMPLETED');
+    log.info({user_id, job_type: 'sync-stars'}, 'JOB_COMPLETED');
+    redisClient.set(`{uniq-job:sync-stars}:user_id:${user_id}`, 'idle');
     done();
   }
 });

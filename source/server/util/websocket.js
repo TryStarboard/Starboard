@@ -6,10 +6,10 @@ import { curry                 } from 'ramda';
 import { props                 } from 'bluebird';
 import Redis                     from 'ioredis';
 import log                       from '../../shared-backend/log';
+import { client as redisClient } from '../../shared-backend/redis';
 import { getReposWithIds       } from '../../shared-backend/model/Repos';
 import { getAll as getAllTags  } from '../../shared-backend/model/Tags';
 import { SYNC_REPOS            } from '../../shared/action-types';
-import { client as redisClient } from './redis';
 import { enqueueSyncStarsJob   } from './JobQueue';
 import {
   UPDATE_SOME_REPOS,
