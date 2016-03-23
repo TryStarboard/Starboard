@@ -26,6 +26,11 @@ function subscribeRedis(channelName) {
   const current = subCounters.get(channelName);
   if (!current) {
     subCounters.set(channelName, 1);
+    sub.subscribe(channelName, (err) => {
+      if (err) {
+        log.error(err, 'SUBSCRIBE_SYNC_STARS_CHANNEL_ERROR');
+      }
+    });
   } else {
     subCounters.set(channelName, current + 1);
   }
