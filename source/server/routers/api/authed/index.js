@@ -1,8 +1,8 @@
 import Router from 'koa-router';
-import { getAll as getAllRepos } from '../../../util/data/Repos';
-import { getAll as getAllTags, addTag, deleteTag } from '../../../util/data/Tags';
-import { addRepoTag, deleteRepoTag } from '../../../util/data/RepoTags';
-import { findById as findUserById, deleteUser } from '../../../model/User';
+import { getAll as getAllRepos                   } from '../../../../shared-backend/model/Repos';
+import { getAll as getAllTags, addTag, deleteTag } from '../../../../shared-backend/model/Tags';
+import { addRepoTag, deleteRepoTag               } from '../../../../shared-backend/model/RepoTags';
+import { findById as findUserById, deleteUser    } from '../../../../shared-backend/model/User';
 
 function *ensureAuthed(next) {
   if (this.req.isAuthenticated()) {

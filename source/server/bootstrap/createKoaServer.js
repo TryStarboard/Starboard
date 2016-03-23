@@ -1,15 +1,15 @@
-import config from 'config';
-import koa from 'koa';
-import koaStatic from 'koa-static';
-import bodyParser from 'koa-bodyparser';
-import koaLogger from 'koa-logger';
-import views from 'koa-views';
-import session from '../util/session';
-import log from '../util/log';
+import config                    from 'config';
+import koa                       from 'koa';
+import koaStatic                 from 'koa-static';
+import bodyParser                from 'koa-bodyparser';
+import koaLogger                 from 'koa-logger';
+import views                     from 'koa-views';
+import log                       from '../../shared-backend/log';
+import session                   from '../util/session';
 import { authInit, authSession } from '../util/auth';
-import htmlRoute from '../routers/html';
-import unauthedRoute from '../routers/html/unauthed';
-import apiRoute from '../routers/api';
+import htmlRoute                 from '../routers/html';
+import unauthedRoute             from '../routers/html/unauthed';
+import apiRoute                  from '../routers/api';
 
 export default function createKoaServer() {
 

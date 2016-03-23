@@ -1,8 +1,8 @@
 import Router from 'koa-router';
 import { fromCallback } from 'bluebird';
-import { createLoginUrl, handleLoginCallback } from '../../util/github';
-import log from '../../util/log';
-import { fetchUserProfile, upsert as upsertUser } from '../../model/User';
+import log                                        from '../../../shared-backend/log';
+import { createLoginUrl, handleLoginCallback    } from '../../../shared-backend/github';
+import { fetchUserProfile, upsert as upsertUser } from '../../../shared-backend/model/User';
 
 const unauthedRoute = new Router();
 

@@ -1,6 +1,6 @@
 import passport from 'koa-passport';
 import { wrap } from 'co';
-import db from '../db';
+import db from '../../../shared-backend/db';
 
 passport.serializeUser(function (user, done) {
   done(null, user.id);
