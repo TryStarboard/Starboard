@@ -1,0 +1,37 @@
+apiVersion: v1
+
+kind: ReplicationController
+
+metadata:
+  name: starboard-job-server-rc-v<%= version %>-production
+
+spec:
+  replicas: 1
+  selector:
+    app: starboard-job-server
+    deployment: v<%= version %>
+    environment: production
+
+  template:
+    metadata:
+      labels:
+        app: starboard-job-server
+        deployment: v<%= version %>
+        environment: production
+
+    spec:
+      restartPolicy: Always
+      volumes:
+        - name: secret-volume
+          secret:
+            secretName: starboard-secret-prod
+      containers:
+        - name: starboard-job-server-container
+          image: us.gcr.io/starboard-1224/starboard-job-server:v<%= image_version %>
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 80
+          volumeMounts:
+            - name: secret-volume
+              readOnly: true
+              mountPath: /etc/secret-volume

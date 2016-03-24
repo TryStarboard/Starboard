@@ -18,7 +18,7 @@ if (program.list) {
     console.error(err.stack);
   });
 } else if (program.deploy) {
-  deployRC(program.deploy)
+  deployRC(program.deploy, {createRc: program.createRc})
   .catch((err) => {
     console.error(err);
     console.error(err.stack);

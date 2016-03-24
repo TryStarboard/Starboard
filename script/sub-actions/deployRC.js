@@ -22,7 +22,14 @@ function getRCConf(appLabel) {
     });
 }
 
-module.exports = co.wrap(function *(appLabel) {
+/**
+ * @param {string}  appLabel
+ * @param {Object}  opts
+ * @param {boolean} opts.createRc
+ *
+ * @return {Promise} Resolve
+ */
+module.exports = co.wrap(function *(appLabel, opts) {
   console.log(`\n\n--> deploying ${appLabel}\n`);
 
   yield mkdir('_build-tmp');
@@ -34,7 +41,7 @@ module.exports = co.wrap(function *(appLabel) {
     R.path(['metadata', 'name'])
   )(rcoutput);
 
-  if (!rcname) {
+  if (!opts.createRc && !rcname) {
     throw new Error(`RC with app label "${appLabel}" is not found`);
   }
 
@@ -57,7 +64,11 @@ module.exports = co.wrap(function *(appLabel) {
     renderedRCFilePath
   );
 
-  yield exec(`kubectl rolling-update ${rcname} -f ${renderedRCFilePath}`);
+  if (opts.createRc && !rcname) {
+    yield exec(`kubectl create -f ${renderedRCFilePath}`);
+  } else {
+    yield exec(`kubectl rolling-update ${rcname} -f ${renderedRCFilePath}`);
+  }
 
   const conf = yield readJson('config/deployment.json');
   yield writeJson(
