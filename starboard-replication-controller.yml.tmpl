@@ -27,7 +27,7 @@ spec:
             secretName: starboard-secret-prod
       containers:
         - name: starboard
-          image: us.gcr.io/starboard-1224/starboard:v<%= image_version %>
+          image: us.gcr.io/starboard-1224/starboard-server:v<%= image_version %>
           imagePullPolicy: Always
           ports:
             - containerPort: 80
