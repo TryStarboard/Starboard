@@ -10,7 +10,7 @@
     "baseimage": "us.gcr.io/starboard-1224/starboard-server-node"
   },
   "us.gcr.io/starboard-1224/starboard-server": {
-    "version": 12,
+    "version": 13,
     "dockerfile": "./docker-artifact/Dockerfile-server",
     "isTemplate": true,
     "baseimage": "us.gcr.io/starboard-1224/starboard-server-node-modules"
