@@ -8,7 +8,7 @@ import {
 } from '../actions/creators';
 import {
   UPDATE_PROGRESS
-} from '../actions-server/creators';
+} from '../../shared/action-types';
 
 const DEFAULT_UI = {
   isAddTagModalOpen: false,
