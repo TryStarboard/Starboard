@@ -1,21 +1,7 @@
 {
-  "images": [
-    {
-      "name": "us.gcr.io/starboard-1224/starboard-node",
-      "dockerfile": "Dockerfile-node",
-      "version": 3
-    },
-    {
-      "name": "us.gcr.io/starboard-1224/starboard-node-modules",
-      "dockerfile": "Dockerfile-node-modules",
-      "isTemplate": true,
-      "version": 3
-    },
-    {
-      "name": "us.gcr.io/starboard-1224/starboard",
-      "dockerfile": "Dockerfile",
-      "isTemplate": true,
-      "version": 6
-    }
-  ]
+  "starboard": {
+    "rc_template": "./starboard-replication-controller.yml",
+    "version": 6,
+    "image_name": "us.gcr.io/starboard-1224/starboard-server-node"
+  }
 }
