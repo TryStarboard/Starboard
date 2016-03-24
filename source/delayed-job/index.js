@@ -21,6 +21,7 @@ queue.process('sync-stars', 5, function (job, done) {
   const data = job.data;
   const {user_id} = data;
   const channel = `sync-stars:user_id:${user_id}`;
+  const uniqKey = `{uniq-job:sync-stars}:user_id:${user_id}`;
   let total;
   let i = 0;
 
@@ -52,13 +53,13 @@ queue.process('sync-stars', 5, function (job, done) {
 
   function onError(err) {
     log.error({err, user_id, job_type: 'sync-stars'}, 'JOB_ERROR');
-    redisClient.set(`{uniq-job:sync-stars}:user_id:${user_id}`, 'idle');
+    redisClient.del(uniqKey);
     done(err);
   }
 
   function onCompleted() {
     log.info({user_id, job_type: 'sync-stars'}, 'JOB_COMPLETED');
-    redisClient.set(`{uniq-job:sync-stars}:user_id:${user_id}`, 'idle');
+    redisClient.del(uniqKey);
     done();
   }
 });

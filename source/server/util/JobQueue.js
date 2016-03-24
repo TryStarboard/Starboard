@@ -1,6 +1,7 @@
 import kue                       from 'kue';
 import config                    from 'config';
 import Redis                     from 'ioredis';
+import { wrap                  } from 'co';
 import { client as redisClient } from '../../shared-backend/redis';
 
 const REDIS_CONFIG = config.get('redis');
@@ -13,13 +14,13 @@ const queue = kue.createQueue({
   }
 });
 
-export function enqueueSyncStarsJob(user_id) {
-  redisClient.getset(`{uniq-job:sync-stars}:user_id:${user_id}`, 'running')
-    .then(function (result) {
-      // result will be `null` when first time "getset"
-      if (result === 'running') {
-        return;
-      }
-      queue.create('sync-stars', {user_id}).save();
-    });
-}
+export const enqueueSyncStarsJob = wrap(function *(user_id) {
+  const key = `{uniq-job:sync-stars}:user_id:${user_id}`;
+  const result = yield redisClient.getset(key, Date.now().toString());
+  // result will be `null` when first time "getset"
+  if (result !== null) {
+    return;
+  }
+  queue.create('sync-stars', {user_id}).save();
+  yield redisClient.expire(key, 30); // 30 sec
+});
