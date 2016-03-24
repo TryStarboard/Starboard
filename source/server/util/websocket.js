@@ -11,14 +11,13 @@ import {
   unsubscribe as unsubscribeRedis } from '../../shared-backend/pubsub';
 import { getReposWithIds          } from '../../shared-backend/model/Repos';
 import { getAll as getAllTags     } from '../../shared-backend/model/Tags';
-import { SYNC_REPOS               } from '../../shared/action-types';
-import { enqueueSyncStarsJob      } from './JobQueue';
 import {
   UPDATE_SOME_REPOS,
   REMOVE_REPOS,
   UPDATE_TAGS,
-  UPDATE_PROGRESS
-} from '../../client/actions-server/creators';
+  UPDATE_PROGRESS,
+  SYNC_REPOS                      } from '../../shared/action-types';
+import { enqueueSyncStarsJob      } from './JobQueue';
 
 const COOKIE_KEYS = config.get('cookie.keys');
 

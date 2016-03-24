@@ -6,11 +6,15 @@ import {
   BEGIN_DRAG_TAG,
   END_DRAG_TAG
 } from '../actions/creators';
+import {
+  UPDATE_PROGRESS
+} from '../actions-server/creators';
 
 const DEFAULT_UI = {
   isAddTagModalOpen: false,
   addTagModalErrorMsg: null,
   isDraggingTag: false,
+  syncProgress: 1,
 };
 
 export default function (state = DEFAULT_UI, { type, payload }) {
@@ -25,6 +29,8 @@ export default function (state = DEFAULT_UI, { type, payload }) {
     return merge(state, {isDraggingTag: true});
   case END_DRAG_TAG:
     return merge(state, {isDraggingTag: false});
+  case UPDATE_PROGRESS:
+    return merge(state, {syncProgress: payload.progress});
   default:
     return state;
   }

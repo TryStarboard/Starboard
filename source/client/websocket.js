@@ -4,7 +4,7 @@ import {
   REMOVE_REPOS,
   UPDATE_TAGS,
   UPDATE_PROGRESS
-} from './actions-server/creators';
+} from '../shared/action-types';
 import {
   updateSomeRepos,
   removeRepos,
