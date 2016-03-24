@@ -1,9 +1,9 @@
 'use strict';
 
+const basename = require('path').basename;
 const co = require('co');
 const u = require('updeep').default; // Babel transpiled
 const R = require('ramda');
-const basename = require('path').basename;
 
 const exec             = require('../util/ShellUtil').exec;
 const readJson         = require('../util/FSUtil').readJson;

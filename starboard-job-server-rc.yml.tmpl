@@ -3,19 +3,19 @@ apiVersion: v1
 kind: ReplicationController
 
 metadata:
-  name: starboard-rc-v<%= version %>-production
+  name: starboard-job-server-rc-v<%= version %>-production
 
 spec:
   replicas: 1
   selector:
-    app: starboard
+    app: starboard-job-server
     deployment: v<%= version %>
     environment: production
 
   template:
     metadata:
       labels:
-        app: starboard
+        app: starboard-job-server
         deployment: v<%= version %>
         environment: production
 
@@ -26,8 +26,8 @@ spec:
           secret:
             secretName: starboard-secret-prod
       containers:
-        - name: starboard
-          image: us.gcr.io/starboard-1224/starboard-server:v<%= image_version %>
+        - name: starboard-job-server-container
+          image: us.gcr.io/starboard-1224/starboard-job-server:v<%= image_version %>
           imagePullPolicy: Always
           ports:
             - containerPort: 80
