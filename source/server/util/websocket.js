@@ -1,60 +1,25 @@
-import config                    from 'config';
-import socketio                  from 'socket.io';
-import Cookies                   from 'cookies';
-import co                        from 'co';
-import { curry                 } from 'ramda';
-import { props                 } from 'bluebird';
-import Redis                     from 'ioredis';
-import log                       from '../../shared-backend/log';
-import { client as redisClient } from '../../shared-backend/redis';
-import { getReposWithIds       } from '../../shared-backend/model/Repos';
-import { getAll as getAllTags  } from '../../shared-backend/model/Tags';
-import { SYNC_REPOS            } from '../../shared/action-types';
-import { enqueueSyncStarsJob   } from './JobQueue';
+import socketio                     from 'socket.io';
+import Cookies                      from 'cookies';
+import co                           from 'co';
+import { curry                    } from 'ramda';
+import { props                    } from 'bluebird';
+import config                       from 'config';
+import { client as redisClient    } from '../../shared-backend/redis';
+import {
+  subClient,
+  subscribe as subscribeRedis,
+  unsubscribe as unsubscribeRedis } from '../../shared-backend/pubsub';
+import { getReposWithIds          } from '../../shared-backend/model/Repos';
+import { getAll as getAllTags     } from '../../shared-backend/model/Tags';
 import {
   UPDATE_SOME_REPOS,
   REMOVE_REPOS,
-  UPDATE_TAGS
-} from '../../client/actions-server/creators';
+  UPDATE_TAGS,
+  UPDATE_PROGRESS,
+  SYNC_REPOS                      } from '../../shared/action-types';
+import { enqueueSyncStarsJob      } from './JobQueue';
 
 const COOKIE_KEYS = config.get('cookie.keys');
-
-const sub = new Redis(config.get('redis'));
-const subCounters = new Map();
-
-function subscribeRedis(channelName) {
-  const current = subCounters.get(channelName);
-  if (!current) {
-    subCounters.set(channelName, 1);
-    sub.subscribe(channelName, (err) => {
-      if (err) {
-        log.error(err, 'SUBSCRIBE_SYNC_STARS_CHANNEL_ERROR');
-      }
-    });
-  } else {
-    subCounters.set(channelName, current + 1);
-  }
-}
-
-function unsubscribeRedis(channelName) {
-  const current = subCounters.get(channelName);
-
-  if (!current) {
-    throw new Error(`subCounters key "${channelName}" cannot be "${current}"`);
-  }
-
-  if (current > 1) {
-    subCounters.set(channelName, current - 1);
-    return;
-  }
-
-  subCounters.set(channelName, 0);
-  sub.unsubscribe(channelName, (err) => {
-    if (err) {
-      log.error(err, 'UNSUBSCRIBE_SYNC_STARS_CHANNEL_ERROR');
-    }
-  });
-}
 
 function authenticate(socket, next) {
   co(function *() {
@@ -97,6 +62,9 @@ const handleChannelMessage = curry((socket, user_id, channelName, channel, messa
   case 'DELETED_ITEM':
     socket.emit(REMOVE_REPOS, event.deleted_repo_ids);
     break;
+  case 'PROGRESS_DATA_ITEM':
+    socket.emit(UPDATE_PROGRESS, event.progress);
+    break;
   default:
     // No additional case
   }
@@ -107,14 +75,14 @@ function handleConnection(socket) {
   const channelName = `sync-stars:user_id:${user_id}`;
   const messageHandler = handleChannelMessage(socket, user_id, channelName);
 
-  sub.on('message', messageHandler);
+  subClient.on('message', messageHandler);
   subscribeRedis(channelName);
   socket.on(SYNC_REPOS, () => enqueueSyncStarsJob(user_id));
 
   // Clean up
   socket.on('disconnect', () => {
     unsubscribeRedis(channelName);
-    sub.removeListener('message', messageHandler);
+    subClient.removeListener('message', messageHandler);
   });
 }
 

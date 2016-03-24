@@ -66,6 +66,7 @@
     "mz": "2.3.1",
     "node-sass": "3.4.2",
     "nodemon": "1.8.1",
+    "nprogress": "0.2.0",
     "observe-object-path": "0.3.0",
     "onchange": "2.0.0",
     "react": "^0.14.0",

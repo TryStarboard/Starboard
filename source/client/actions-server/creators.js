@@ -1,6 +1,9 @@
-export const UPDATE_SOME_REPOS = 'UPDATE_SOME_REPOS';
-export const REMOVE_REPOS = 'REMOVE_REPOS';
-export const UPDATE_TAGS = 'UPDATE_TAGS';
+import NProgress from 'nprogress';
+import {
+  UPDATE_SOME_REPOS,
+  REMOVE_REPOS,
+  UPDATE_TAGS,
+  UPDATE_PROGRESS } from '../../shared/action-types';
 
 export function updateSomeRepos(repos) {
   return {
@@ -20,5 +23,25 @@ export function updateTags(tags) {
   return {
     type: UPDATE_TAGS,
     payload: tags,
+  };
+}
+
+let progressBarStarted = false;
+
+export function updateProgress(progress) {
+  if (0 < progress && progress < 1) {
+    if (!progressBarStarted) {
+      progressBarStarted = true;
+      NProgress.start();
+    }
+    NProgress.set(progress);
+  } else {
+    progressBarStarted = false;
+    NProgress.done();
+  }
+
+  return {
+    type: UPDATE_PROGRESS,
+    payload: {progress},
   };
 }

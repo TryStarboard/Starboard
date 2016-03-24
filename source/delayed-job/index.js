@@ -20,6 +20,7 @@ const pub = new Redis(REDIS_CONFIG);
 queue.process('sync-stars', 5, function (job, done) {
   const data = job.data;
   const {user_id} = data;
+  const channel = `sync-stars:user_id:${user_id}`;
   let total;
   let i = 0;
 
@@ -38,7 +39,11 @@ queue.process('sync-stars', 5, function (job, done) {
     case 'DELETED_ITEM':
       i += 1;
       job.progress(i, total);
-      pub.publish(`sync-stars:user_id:${user_id}`, JSON.stringify(event));
+      pub.publish(channel, JSON.stringify({
+        type: 'PROGRESS_DATA_ITEM',
+        progress: Math.round(i / total * 100) / 100,
+      }));
+      pub.publish(channel, JSON.stringify(event));
       break;
     default:
       // No additional case
