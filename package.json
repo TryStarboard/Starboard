@@ -113,6 +113,7 @@
     "dev:client": "npm run watch:build:client:js & npm run watch:build:client:css",
     "dev:live-reload": "browser-sync start --config bs-config.js",
     "dev": "npm run dev:databases & npm run dev:server & npm run dev:delayed-job & npm run dev:client & npm run dev:live-reload",
-    "dev-no-client": "npm run dev:databases & npm run dev:server & npm run dev:delayed-job & npm run dev:live-reload"
+    "dev-no-client": "npm run dev:databases & npm run dev:server & npm run dev:delayed-job & npm run dev:live-reload",
+    "dev-no-database": "node --harmony_default_parameters --harmony_destructuring script/dev.js"
   }
 }
