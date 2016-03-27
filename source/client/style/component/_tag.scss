@@ -1,38 +1,13 @@
 .tag {
-  width: 80px;
-  height: 80px;
-  padding: 5px;
-  margin-bottom: 10px;
-  margin-right: 10px;
-  border-radius: 4px;
+  $height: 26px;
+
+  height: $height;
+  border-radius: ($height / 2);
+  padding: 6px 8px;
+  margin-bottom: 5px;
+  margin-right: 5px;
   background-color: #DBDDDE;
   cursor: pointer;
-
-  &.tag--btn {
-    border: none;
-    position: relative;
-    svg {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-    }
-  }
-
-  &.tag--delete-active {
-    background-color: red;
-    svg path {
-      fill: white;
-    }
-  }
-}
-
-.tag__text {
-  height: 100%;
-  line-height: 80px - 5px * 2;
-  text-align: center;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  font-weight: 700;
-  white-space: nowrap;
+  font-size: 12px;
+  line-height: 14px;
 }

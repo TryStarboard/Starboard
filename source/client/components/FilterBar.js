@@ -1,9 +1,9 @@
-import React, { Component } from 'react';
-import observeStore from '../higher-order-components/observeStore';
-import Filter from './Filter';
+import React, {Component} from 'react';
+import observeStore       from '../higher-order-components/observeStore';
+import Filter             from './Filter';
 
 const createObserveComponent = observeStore(
-  () => ({ filters: ['filters'] })
+  () => ({filters: ['filters']})
 );
 
 export default createObserveComponent(
@@ -11,7 +11,7 @@ export default createObserveComponent(
     render() {
       return (
         <div className='dashboard__filters filters'>
-          { this.props.filters.map((tagId) =>  <Filter tagId={ tagId } key={ tagId } />) }
+          {this.props.filters.map((tagId) => <Filter tagId={tagId} key={tagId}/>)}
         </div>
       );
     }

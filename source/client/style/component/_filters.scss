@@ -1,13 +1,11 @@
 .filters {
-  padding: 20px;
-}
+  padding: 30px;
+  padding-bottom: 0;
+  display: flex;
 
-.filters__tag {
-  display: inline-block;
-  margin: 0 5px 5px 0;
-  background-color: #DBDDDE;
-  padding: 1px 8px 2px;
-  border-radius: 4px;
-  color: black;
-  font-weight: 700;
+  @at-root {
+    .filters__tag {
+      @extend .tag;
+    }
+  }
 }

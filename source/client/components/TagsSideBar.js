@@ -1,26 +1,89 @@
-import React, { Component } from 'react';
-import observeStore from '../higher-order-components/observeStore';
-import { getAllTags } from '../actions';
-import AddTag from './AddTag';
-import Tag from './Tag';
+import React, {Component}              from 'react';
+import classnames                      from 'classnames';
+import {DropTarget}                    from 'react-dnd';
+import observeStore                    from '../higher-order-components/observeStore';
+import {getAllTags, addTag, deleteTag} from '../actions';
+import Tag                             from './Tag';
 
 const createObserveComponent = observeStore(
-  () => ({ tags: ['tags'] })
+  () => ({
+    tags: ['tags'],
+    errorMsg: ['ui', 'addTagErrorMsg', 'tag_text', 0],
+    isDraggingTag: ['ui', 'isDraggingTag'],
+  })
 );
 
-export default createObserveComponent(
-  class TagsSideBar extends Component {
-    componentDidMount() {
-      getAllTags();
-    }
+class TagsSideBar extends Component {
+  componentDidMount() {
+    getAllTags();
+  }
 
-    render() {
-      return (
-        <div className="dashboard__tags">
-          <AddTag />
-          { this.props.tags.map((id) => <Tag id={ id } key={ id } />) }
+  render() {
+    const {
+      isDraggingTag,
+      connectDropTarget,
+      isOver,
+      errorMsg
+    } = this.props;
+
+    let inputContent;
+
+    if (isDraggingTag) {
+      const dropTarget = connectDropTarget(
+        <div className={classnames('dashboard__tags-input-delete-zone', {
+          'dashboard__tags-input-delete-zone--over': isOver,
+        })}></div>
+      );
+
+      inputContent = (
+        <div>
+          {dropTarget}
+          <div className='dashboard__tags-input-helper-text'>
+            Drag here to delete
+          </div>
         </div>
       );
+    } else {
+      const helperMsg = errorMsg || 'Type tag name, hit Enter to create new tag';
+
+      inputContent = (
+        <form onSubmit={addTag}>
+          <input
+            type='text'
+            name='tag_text'
+            className='dashboard__tags-input'
+            placeholder='Create new tag...'/>
+          <div className={classnames('dashboard__tags-input-helper-text', {
+            'dashboard__tags-input-helper-text--error': errorMsg,
+          })}>
+            {helperMsg}
+          </div>
+        </form>
+      );
     }
+
+    return (
+      <div className='dashboard__tags'>
+        <div className='dashboard__tags-input-wrapper'>
+          {inputContent}
+        </div>
+        <div className='dashboard__tags-tag-list'>
+          {this.props.tags.map((id) => <Tag id={id} key={id} />)}
+        </div>
+      </div>
+    );
   }
-);
+}
+
+export default createObserveComponent(DropTarget(
+  'TAG',
+  {
+    drop(props, monitor) {
+      deleteTag(monitor.getItem());
+    }
+  },
+  (connect, monitor) => ({
+    connectDropTarget: connect.dropTarget(),
+    isOver: monitor.isOver(),
+  })
+)(TagsSideBar));

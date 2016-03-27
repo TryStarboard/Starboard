@@ -1,54 +1,104 @@
-// TODO: 80px * 3 + 10px * 3 + 20px is the ideal with,
-// but browser scrollbar can make things ugly,
-// before we can replace the scrollbar, we have to leave extra space for it
-// $tags-bar-width: 80px * 3 + 10px * 3 + 20px;
-$tags-bar-width: 310px;
-
-$filters-height: 20px + 24px + 10px;
-$dashboard-content-height: calc(100vh - #{$filters-height});
-
 .dashboard {
-  margin-left: 64px;
+  $tags-side-bar-width: 316px;
+  $input-height: 38px;
+
+  margin-left: $side-bar-width;
   position: relative;
-}
+  height: 100vh;
 
-.dashboard__filters {
-  height: $filters-height;
-}
+  @at-root {
+    .dashboard__content {
+      position: relative;
+      height: 100vh;
+    }
 
-.dashboard__tags {
-  position: absolute;
-  top: $filters-height;
-  left: 0;
-  width: $tags-bar-width;
-  height: $dashboard-content-height;
-  overflow: auto;
-  padding: 20px 0 10px 20px;
-  margin-right: -10px;
-  display: flex;
-  flex-wrap: wrap;
-  align-content: flex-start;
-}
+    .dashboard__tags {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: $tags-side-bar-width;
+      height: 100vh;
+      overflow: auto;
+      padding: 30px;
+      background-color: #F9F9F9;
+      border-right: 1px solid #E5E5E5;
+    }
 
-.dashboard__repos {
-  position: absolute;
-  top: $filters-height;
-  left: $tags-bar-width;
-  right: 0;
-  padding: 20px 0 0 20px;
-  display: flex;
-  flex-wrap: wrap;
-  align-content: flex-start;
-  align-items: flex-start;
-  height: $dashboard-content-height;
-  overflow: auto;
-}
+    .dashboard__tags-input-wrapper {
+      margin-bottom: 30px;
+      height: 60px;
+    }
 
-.dashboard__repo-tag-drag-layer {
-  position: absolute;
-  top: 0;
-  left: 0;
-  svg path {
-    fill: red;
+    // Specify input tag to overwrite Skeleton CSS
+    input.dashboard__tags-input {
+      width: 100%;
+      height: $input-height;
+      border-radius: ($input-height / 2);
+      padding-left: ($input-height / 2);
+      padding-right: ($input-height / 2);
+      border: 1px solid #CDCDCD;
+      margin-bottom: 0;
+      font-size: 14px;
+
+      &:focus {
+        border: 2px solid #77ABE7;
+        padding-left: ($input-height / 2) - 1;
+        padding-right: ($input-height / 2) - 1;
+      }
+    }
+
+    .dashboard__tags-input-helper-text {
+      font-size: 11px;
+      text-align: center;
+      color: #AAAAAA;
+      margin-top: 5px;
+
+      &.dashboard__tags-input-helper-text--error {
+        color: red;
+      }
+    }
+
+    .dashboard__tags-input-delete-zone {
+      height: $input-height;
+      border-radius: ($input-height / 2);
+      border: 2px solid #E54B72;
+      background-color: #F6E7EA;
+      border-style: dashed;
+
+      &.dashboard__tags-input-delete-zone--over {
+        box-shadow: 0 0 0 5px #F6E7EA;
+      }
+    }
+
+    .dashboard__tags-tag-list {
+      display: flex;
+      flex-wrap: wrap;
+    }
+
+    .dashboard__repos {
+      position: absolute;
+      top: 0;
+      left: $tags-side-bar-width;
+      right: 0;
+      height: 100vh;
+    }
+
+    .dashboard__repos-list {
+      height: 100vh;
+      padding: 20px 0 0 20px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      overflow: auto;
+    }
+
+    .dashboard__repo-tag-drag-layer {
+      position: absolute;
+      top: 0;
+      left: 0;
+      svg path {
+        fill: red;
+      }
+    }
   }
 }

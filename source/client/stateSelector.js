@@ -1,10 +1,7 @@
-import { createSelector } from 'reselect';
-import {
-  prop, values, map, pipe, merge, sortBy, reverse, toPairs, fromPairs,
-  contains, filter, all, __
-} from 'ramda';
-import u from 'updeep';
-import { DEFAULT_TAG_COLORS } from './const/DEFAULT_TAG_COLORS';
+import {prop, values, map, pipe, merge, sortBy, reverse, toPairs, fromPairs, contains, filter, all, not, __} from 'ramda';
+import {createSelector}     from 'reselect';
+import u                    from 'updeep';
+import {DEFAULT_TAG_COLORS} from './const/DEFAULT_TAG_COLORS';
 
 // Helpers
 //
@@ -53,16 +50,34 @@ const updateTagsStateAffectedByFilter = createSelector(
   }
 );
 
+const selectTags = createSelector(
+  prop('filters'),
+  prop('tagsById'),
+  (filters, tagsById) => {
+    return pipe(
+      values,
+      filter(pipe(
+        prop('id'),
+        contains(__, filters),
+        not
+      )),
+      sortBy(prop('id')),
+      reverse,
+      map(prop('id'))
+    )(tagsById);
+  }
+);
+
 /**
 interface ComputedStoreShape {
-  filters: number[];
-  reposById: { [key string]: Repo };
-  repos: number[];
-  routes: RouteShape;
-  tagsById: { [key string]: Tag },
-  tags: number[];
-  ui: UIShape;
-  user: UserShape;
+  filters   : number[];
+  reposById : { [key string] : Repo };
+  repos     : number[];
+  routes    : RouteShape;
+  tagsById  : { [key string] : Tag },
+  tags      : number[];
+  ui        : UIShape;
+  user      : UserShape;
 }
 */
 
@@ -72,7 +87,7 @@ export default createStateTransformer({
   repos: selectRepos,
   routes: prop('routes'),
   tagsById: pipe(updateTagsStateAffectedByFilter, map(assignDefaultColorToTag)),
-  tags: pipe(prop('tagsById'), values, sortBy(prop('id')), reverse, map(prop('id'))),
+  tags: selectTags,
   ui: prop('ui'),
   user: prop('user'),
 });

@@ -1,19 +1,18 @@
 /*eslint no-process-env:0*/
 
-import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
+import {createStore, combineReducers, applyMiddleware, compose} from 'redux';
 import promiseMiddleware from 'redux-promise-middleware';
-import thunk from 'redux-thunk';
-import { identity } from 'ramda';
-import stateSelector from './stateSelector';
+import thunk             from 'redux-thunk';
+import {identity}        from 'ramda';
+import stateSelector     from './stateSelector';
+import filters           from './reducers/filters';
+import reposById         from './reducers/reposById';
+import routes            from './reducers/routes';
+import tagsById          from './reducers/tagsById';
+import ui                from './reducers/ui';
+import user              from './reducers/user';
 
-import filters   from './reducers/filters';
-import reposById from './reducers/reposById';
-import routes    from './reducers/routes';
-import tagsById  from './reducers/tagsById';
-import ui        from './reducers/ui';
-import user      from './reducers/user';
-
-const middlewares = [ promiseMiddleware(), thunk ];
+const middlewares = [promiseMiddleware(), thunk];
 
 if (process.env.NODE_ENV !== 'production') {
   middlewares.push(require('redux-logger')());
