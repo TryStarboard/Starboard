@@ -1,11 +1,11 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import observeStore from '../higher-order-components/observeStore';
-import { getAllTags } from '../actions';
+import {getAllTags} from '../actions';
 import AddTag from './AddTag';
 import Tag from './Tag';
 
 const createObserveComponent = observeStore(
-  () => ({ tags: ['tags'] })
+  () => ({tags: ['tags']})
 );
 
 export default createObserveComponent(
@@ -17,8 +17,12 @@ export default createObserveComponent(
     render() {
       return (
         <div className="dashboard__tags">
+          <div className="dashboard__tags-input-wrapper">
+            <input type="text" className="dashboard__tags-input" placeholder="Search or create new tag..." />
+            <div className="dashboard__tags-input-helper-text">Type for search, hit Enter to create new tag</div>
+          </div>
           <AddTag />
-          { this.props.tags.map((id) => <Tag id={ id } key={ id } />) }
+          {this.props.tags.map((id) => <Tag id={id} key={id} />)}
         </div>
       );
     }
