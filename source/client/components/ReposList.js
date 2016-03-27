@@ -20,9 +20,9 @@ export default createObserveComponent(
 
     render() {
       return (
-        <div className="dashboard__repos">
+        <div className='dashboard__repos'>
           <FilterBar/>
-          <div className={classnames("dashboard__repos-list", {
+          <div className={classnames('dashboard__repos-list', {
             'dashboard__repos-list--no-filter': this.props.filters.length === 0,
           })}>
             {this.props.repos.map((id) => <Repo id={id} key={id}/>)}
