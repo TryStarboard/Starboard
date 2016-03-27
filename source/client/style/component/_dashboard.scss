@@ -39,6 +39,12 @@
       border: 1px solid #CDCDCD;
       margin-bottom: 0;
       font-size: 14px;
+
+      &:focus {
+        border: 2px solid #77ABE7;
+        padding-left: ($height / 2) - 1;
+        padding-right: ($height / 2) - 1;
+      }
     }
 
     .dashboard__tags-input-helper-text {
