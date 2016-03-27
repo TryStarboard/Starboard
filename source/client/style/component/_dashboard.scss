@@ -20,9 +20,6 @@
       height: $dashboard-content-height;
       overflow: auto;
       padding: 30px;
-      // display: flex;
-      // flex-wrap: wrap;
-      // align-content: flex-start;
       background-color: #F9F9F9;
       border-right: 1px solid #E5E5E5;
     }
@@ -50,6 +47,11 @@
       text-align: center;
       color: #AAAAAA;
       margin-top: 5px;
+    }
+
+    .dashboard__tags-tag-list {
+      display: flex;
+      flex-wrap: wrap;
     }
 
     .dashboard__repos {

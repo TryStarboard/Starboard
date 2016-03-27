@@ -1,12 +1,12 @@
-import React, { Component } from 'react';
-import { DropTarget } from 'react-dnd';
+import React, {Component} from 'react';
+import {DropTarget} from 'react-dnd';
 import classnames from 'classnames';
 import observeStore from '../higher-order-components/observeStore';
-import { applyTagToRepo } from '../actions';
+import {applyTagToRepo} from '../actions';
 import RepoTag from './RepoTag';
 
 const createObserveComponent = observeStore(
-  ({ id }) => ({ repo: ['reposById', id] })
+  ({id}) => ({repo: ['reposById', id]})
 );
 
 class Repo extends Component {
@@ -19,7 +19,7 @@ class Repo extends Component {
     } = this.props;
 
     return connectDropTarget(
-      <div className={ classnames('repo', { 'repo--is-tag-over': isOver }) }>
+      <div className={classnames('repo', {'repo--is-tag-over': isOver})}>
         <div className="repo__full-name">
           <a className="repo__name-link" target="_blank" href={ html_url }>{ full_name }</a>
         </div>

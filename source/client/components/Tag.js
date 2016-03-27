@@ -1,10 +1,10 @@
-import React, { Component } from 'react';
-import { DragSource } from 'react-dnd';
+import React, {Component} from 'react';
+import {DragSource} from 'react-dnd';
 import observeStore from '../higher-order-components/observeStore';
-import { beginDragTag, endDragTag, selectTag } from '../actions';
+import {beginDragTag, endDragTag, selectTag} from '../actions';
 
 const createObserveComponent = observeStore(
-  ({ id }) => ({ tag: ['tagsById', id] })
+  ({id}) => ({tag: ['tagsById', id]})
 );
 
 class Tag extends Component {
@@ -13,7 +13,7 @@ class Tag extends Component {
       id,
       isDragging,
       connectDragSource,
-      tag: { text, foreground_color, background_color, isSelected } = {}
+      tag: {text, foreground_color, background_color, isSelected} = {}
     } = this.props;
 
     const style = {
@@ -24,11 +24,8 @@ class Tag extends Component {
     };
 
     return connectDragSource(
-      <div
-        className='tag'
-        style={ style }
-        onClick={ () => selectTag(id) }>
-        <div className="tag__text">{ text }</div>
+      <div className='tag' style={style} onClick={() => selectTag(id)}>
+        {text}
       </div>
     );
   }
@@ -39,7 +36,7 @@ export default createObserveComponent(DragSource(
   {
     beginDrag(props) {
       beginDragTag();
-      return { tagId: props.id };
+      return {tagId: props.id};
     },
     endDrag() {
       endDragTag();
