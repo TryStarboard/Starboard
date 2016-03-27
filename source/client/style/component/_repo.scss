@@ -40,19 +40,11 @@
       color: #888888;
     }
 
-    .repo__desc {
-      font-size: 14px;
-      line-height: 18px;
-      color: #666666;
-      word-break: break-word;
-    }
-
     .repo__tags {
       list-style: none;
       padding: 0;
       margin: 0;
       margin-top: 10px;
-      margin-bottom: 15px;
       font-size: 14px;
       display: flex;
       flex-wrap: wrap;
@@ -64,6 +56,14 @@
       &.repo__tag--dragging {
         opacity: 0;
       }
+    }
+
+    .repo__desc {
+      margin-top: 15px;
+      font-size: 14px;
+      line-height: 18px;
+      color: #666666;
+      word-break: break-word;
     }
   }
 }

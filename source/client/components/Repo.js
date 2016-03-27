@@ -20,6 +20,15 @@ class Repo extends Component {
 
     const [, authorName, repoName] = /(.+)\/(.+)/.exec(full_name);
 
+    let tagsSection = null;
+    if (tags.length) {
+      tagsSection = (
+        <ul className="repo__tags">
+          {tags.map((id) => <RepoTag tagId={id} repoId={repoId} key={id}/>)}
+        </ul>
+      );
+    }
+
     return connectDropTarget(
       <div className={classnames('repo', {'repo--is-tag-over': isOver})}>
         <div className="repo__full-name">
@@ -28,9 +37,7 @@ class Repo extends Component {
             <span className="repo__author-name"> / {authorName}</span>
           </a>
         </div>
-        <ul className="repo__tags">
-          {tags.map((id) => <RepoTag tagId={id} repoId={repoId} key={id}/>)}
-        </ul>
+        {tagsSection}
         <div className="repo__desc">{description}</div>
       </div>
     );
