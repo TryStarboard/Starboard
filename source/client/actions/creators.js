@@ -1,21 +1,22 @@
-import axios from 'axios';
-import validate from 'validate.js';
-import mixpanel from '../mixpanel';
-import { collect } from '../helpers/form';
+import axios     from 'axios';
+import validate  from 'validate.js';
+import {collect} from '../helpers/form';
+import mixpanel  from '../mixpanel';
 
-export const GET_CURRENT_USER = 'GET_CURRENT_USER';
-export const GET_ALL_REPOS = 'GET_ALL_REPOS';
-export const GET_ALL_TAGS = 'GET_ALL_TAGS';
-export const CLOSE_ADD_TAG_MODAL = 'CLOSE_ADD_TAG_MODAL';
-export const OPEN_ADD_TAG_MODAL = 'OPEN_ADD_TAG_MODAL';
-export const ADD_TAG = 'ADD_TAG';
+export const GET_CURRENT_USER      = 'GET_CURRENT_USER';
+export const GET_ALL_REPOS         = 'GET_ALL_REPOS';
+export const GET_ALL_TAGS          = 'GET_ALL_TAGS';
+export const CLOSE_ADD_TAG_MODAL   = 'CLOSE_ADD_TAG_MODAL';
+export const OPEN_ADD_TAG_MODAL    = 'OPEN_ADD_TAG_MODAL';
+export const ADD_TAG               = 'ADD_TAG';
 export const ADD_TAG_INVALID_INPUT = 'ADD_TAG_INVALID_INPUT';
-export const APPLY_TAG_TO_REPO = 'APPLY_TAG_TO_REPO';
-export const BEGIN_DRAG_TAG = 'BEGIN_DRAG_TAG';
-export const END_DRAG_TAG = 'END_DRAG_TAG';
-export const DELETE_TAG = 'DELETE_TAG';
-export const REMOVE_REPO_TAG = 'REMOVE_REPO_TAG';
-export const SELECT_TAG = 'SELECT_TAG';
+export const APPLY_TAG_TO_REPO     = 'APPLY_TAG_TO_REPO';
+export const BEGIN_DRAG_TAG        = 'BEGIN_DRAG_TAG';
+export const END_DRAG_TAG          = 'END_DRAG_TAG';
+export const DELETE_TAG            = 'DELETE_TAG';
+export const REMOVE_REPO_TAG       = 'REMOVE_REPO_TAG';
+export const SELECT_TAG            = 'SELECT_TAG';
+export const REMOVE_FILTER         = 'REMOVE_FILTER';
 
 export function getCurrentUser() {
   return {
@@ -140,5 +141,13 @@ export function selectTag(tagId) {
   return {
     type: SELECT_TAG,
     payload: { tagId },
+  };
+}
+
+export function removeFilter(tagId) {
+  mixpanel.track(REMOVE_FILTER);
+  return {
+    type: REMOVE_FILTER,
+    payload: {tagId},
   };
 }
