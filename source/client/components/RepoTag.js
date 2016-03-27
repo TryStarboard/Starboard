@@ -1,11 +1,13 @@
-import React, { Component } from 'react';
-import { DragSource } from 'react-dnd';
-import classnames from 'classnames';
-import observeStore from '../higher-order-components/observeStore';
-import { removeRepoTag } from '../actions';
+import React, {Component} from 'react';
+import {DragSource}       from 'react-dnd';
+import classnames         from 'classnames';
+import observeStore       from '../higher-order-components/observeStore';
+import {removeRepoTag}    from '../actions';
+
+const {pow, sqrt} = Math;
 
 const createObserveComponent = observeStore(
-  ({ tagId }) => ({ tag: ['tagsById', tagId] })
+  ({tagId}) => ({tag: ['tagsById', tagId]})
 );
 
 class RepoTag extends Component {
@@ -13,7 +15,7 @@ class RepoTag extends Component {
     const {
       connectDragSource,
       isDragging,
-      tag: { background_color, foreground_color, text } = {},
+      tag: {background_color, foreground_color, text} = {},
     } = this.props;
 
     const style = {
@@ -23,24 +25,22 @@ class RepoTag extends Component {
 
     return connectDragSource(
       <li
-        className={ classnames('repo__tag', {'repo__tag--dragging': isDragging}) }
-        style={ style }>
-        { text }
+        className={classnames('repo__tag', {'repo__tag--dragging': isDragging})}
+        style={style}>
+        {text}
       </li>
     );
   }
 }
 
-const { pow, sqrt } = Math;
-
 export default createObserveComponent(DragSource(
   'REPO_TAG',
   {
-    beginDrag({ tagId, repoId }) {
-      return { tag_id: tagId, repo_id: repoId };
+    beginDrag({tagId, repoId}) {
+      return {tag_id: tagId, repo_id: repoId};
     },
     endDrag(props, monitor) {
-      const { x, y } = monitor.getDifferenceFromInitialOffset();
+      const {x, y} = monitor.getDifferenceFromInitialOffset();
       const shouldRemoveTag = sqrt(pow(x, 2) + pow(y, 2)) > 200;
       if (shouldRemoveTag) {
         removeRepoTag(monitor.getItem());

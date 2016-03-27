@@ -1,9 +1,9 @@
 import React, {Component} from 'react';
-import {DropTarget} from 'react-dnd';
-import classnames from 'classnames';
-import observeStore from '../higher-order-components/observeStore';
-import {applyTagToRepo} from '../actions';
-import RepoTag from './RepoTag';
+import {DropTarget}       from 'react-dnd';
+import classnames         from 'classnames';
+import observeStore       from '../higher-order-components/observeStore';
+import {applyTagToRepo}   from '../actions';
+import RepoTag            from './RepoTag';
 
 const createObserveComponent = observeStore(
   ({id}) => ({repo: ['reposById', id]})
@@ -18,15 +18,20 @@ class Repo extends Component {
       repo: { full_name, description, html_url, tags } = {},
     } = this.props;
 
+    const [, authorName, repoName] = /(.+)\/(.+)/.exec(full_name);
+
     return connectDropTarget(
       <div className={classnames('repo', {'repo--is-tag-over': isOver})}>
         <div className="repo__full-name">
-          <a className="repo__name-link" target="_blank" href={ html_url }>{ full_name }</a>
+          <a className="repo__name-link" target="_blank" href={html_url}>
+            <span className="repo__repo-name">{repoName}</span>
+            <span className="repo__author-name"> / {authorName}</span>
+          </a>
         </div>
         <ul className="repo__tags">
-          { tags.map((id) => <RepoTag tagId={ id } repoId={ repoId } key={ id } />) }
+          {tags.map((id) => <RepoTag tagId={id} repoId={repoId} key={id}/>)}
         </ul>
-        <div className="repo__desc">{ description }</div>
+        <div className="repo__desc">{description}</div>
       </div>
     );
   }

@@ -1,6 +1,5 @@
 .dashboard {
   $tags-side-bar-width: 316px;
-  $dashboard-content-height: 100vh;
 
   margin-left: $side-bar-width;
   position: relative;
@@ -17,7 +16,7 @@
       top: 0;
       left: 0;
       width: $tags-side-bar-width;
-      height: $dashboard-content-height;
+      height: 100vh;
       overflow: auto;
       padding: 30px;
       background-color: #F9F9F9;
@@ -62,9 +61,8 @@
       padding: 20px 0 0 20px;
       display: flex;
       flex-wrap: wrap;
-      align-content: flex-start;
-      align-items: flex-start;
-      height: $dashboard-content-height;
+      justify-content: center;
+      height: 100vh;
       overflow: auto;
     }
 
