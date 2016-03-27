@@ -15,7 +15,7 @@ class Repo extends Component {
       id: repoId,
       isOver,
       connectDropTarget,
-      repo: { full_name, description, html_url, tags } = {},
+      repo: {full_name, description, html_url, tags} = {},
     } = this.props;
 
     const [, authorName, repoName] = /(.+)\/(.+)/.exec(full_name);

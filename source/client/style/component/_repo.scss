@@ -1,15 +1,18 @@
 .repo {
+  $padding: 20px;
+
   width: 310px;
   min-height: 165px;
   border: 1px solid #E5E5E5;
   border-radius: 4px;
-  padding: 20px;
+  padding: $padding;
   margin-right: 20px;
   margin-bottom: 20px;
   line-height: 1.5;
 
   &.repo--is-tag-over {
-    background-color: #DBDDDE;
+    border: 2px solid #77ABE7;
+    padding: $padding - 1px;
   }
 
   @at-root {
