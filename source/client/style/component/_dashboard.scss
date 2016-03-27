@@ -58,11 +58,15 @@
       top: 0;
       left: $tags-side-bar-width;
       right: 0;
+      height: 100vh;
+    }
+
+    .dashboard__repos-list {
+      height: 100vh;
       padding: 20px 0 0 20px;
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
-      height: 100vh;
       overflow: auto;
     }
 
