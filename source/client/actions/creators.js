@@ -6,8 +6,6 @@ import mixpanel  from '../mixpanel';
 export const GET_CURRENT_USER      = 'GET_CURRENT_USER';
 export const GET_ALL_REPOS         = 'GET_ALL_REPOS';
 export const GET_ALL_TAGS          = 'GET_ALL_TAGS';
-export const CLOSE_ADD_TAG_MODAL   = 'CLOSE_ADD_TAG_MODAL';
-export const OPEN_ADD_TAG_MODAL    = 'OPEN_ADD_TAG_MODAL';
 export const ADD_TAG               = 'ADD_TAG';
 export const ADD_TAG_INVALID_INPUT = 'ADD_TAG_INVALID_INPUT';
 export const APPLY_TAG_TO_REPO     = 'APPLY_TAG_TO_REPO';
@@ -46,20 +44,6 @@ export function getAllTags() {
   };
 }
 
-export function openAddTagModal() {
-  mixpanel.track(OPEN_ADD_TAG_MODAL);
-  return {
-    type: OPEN_ADD_TAG_MODAL,
-  };
-}
-
-export function closeAddTagModal() {
-  mixpanel.track(CLOSE_ADD_TAG_MODAL);
-  return {
-    type: CLOSE_ADD_TAG_MODAL,
-  };
-}
-
 export function addTag(event) {
   event.preventDefault();
 
@@ -79,11 +63,11 @@ export function addTag(event) {
 
   return function (dispatch) {
     mixpanel.track(ADD_TAG);
+
     dispatch({
       type: ADD_TAG,
       payload: {
-        promise: axios.post('/api/v1/tags', { name: inputs.tag_text })
-          .tap((data) => dispatch(closeAddTagModal())),
+        promise: axios.post('/api/v1/tags', {name: inputs.tag_text}),
       },
     });
   };
