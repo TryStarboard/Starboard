@@ -1,11 +1,11 @@
 .filters {
-  padding: 30px;
-  padding-bottom: 0;
+  padding: 20px;
   display: flex;
 
   @at-root {
     .filters__tag {
       @extend .tag;
+      margin-bottom: 0;
     }
   }
 }

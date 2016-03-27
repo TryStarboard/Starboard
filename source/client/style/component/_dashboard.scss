@@ -77,19 +77,37 @@
 
     .dashboard__repos {
       position: absolute;
+      z-index: 0;
       top: 0;
       left: $tags-side-bar-width;
       right: 0;
       height: 100vh;
     }
 
+    .dashboard__filters {
+      position: relative;
+      z-index: 0;
+    }
+
     .dashboard__repos-list {
-      height: 100vh;
+      position: absolute;
+      z-index: 1;
+      top: 66px;
+      left: 0;
+      width: 100%;
+      bottom: 0;
       padding: 20px 0 0 20px;
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
       overflow: auto;
+      background-color: white;
+
+      transition: top 400ms;
+
+      &.dashboard__repos-list--no-filter {
+        top: 0;
+      }
     }
 
     .dashboard__repo-tag-drag-layer {
