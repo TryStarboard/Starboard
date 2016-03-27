@@ -8,7 +8,7 @@
   width: $width;
   top: 0;
   height: 100vh;
-  background-color: #1F2245;
+  background-color: #333333;
   padding: 0 $padding;
 
   @at-root {
@@ -27,10 +27,15 @@
       padding: 5px;
       border: none;
       margin: $padding 0;
-      fill: #D2CA2A;
+      fill: #CCCCCC;
       display: block;
+
       &:hover {
-        fill: #EFE525;
+        fill: #51B3FF;
+      }
+
+      &.nav__btn--active {
+        fill: #64BE6B;
       }
     }
   }
