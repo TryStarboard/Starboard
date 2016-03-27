@@ -17,6 +17,8 @@ export default function (state = INITIAL_UI, {type, payload}) {
   switch (type) {
   case ADD_TAG_INVALID_INPUT:
     return merge(state, {addTagErrorMsg: payload});
+  case ADD_TAG_RESET_MESSAGE:
+    return merge(state, {addTagErrorMsg: null});
   case BEGIN_DRAG_TAG:
     return merge(state, {isDraggingTag: true});
   case END_DRAG_TAG:

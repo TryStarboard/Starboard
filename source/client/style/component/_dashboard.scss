@@ -53,6 +53,10 @@
       text-align: center;
       color: #AAAAAA;
       margin-top: 5px;
+
+      &.dashboard__tags-input-helper-text--error {
+        color: red;
+      }
     }
 
     .dashboard__tags-tag-list {

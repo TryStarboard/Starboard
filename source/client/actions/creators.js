@@ -8,6 +8,7 @@ export const GET_ALL_REPOS         = 'GET_ALL_REPOS';
 export const GET_ALL_TAGS          = 'GET_ALL_TAGS';
 export const ADD_TAG               = 'ADD_TAG';
 export const ADD_TAG_INVALID_INPUT = 'ADD_TAG_INVALID_INPUT';
+export const ADD_TAG_RESET_MESSAGE = 'ADD_TAG_RESET_MESSAGE';
 export const APPLY_TAG_TO_REPO     = 'APPLY_TAG_TO_REPO';
 export const BEGIN_DRAG_TAG        = 'BEGIN_DRAG_TAG';
 export const END_DRAG_TAG          = 'END_DRAG_TAG';
@@ -69,6 +70,10 @@ export function addTag(event) {
       payload: {
         promise: axios.post('/api/v1/tags', {name: inputs.tag_text}),
       },
+    });
+
+    dispatch({
+      type: ADD_TAG_RESET_MESSAGE,
     });
   };
 }
