@@ -1,5 +1,6 @@
 .dashboard {
   $tags-side-bar-width: 316px;
+  $input-height: 38px;
 
   margin-left: $side-bar-width;
   position: relative;
@@ -25,26 +26,24 @@
 
     .dashboard__tags-input-wrapper {
       margin-bottom: 30px;
-      display: block;
+      height: 60px;
     }
 
     // Specify input tag to overwrite Skeleton CSS
     input.dashboard__tags-input {
-      $height: 38px;
-
       width: 100%;
-      height: $height;
-      border-radius: ($height / 2);
-      padding-left: ($height / 2);
-      padding-right: ($height / 2);
+      height: $input-height;
+      border-radius: ($input-height / 2);
+      padding-left: ($input-height / 2);
+      padding-right: ($input-height / 2);
       border: 1px solid #CDCDCD;
       margin-bottom: 0;
       font-size: 14px;
 
       &:focus {
         border: 2px solid #77ABE7;
-        padding-left: ($height / 2) - 1;
-        padding-right: ($height / 2) - 1;
+        padding-left: ($input-height / 2) - 1;
+        padding-right: ($input-height / 2) - 1;
       }
     }
 
@@ -56,6 +55,18 @@
 
       &.dashboard__tags-input-helper-text--error {
         color: red;
+      }
+    }
+
+    .dashboard__tags-input-delete-zone {
+      height: $input-height;
+      border-radius: ($input-height / 2);
+      border: 2px solid #E54B72;
+      background-color: #F6E7EA;
+      border-style: dashed;
+
+      &.dashboard__tags-input-delete-zone--over {
+        box-shadow: 0 0 0 5px #F6E7EA;
       }
     }
 
