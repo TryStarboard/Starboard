@@ -1,31 +1,37 @@
 .nav {
+  $width: $side-bar-width;
+  $btn-edge-length: 34px;
+  $padding: ($width - $btn-edge-length) / 2;
+
   position: absolute;
   left: 0;
-  width: 64px;
+  width: $width;
   top: 0;
   height: 100vh;
   background-color: #1F2245;
-  padding: 0 15px;
-}
+  padding: 0 $padding;
 
-.nav__top {
-}
+  @at-root {
+    .nav__top {
+    }
 
-.nav__bottom {
-  position: absolute;
-  bottom: 0;
-  left: 15px;
-}
+    .nav__bottom {
+      position: absolute;
+      bottom: 0;
+      left: $padding;
+    }
 
-.nav__btn {
-  height: 34px;
-  width: 34px;
-  padding: 5px;
-  border: none;
-  margin: 15px 0;
-  fill: #D2CA2A;
-  display: block;
-  &:hover {
-    fill: #EFE525;
+    .nav__btn {
+      height: $btn-edge-length;
+      width: $btn-edge-length;
+      padding: 5px;
+      border: none;
+      margin: $padding 0;
+      fill: #D2CA2A;
+      display: block;
+      &:hover {
+        fill: #EFE525;
+      }
+    }
   }
 }
