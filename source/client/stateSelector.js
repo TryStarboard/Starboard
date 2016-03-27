@@ -55,14 +55,14 @@ const updateTagsStateAffectedByFilter = createSelector(
 
 /**
 interface ComputedStoreShape {
-  filters: number[];
-  reposById: { [key string]: Repo };
-  repos: number[];
-  routes: RouteShape;
-  tagsById: { [key string]: Tag },
-  tags: number[];
-  ui: UIShape;
-  user: UserShape;
+  filters   : number[];
+  reposById : { [key string] : Repo };
+  repos     : number[];
+  routes    : RouteShape;
+  tagsById  : { [key string] : Tag },
+  tags      : number[];
+  ui        : UIShape;
+  user      : UserShape;
 }
 */
 
