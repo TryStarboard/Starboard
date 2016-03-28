@@ -179,8 +179,11 @@ export const tagsSelector = curryN(2, wrap(function *(user_id, repos) {
     map((text) => ({user_id, text}))
   )(repos);
 
-  const sql = db('tags').insert(tags);
-  yield db.raw('? ON CONFLICT DO NOTHING', [sql]);
+  if (tags.length) {
+    const sql = db('tags').insert(tags);
+    yield db.raw('? ON CONFLICT DO NOTHING', [sql]);
+  }
+
   const allTags = yield db('tags').select('id', 'text').where({user_id});
 
   const languageTagMap = {};
