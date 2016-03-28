@@ -1,3 +1,5 @@
+/*eslint no-process-exit:0*/
+
 import 'source-map-support/register';
 import './loadEnv';
 import kue                     from 'kue';
@@ -24,14 +26,14 @@ queue
     log.info({job_type: type, job_id: id}, 'JOB_ENQUEUE');
   })
   .on('job complete', function (id, result) {
-    kue.Job.get(id, function (err, job) {
-      if (err) {
+    kue.Job.get(id, function (err1, job) {
+      if (err1) {
         return;
       }
 
-      job.remove(function (err) {
-        if (err) {
-          throw err;
+      job.remove(function (err2) {
+        if (err2) {
+          throw err2;
         }
         log.info({job_id: id}, 'JOB_REMOVED');
       });
