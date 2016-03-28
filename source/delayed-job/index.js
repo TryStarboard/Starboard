@@ -17,6 +17,30 @@ const queue = kue.createQueue({
   }
 });
 
+queue.watchStuckJobs(20000);
+
+queue
+  .on('job enqueue', function (id, type) {
+    log.info({job_type: type, job_id: id}, 'JOB_ENQUEUE');
+  })
+  .on('job complete', function (id, result) {
+    kue.Job.get(id, function (err, job) {
+      if (err) {
+        return;
+      }
+
+      job.remove(function (err) {
+        if (err) {
+          throw err;
+        }
+        log.info({job_id: id}, 'JOB_REMOVED');
+      });
+    });
+  })
+  .on('error', function (err) {
+    log.error(err, 'QUEUE_ERROR');
+  });
+
 const pub = new Redis(REDIS_CONFIG);
 
 queue.process('sync-stars', 5, function (job, done) {
@@ -65,3 +89,27 @@ queue.process('sync-stars', 5, function (job, done) {
     done();
   }
 });
+
+log.info('JOB_SERVER_START');
+
+listenToSignal('SIGINT');
+listenToSignal('SIGTERM');
+
+function gracefullShowdown(signal, handler) {
+  queue.shutdown(20000, function (err) {
+    if (err) {
+      log.error({err, signal}, 'QUEUE_SHUTDOWN_ERROR');
+    }
+    log.info({signal}, 'QUEUE_SHUTDOWN');
+    handler();
+  });
+}
+
+function listenToSignal(signal) {
+  process.once(signal, function () {
+    log.info({signal}, 'RECEIVE_SIGNAL');
+    gracefullShowdown(signal, function () {
+      process.exit(0);
+    });
+  });
+}
