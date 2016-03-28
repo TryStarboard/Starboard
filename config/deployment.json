@@ -1,12 +1,12 @@
 {
   "starboard": {
     "rc_template": "./starboard-replication-controller.yml",
-    "version": 11,
+    "version": 12,
     "image_name": "us.gcr.io/starboard-1224/starboard-server"
   },
   "starboard-job-server": {
     "rc_template": "./starboard-job-server-rc.yml",
-    "version": 2,
+    "version": 3,
     "image_name": "us.gcr.io/starboard-1224/starboard-job-server"
   }
 }
