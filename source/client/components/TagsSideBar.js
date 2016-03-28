@@ -49,7 +49,7 @@ class TagsSideBar extends Component {
       const helperMsg = errorMsg || 'Type tag name, hit Enter to create new tag';
 
       inputContent = (
-        <form onSubmit={addTag}>
+        <form onSubmit={addTag} autoComplete='off'>
           <input
             type='text'
             name='tag_text'
