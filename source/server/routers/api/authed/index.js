@@ -1,8 +1,9 @@
-import Router from 'koa-router';
-import { getAll as getAllRepos                   } from '../../../../shared-backend/model/Repos';
-import { getAll as getAllTags, addTag, deleteTag } from '../../../../shared-backend/model/Tags';
-import { addRepoTag, deleteRepoTag               } from '../../../../shared-backend/model/RepoTags';
-import { findById as findUserById, deleteUser    } from '../../../../shared-backend/model/User';
+import Router                                    from 'koa-router';
+import {getAll as getAllRepos                  } from '../../../../shared-backend/model/Repos';
+import {getAll as getAllTags, addTag, deleteTag} from '../../../../shared-backend/model/Tags';
+import {addRepoTag, deleteRepoTag              } from '../../../../shared-backend/model/RepoTags';
+import {findById as findUserById, deleteUser   } from '../../../../shared-backend/model/User';
+import {UniqueConstraintError                  } from '../../../../shared-backend/model/Errors';
 
 function *ensureAuthed(next) {
   if (this.req.isAuthenticated()) {
@@ -28,7 +29,16 @@ authedRoute.get('/repos', ensureAuthed, function *() {
 });
 
 authedRoute.post('/tags', ensureAuthed, function *(next) {
-  this.body = yield addTag(this.req.user.id, this.request.body.name);
+  try {
+    this.body = yield addTag(this.req.user.id, this.request.body.name);
+  } catch (err) {
+    if (err instanceof UniqueConstraintError && err.field === 'text') {
+      this.status = 409;
+      this.body = {error: `"${this.request.body.name}" already exists`};
+      return;
+    }
+    throw err;
+  }
 });
 
 authedRoute.get('/tags', ensureAuthed, function *(next) {

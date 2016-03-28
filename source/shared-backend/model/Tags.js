@@ -1,5 +1,6 @@
-import { wrap } from 'co';
-import db       from '../db';
+import {wrap}                  from 'co';
+import db                      from '../db';
+import {UniqueConstraintError} from './Errors';
 
 export function getAll(id) {
   return db
@@ -10,8 +11,15 @@ export function getAll(id) {
 }
 
 export const addTag = wrap(function *(user_id, text) {
-  const [ tag ] = yield db('tags').insert({ user_id, text }, '*');
-  return tag;
+  try {
+    const [tag] = yield db('tags').insert({user_id, text}, '*');
+    return tag;
+  } catch (err) {
+    if (err.constraint === 'tags_user_id_text_unique') {
+      throw new UniqueConstraintError('tags', 'text');
+    }
+    throw err;
+  }
 });
 
 export const deleteTag = wrap(function *(id) {

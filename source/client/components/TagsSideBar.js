@@ -8,7 +8,7 @@ import Tag                                                from './Tag';
 const createObserveComponent = observeStore(
   () => ({
     tags: ['tags'],
-    errorMsg: ['ui', 'addTagErrorMsg', 'tag_text', 0],
+    errorMsg: ['ui', 'addTagErrorMsg'],
     isDraggingTag: ['ui', 'isDraggingTag'],
     inputValue: ['ui', 'tagInputValue'],
   })

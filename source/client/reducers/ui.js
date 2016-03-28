@@ -1,4 +1,4 @@
-import {merge}           from 'ramda';
+import {merge, path}     from 'ramda';
 import {UPDATE_PROGRESS} from '../../shared/action-types';
 import {
   CHNAGE_ADD_TAG_INPUT,
@@ -26,6 +26,8 @@ export default function (state = INITIAL_UI, {type, payload}) {
     return merge(state, {addTagErrorMsg: null});
   case `${ADD_TAG}_FULFILLED`:
     return merge(state, {tagInputValue: ''});
+  case `${ADD_TAG}_REJECTED`:
+    return merge(state, {addTagErrorMsg: path(['data', 'error'], payload)});
   case BEGIN_DRAG_TAG:
     return merge(state, {isDraggingTag: true});
   case END_DRAG_TAG:

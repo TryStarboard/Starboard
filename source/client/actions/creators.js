@@ -59,7 +59,7 @@ export function addTag(event) {
   if (errors != null) {
     return {
       type: ADD_TAG_INVALID_INPUT,
-      payload: errors,
+      payload: errors.tag_text[0],
     };
   }
 
