@@ -1,6 +1,8 @@
 # Starboard
 
-A github stared repo management app
+A github starred repo management app
+
+![](./doc/dashboard-screenshot.png)
 
 ## Tech Stack
 
