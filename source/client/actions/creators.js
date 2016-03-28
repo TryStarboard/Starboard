@@ -7,6 +7,7 @@ export const GET_CURRENT_USER      = 'GET_CURRENT_USER';
 export const GET_ALL_REPOS         = 'GET_ALL_REPOS';
 export const GET_ALL_TAGS          = 'GET_ALL_TAGS';
 export const ADD_TAG               = 'ADD_TAG';
+export const CHNAGE_ADD_TAG_INPUT  = 'CHNAGE_ADD_TAG_INPUT';
 export const ADD_TAG_INVALID_INPUT = 'ADD_TAG_INVALID_INPUT';
 export const ADD_TAG_RESET_MESSAGE = 'ADD_TAG_RESET_MESSAGE';
 export const APPLY_TAG_TO_REPO     = 'APPLY_TAG_TO_REPO';
@@ -75,6 +76,13 @@ export function addTag(event) {
     dispatch({
       type: ADD_TAG_RESET_MESSAGE,
     });
+  };
+}
+
+export function changeAddTagInput(event) {
+  return {
+    type: CHNAGE_ADD_TAG_INPUT,
+    payload: event.target.value,
   };
 }
 

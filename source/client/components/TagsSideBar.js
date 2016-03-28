@@ -1,15 +1,16 @@
-import React, {Component}              from 'react';
-import classnames                      from 'classnames';
-import {DropTarget}                    from 'react-dnd';
-import observeStore                    from '../higher-order-components/observeStore';
-import {getAllTags, addTag, deleteTag} from '../actions';
-import Tag                             from './Tag';
+import React, {Component}                                 from 'react';
+import classnames                                         from 'classnames';
+import {DropTarget}                                       from 'react-dnd';
+import observeStore                                       from '../higher-order-components/observeStore';
+import {getAllTags, addTag, deleteTag, changeAddTagInput} from '../actions';
+import Tag                                                from './Tag';
 
 const createObserveComponent = observeStore(
   () => ({
     tags: ['tags'],
     errorMsg: ['ui', 'addTagErrorMsg', 'tag_text', 0],
     isDraggingTag: ['ui', 'isDraggingTag'],
+    inputValue: ['ui', 'tagInputValue'],
   })
 );
 
@@ -23,7 +24,8 @@ class TagsSideBar extends Component {
       isDraggingTag,
       connectDropTarget,
       isOver,
-      errorMsg
+      errorMsg,
+      inputValue,
     } = this.props;
 
     let inputContent;
@@ -52,7 +54,9 @@ class TagsSideBar extends Component {
             type='text'
             name='tag_text'
             className='dashboard__tags-input'
-            placeholder='Create new tag...'/>
+            placeholder='Create new tag...'
+            value={inputValue}
+            onChange={changeAddTagInput}/>
           <div className={classnames('dashboard__tags-input-helper-text', {
             'dashboard__tags-input-helper-text--error': errorMsg,
           })}>
