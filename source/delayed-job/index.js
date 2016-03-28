@@ -90,15 +90,26 @@ queue.process('sync-stars', 5, function (job, done) {
   }
 });
 
-process.once('SIGINT', function () {
-  log.info({signal: 'SIGINT'}, 'RECEIVE_SIGNAL');
+log.info('JOB_SERVER_START');
+
+listenToSignal('SIGINT');
+listenToSignal('SIGTERM');
+
+function gracefullShowdown(signal, handler) {
   queue.shutdown(20000, function (err) {
     if (err) {
-      log.error(err, 'QUEUE_SHOWDOWN_ERROR');
+      log.error({err, signal}, 'QUEUE_SHUTDOWN_ERROR');
     }
-    log.info('QUEUE_SHOWDOWN');
-    process.exit(0);
+    log.info({signal}, 'QUEUE_SHUTDOWN');
+    handler();
   });
-});
+}
 
-log.info('JOB_SERVER_START');
+function listenToSignal(signal) {
+  process.once(signal, function () {
+    log.info({signal}, 'RECEIVE_SIGNAL');
+    gracefullShowdown(signal, function () {
+      process.exit(0);
+    });
+  });
+}
