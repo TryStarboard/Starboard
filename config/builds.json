@@ -4,23 +4,23 @@
     "dockerfile": "./docker-artifact/Dockerfile-server-node"
   },
   "us.gcr.io/starboard-1224/starboard-server-node-modules": {
-    "version": 6,
+    "version": 7,
     "dockerfile": "./docker-artifact/Dockerfile-server-node-modules",
     "isTemplate": true,
     "baseimage": "us.gcr.io/starboard-1224/starboard-server-node"
   },
   "us.gcr.io/starboard-1224/starboard-server": {
-    "version": 14,
+    "version": 16,
     "dockerfile": "./docker-artifact/Dockerfile-server",
     "isTemplate": true,
     "baseimage": "us.gcr.io/starboard-1224/starboard-server-node-modules"
   },
   "us.gcr.io/starboard-1224/starboard-job-server-node-modules": {
-    "version": 5,
+    "version": 6,
     "dockerfile": "./docker-artifact/Dockerfile-job-server-node-modules"
   },
   "us.gcr.io/starboard-1224/starboard-job-server": {
-    "version": 6,
+    "version": 7,
     "dockerfile": "./docker-artifact/Dockerfile-job-server",
     "isTemplate": true,
     "baseimage": "us.gcr.io/starboard-1224/starboard-job-server-node-modules"
