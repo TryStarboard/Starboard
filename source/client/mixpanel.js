@@ -1,7 +1,16 @@
 /*global MIXPANEL_TOKEN*/
-
 import mixpanel from 'mixpanel-browser';
 
-mixpanel.init(MIXPANEL_TOKEN); // Token is defined in webpack.config
+let mix = mixpanel;
 
-export { mixpanel as default };
+if (MIXPANEL_TOKEN) {
+  mixpanel.init(MIXPANEL_TOKEN); // Token is defined in webpack.config
+} else {
+  let mixpanelStub = {};
+  mixpanelStub.identify = function() {};
+  mixpanelStub.track = function() {};
+
+  mix = mixpanelStub;
+}
+
+export { mix as default };

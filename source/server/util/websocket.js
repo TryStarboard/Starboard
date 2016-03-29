@@ -4,6 +4,7 @@ import co                           from 'co';
 import { curry                    } from 'ramda';
 import { props                    } from 'bluebird';
 import config                       from 'config';
+import log                          from '../../shared-backend/log';
 import { client as redisClient    } from '../../shared-backend/redis';
 import {
   subClient,
@@ -77,7 +78,12 @@ function handleConnection(socket) {
 
   subClient.on('message', messageHandler);
   subscribeRedis(channelName);
-  socket.on(SYNC_REPOS, () => enqueueSyncStarsJob(user_id));
+  socket.on(SYNC_REPOS, () => {
+    enqueueSyncStarsJob(user_id)
+      .catch((err) => {
+        log.error({err, user_id}, 'ENQUEUE_JOB_ERROR');
+      });
+  });
 
   // Clean up
   socket.on('disconnect', () => {
