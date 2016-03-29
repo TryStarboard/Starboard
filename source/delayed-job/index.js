@@ -18,8 +18,6 @@ const queue = kue.createQueue({
   }
 });
 
-queue.watchStuckJobs(20000);
-
 queue
   .on('job enqueue', function (id, type) {
     log.info({job_type: type, job_id: id}, 'JOB_ENQUEUE');
