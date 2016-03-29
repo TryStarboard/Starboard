@@ -14,7 +14,7 @@ export default function (job, done) {
   let total;
   let i = 0;
 
-  log.info({user_id, job_type: 'sync-stars'}, 'JOB_STARTED');
+  log.info({user_id, job_type: 'sync-stars', job_id: job.id}, 'JOB_STARTED');
 
   startSyncStars(user_id).subscribe(onNext, onError, onCompleted);
 
@@ -41,13 +41,13 @@ export default function (job, done) {
   }
 
   function onError(err) {
-    log.error({err, user_id, job_type: 'sync-stars'}, 'JOB_ERROR');
+    log.error({err, user_id, job_type: 'sync-stars', job_id: job.id}, 'JOB_ERROR');
     redisClient.del(uniqKey);
     done(err);
   }
 
   function onCompleted() {
-    log.info({user_id, job_type: 'sync-stars'}, 'JOB_COMPLETED');
+    log.info({user_id, job_type: 'sync-stars', job_id: job.id}, 'JOB_COMPLETED');
     redisClient.del(uniqKey);
     done();
   }

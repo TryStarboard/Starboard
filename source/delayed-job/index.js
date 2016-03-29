@@ -49,26 +49,4 @@ queue.process('sync-stars', 5, function (job, done) {
   }
 });
 
-listenToSignal('SIGINT');
-listenToSignal('SIGTERM');
-
 log.info('JOB_SERVER_START');
-
-function gracefullShowdown(signal, handler) {
-  queue.shutdown(20000, function (err) {
-    if (err) {
-      log.error({err, signal}, 'QUEUE_SHUTDOWN_ERROR');
-    }
-    log.info({signal}, 'QUEUE_SHUTDOWN');
-    handler();
-  });
-}
-
-function listenToSignal(signal) {
-  process.once(signal, function () {
-    log.info({signal}, 'RECEIVE_SIGNAL');
-    gracefullShowdown(signal, function () {
-      process.exit(0);
-    });
-  });
-}
