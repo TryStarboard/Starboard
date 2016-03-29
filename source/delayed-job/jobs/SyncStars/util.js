@@ -1,12 +1,9 @@
-import {
-  curry, curryN, pluck, filter, identity, uniq, pick, map,
-  omit, pipe, path, defaultTo } from 'ramda';
-import co, { wrap } from 'co';
-import { Observable } from 'rx';
+import {curry, curryN, pluck, filter, identity, uniq, pick, map, omit, pipe, path, defaultTo} from 'ramda';
+import co, {wrap}      from 'co';
+import {Observable}    from 'rx';
 import parseLinkHeader from 'parse-link-header';
-
-import github from '../../shared-backend/github';
-import db     from '../../shared-backend/db';
+import github          from '../../../shared-backend/github';
+import db              from '../../../shared-backend/db';
 
 export const transformRepo = curry(function (id, {starred_at, repo}) {
   const transformed = pick([
