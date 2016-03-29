@@ -20,7 +20,7 @@
     "dockerfile": "./docker-artifact/Dockerfile-job-server-node-modules"
   },
   "us.gcr.io/starboard-1224/starboard-job-server": {
-    "version": 10,
+    "version": 11,
     "dockerfile": "./docker-artifact/Dockerfile-job-server",
     "isTemplate": true,
     "baseimage": "us.gcr.io/starboard-1224/starboard-job-server-node-modules"

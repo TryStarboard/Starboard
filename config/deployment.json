@@ -6,7 +6,7 @@
   },
   "starboard-job-server": {
     "rc_template": "./starboard-job-server-rc.yml",
-    "version": 7,
+    "version": 8,
     "image_name": "us.gcr.io/starboard-1224/starboard-job-server"
   }
 }
