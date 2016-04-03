@@ -1,11 +1,13 @@
-import { Observable, Subject } from 'rx';
-import { propEq, concat, prop, pluck } from 'ramda';
+import {Observable, Subject}         from 'rx';
+import {propEq, concat, prop, pluck} from 'ramda';
+import Maxcon                        from 'maxcon';
 import {
   createRepoSource,
   reposSelector,
   tagsSelector,
   reposAndLanguageTagMapSelector,
-  deleteRepos } from './util';
+  deleteRepos
+} from './util';
 
 /**
  * Data source from Github, emit fetched data from github
@@ -29,35 +31,80 @@ import {
 export default function (user_id) {
   const returnSubject = new Subject();
 
-  const reposSharedSource = createRepoSource(user_id).share();
-
-  reposSharedSource
-    .filter(propEq('type', 'SUMMARY_ITEM'))
-    .subscribe(::returnSubject.onNext, ::returnSubject.onError);
-  const reposItemsSource = reposSharedSource
-    .filter(propEq('type', 'REPOS_ITEM'))
-    .map(prop('repos'))
-    .share();
-
-  const reposSource = reposItemsSource
-    .flatMapWithMaxConcurrent(1, reposSelector)
-    .shareReplay();
-  const tagsSource = reposItemsSource
-    .flatMapWithMaxConcurrent(1, tagsSelector(user_id));
-
-  // Use "concat" because we want to make sure DELETED_ITEM comes last
-  Observable.concat(
-    Observable
-      .zip(reposSource, tagsSource)
-      .flatMapWithMaxConcurrent(1, reposAndLanguageTagMapSelector(user_id))
-      .doOnNext(emitProgressItem),
-    reposSource
-      .map(pluck('id'))
-      .reduce(concat)
-      .flatMap(deleteRepos(user_id))
-      .doOnNext(emitDeleteItem)
-  )
-  .subscribe(() => {}, ::returnSubject.onError, ::returnSubject.onCompleted);
+  new Maxcon({
+    fetchStarsFromGithub: {
+      process: () => createRepoSource(user_id),
+    },
+    getFetchSummary: {
+      dependsOn: ['fetchStarsFromGithub'],
+      process({fetchStarsFromGithub: a}) {
+        return a
+          .filter(propEq('type', 'SUMMARY_ITEM'))
+          .doOnNext(::returnSubject.onNext)
+          .doOnError(::returnSubject.onError);
+      },
+    },
+    getStarItems: {
+      dependsOn: ['fetchStarsFromGithub'],
+      process({fetchStarsFromGithub: a}) {
+        return a
+          .filter(propEq('type', 'REPOS_ITEM'))
+          .map(prop('repos'));
+      },
+    },
+    saveRepos: {
+      dependsOn: ['getStarItems'],
+      process({getStarItems: a}) {
+        return a.flatMapWithMaxConcurrent(1, reposSelector);
+      }
+    },
+    saveTags: {
+      dependsOn: ['getStarItems'],
+      process({getStarItems: a}) {
+        return a.flatMapWithMaxConcurrent(1, tagsSelector(user_id));
+      }
+    },
+    saveRepoTags: {
+      dependsOn: ['saveRepos', 'saveTags'],
+      process({saveRepos: a, saveTags: b}) {
+        return Observable
+          .zip(a, b)
+          .flatMapWithMaxConcurrent(1, reposAndLanguageTagMapSelector(user_id))
+          .doOnNext(emitProgressItem);
+      }
+    },
+    deleteUnstarredRepos: {
+      dependsOn: ['saveRepos'],
+      process({saveRepos: a}) {
+        return a
+          .map(pluck('id'))
+          .reduce(concat)
+          .flatMap(deleteRepos(user_id));
+      }
+    },
+    reportProgress: {
+      dependsOn: ['saveRepoTags', 'deleteUnstarredRepos'],
+      process({saveRepoTags: a, deleteUnstarredRepos: b}) {
+        return Observable.create((observer) => {
+          // Use replay to convert into hot observable
+          // because concat won't subscribe to "b" before "a" finish
+          const c = b.replay();
+          const d1 = c.connect();
+          // Use concat to ensure delete event is emitted last
+          const d2 = Observable
+            .concat(a, c.doOnNext(emitDeleteItem))
+            .subscribe(observer);
+          return () => {
+            // Dispose resource in case of unsubscribing at the bottom
+            d1.dispose();
+            d2.dispose();
+          };
+        })
+          .doOnError(::returnSubject.onError)
+          .doOnCompleted(::returnSubject.onCompleted);
+      }
+    }
+  }).connect();
 
   function emitProgressItem(repoIds) {
     returnSubject.onNext({type: 'UPDATED_ITEM', repo_ids: repoIds});
