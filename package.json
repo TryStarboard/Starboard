@@ -33,7 +33,7 @@
     "kue": "0.10.5",
     "le_node": "1.2.0",
     "lodash": "4.6.1",
-    "maxcon": "^2.0.0",
+    "maxcon": "2.1.0",
     "octonode": "0.7.5",
     "parse-link-header": "0.4.1",
     "passport-github": "1.1.0",

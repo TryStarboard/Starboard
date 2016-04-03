@@ -40,8 +40,7 @@ export default function (user_id) {
       process({fetchStarsFromGithub: a}) {
         return a
           .filter(propEq('type', 'SUMMARY_ITEM'))
-          .doOnNext(::returnSubject.onNext)
-          .doOnError(::returnSubject.onError);
+          .doOnNext(::returnSubject.onNext);
       },
     },
     getStarItems: {
@@ -99,12 +98,17 @@ export default function (user_id) {
             d1.dispose();
             d2.dispose();
           };
-        })
-          .doOnError(::returnSubject.onError)
-          .doOnCompleted(::returnSubject.onCompleted);
+        });
       }
     }
-  }).connect();
+  })
+  .connect((err) => {
+    if (err) {
+      returnSubject.onError(err);
+    } else {
+      returnSubject.onCompleted();
+    }
+  });
 
   function emitProgressItem(repoIds) {
     returnSubject.onNext({type: 'UPDATED_ITEM', repo_ids: repoIds});
