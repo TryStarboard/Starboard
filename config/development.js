@@ -11,7 +11,7 @@ module.exports = {
   },
   redis: {
     host: dockerConn.hostname,
-    port: 6379,
+    port: 10100,
   },
   postgres: {
     host: dockerConn.hostname,
