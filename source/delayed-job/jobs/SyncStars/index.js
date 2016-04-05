@@ -1,6 +1,6 @@
 import {Observable, Subject}         from 'rx';
 import {propEq, concat, prop, pluck} from 'ramda';
-import Maxcon                        from 'maxcon';
+import {Maxcon}                      from 'maxcon';
 import {
   createRepoSource,
   reposSelector,
