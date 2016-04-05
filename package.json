@@ -103,10 +103,6 @@
     "watch:build:client:js": "npm run build:client:js -- -w",
     "watch:build:client:css": "npm run build:client:css -- -w",
     "watch:build": "npm run watch:build:server & npm run watch:build:delayed-job & npm run watch:build:client:js & npm run watch:build:client:css",
-    "run:server": "env NODE_ENV=development BLUEBIRD_WARNINGS=0 DEBUG='socket.io:server' nodemon -w build/server.js -w config build/server.js",
-    "run:delayed-job": "env NODE_ENV=development BLUEBIRD_WARNINGS=0 nodemon -w build/delayed-job.js -w config build/delayed-job.js",
-    "run-server": "npm run run:server & npm run run:delayed-job",
-    "run-non-server": "browser-sync start --config bs-config.js & docker-compose up",
     "dev": "node script/dev.js"
   }
 }

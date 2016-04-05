@@ -48,7 +48,7 @@ const runner = new DevRunner({
     start: 'npm run watch:build:client:css'
   },
   'start-http-server': {
-    start: 'env NODE_ENV=development BLUEBIRD_WARNINGS=0 DEBUG=\'socket.io:server\' nodemon -C -w build/server.js -w config build/server.js',
+    start: 'env NODE_ENV=development BLUEBIRD_WARNINGS=0 DEBUG="socket.io:server" nodemon -C -w build/server.js -w config build/server.js',
     events: [
       {
         regex: /Server listening/,
