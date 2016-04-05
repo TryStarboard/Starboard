@@ -1,75 +1,11 @@
 'use strict';
 
+const DevRunner = require('dev-runner').DevRunner;
+
 const join = require('path').join;
-const webpack = require('webpack');
-const nodemon = require('nodemon');
-const browserSync = require('browser-sync');
+const bs = require('browser-sync').create();
 
-const serverConf = require('../webpack.config.server');
-const browserConf = require('../webpack.config.browser');
-const delayedJobConf = require('../webpack.config.delayed-job');
-
-class NodemonManager {
-  constructor(opts) {
-    this.opts = opts;
-    this.hasStarted = false;
-  }
-
-  start() {
-    if (this.hasStarted) {
-      return;
-    }
-    this.nodemonInstance = nodemon(this.opts);
-  }
-}
-
-class BrowserSyncManager {
-  constructor(opts) {
-    this.opts = opts;
-    this.browserSync = browserSync;
-    this.serverReady = false;
-    this.clientReady = false;
-    this.hasStarted = false;
-  }
-
-  start({server = false, client = false}) {
-    if (this.hasStarted) {
-      return;
-    }
-    this.serverReady = this.serverReady || server;
-    this.clientReady = this.clientReady || client;
-    if (this.serverReady && this.clientReady) {
-      this.hasStarted = true;
-      this.browserSync(this.opts);
-    }
-  }
-
-  reload(changed) {
-    if (this.hasStarted) {
-      this.browserSync.reload(changed);
-    }
-  }
-}
-
-const serverNodemonManager = new NodemonManager({
-  script: join(__dirname, '../build/server.js'),
-  watch: [
-    join(__dirname, '../config/*'),
-    join(__dirname, '../build/server.js'),
-  ],
-  ext: 'js',
-});
-
-const delayedJobNodemonManager = new NodemonManager({
-  script: join(__dirname, '../build/delayed-job.js'),
-  watch: [
-    join(__dirname, '../config/*'),
-    join(__dirname, '../build/delayed-job.js'),
-  ],
-  ext: 'js',
-});
-
-const browserSyncManager = new BrowserSyncManager({
+const browserSyncOpts = {
   ui: false,
   files: [
     join(__dirname, '../template/**'),
@@ -84,24 +20,68 @@ const browserSyncManager = new BrowserSyncManager({
   reloadDelay: 1000,
   notify: false,
   ghostMode: false,
+};
+
+const runner = new DevRunner({
+  'start-database': {
+    start: 'docker-compose up'
+  },
+  'build-http-server': {
+    start: 'npm run watch:build:server'
+  },
+  'build-job-server': {
+    start: 'npm run watch:build:delayed-job'
+  },
+  'build-client-js': {
+    start: 'npm run watch:build:client:js',
+    events: [
+      {
+        regex: /bundle\.js/,
+        actionData() {
+          return {type: 'ready'};
+        }
+      }
+    ]
+  },
+  'build-client-css': {
+    preStart: 'npm run build:client:css',
+    start: 'npm run watch:build:client:css'
+  },
+  'start-http-server': {
+    start: "env NODE_ENV=development BLUEBIRD_WARNINGS=0 DEBUG='socket.io:server' nodemon -C -w build/server.js -w config build/server.js",
+    events: [
+      {
+        regex: /Server listening/,
+        actionData: {type: 'ready', source: 'http-server'},
+      }
+    ]
+  },
+  'start-job-server': {
+    start: "env NODE_ENV=development BLUEBIRD_WARNINGS=0 nodemon -C -w build/delayed-job.js -w config build/delayed-job.js"
+  },
+  'start-browser-sync': {
+    dependsOn: ['build-client-js', 'start-http-server'],
+    process(input, output) {
+      bs.init(browserSyncOpts);
+
+      input.on('action', (data) => {
+        if (data.type === 'ready' && data.source === 'http-server') {
+          bs.reload();
+        }
+      });
+    }
+  },
 });
 
-createWebpackWatcher(serverConf, (err, stats) => {
-  console.log(stats.toString({chunkModules: false, colors: true}));
-  serverNodemonManager.start();
-  browserSyncManager.start({server: true});
-});
+runner.run();
 
-createWebpackWatcher(delayedJobConf, (err, stats) => {
-  console.log(stats.toString({chunkModules: false, colors: true}));
-  delayedJobNodemonManager.start();
-});
+process.once('SIGINT', () => {
+  console.log('\n---> Recieved SIGINT, disposing\n');
+  runner.stop();
+  bs.exit();
 
-createWebpackWatcher(browserConf, (err, stats) => {
-  console.log(stats.toString({chunkModules: false, colors: true}));
-  browserSyncManager.start({client: true});
+  // Stop everything
+  setTimeout(() => {
+    process.exit(1);
+  }, 2000);
 });
-
-function createWebpackWatcher(config, onChangeHook) {
-  return webpack(config).watch({aggregateTimeout: 300}, onChangeHook);
-}

@@ -10,7 +10,7 @@ postgres:
 redis:
   image: redis:3.0
   ports:
-    - '6379:6379'
+    - '10100:6379'
 
 # app:
 #   build: .
