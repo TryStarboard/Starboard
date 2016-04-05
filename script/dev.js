@@ -48,7 +48,7 @@ const runner = new DevRunner({
     start: 'npm run watch:build:client:css'
   },
   'start-http-server': {
-    start: "env NODE_ENV=development BLUEBIRD_WARNINGS=0 DEBUG='socket.io:server' nodemon -C -w build/server.js -w config build/server.js",
+    start: 'env NODE_ENV=development BLUEBIRD_WARNINGS=0 DEBUG=\'socket.io:server\' nodemon -C -w build/server.js -w config build/server.js',
     events: [
       {
         regex: /Server listening/,
@@ -57,7 +57,7 @@ const runner = new DevRunner({
     ]
   },
   'start-job-server': {
-    start: "env NODE_ENV=development BLUEBIRD_WARNINGS=0 nodemon -C -w build/delayed-job.js -w config build/delayed-job.js"
+    start: 'env NODE_ENV=development BLUEBIRD_WARNINGS=0 nodemon -C -w build/delayed-job.js -w config build/delayed-job.js'
   },
   'start-browser-sync': {
     dependsOn: ['build-client-js', 'start-http-server'],
@@ -82,6 +82,8 @@ process.once('SIGINT', () => {
 
   // Stop everything
   setTimeout(() => {
+    /*eslint-disable no-process-exit*/
     process.exit(1);
+    /*eslint-enable no-process-exit*/
   }, 2000);
 });
