@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import octocatImg from 'img/octocat.jpg';
 
-export default class Login extends Component<any, void> {
+export default class Login extends Component {
   render() {
     return (
       <div className="login">

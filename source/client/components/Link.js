@@ -2,7 +2,7 @@ import React from 'react';
 import { navTo } from '../routes';
 
 const Link = (props) => {
-  const onClick = (event: Event) => {
+  const onClick = (event) => {
     event.preventDefault();
     navTo(props.to);
   };

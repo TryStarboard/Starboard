@@ -5,7 +5,7 @@ import TagsSideBar          from './TagsSideBar';
 import ReposList            from './ReposList';
 import RepoTagDragLayer     from './RepoTagDragLayer';
 
-class DashboardContent extends Component<any, any> {
+class DashboardContent extends Component {
   render() {
     return (
       <div className='dashboard__content'>

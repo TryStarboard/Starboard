@@ -1,9 +1,8 @@
-ecmaFeatures:
-  defaultParams:  true
-  destructuring: true
-  spread: true
-  experimentalObjectRestSpread:  true
-  modules: true
+parserOptions:
+  sourceType: module
 
 rules:
   no-dirname: 2
+  no-restricted-syntax:
+    - 2
+    - WithStatement

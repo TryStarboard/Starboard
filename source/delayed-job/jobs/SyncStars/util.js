@@ -91,7 +91,7 @@ function createDataSource(user_id, client) {
 
       observer.onCompleted();
     })
-    .catch(::observer.onError);
+    .catch((err) => observer.onError(err));
   });
 }
 

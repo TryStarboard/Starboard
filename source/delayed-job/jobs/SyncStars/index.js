@@ -40,7 +40,7 @@ export default function (user_id) {
       process({fetchStarsFromGithub: a}) {
         return a
           .filter(propEq('type', 'SUMMARY_ITEM'))
-          .doOnNext(::returnSubject.onNext);
+          .doOnNext((val) => returnSubject.onNext(val));
       },
     },
     getStarItems: {

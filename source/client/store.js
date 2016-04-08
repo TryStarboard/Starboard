@@ -1,4 +1,5 @@
 /*eslint no-process-env:0*/
+/*global process, require*/
 
 import {createStore, combineReducers, applyMiddleware, compose} from 'redux';
 import promiseMiddleware from 'redux-promise-middleware';

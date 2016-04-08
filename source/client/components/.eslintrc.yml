@@ -1,8 +1,9 @@
+parserOptions:
+  ecmaFeatures:
+    jsx: true
+
 plugins:
   - react
-
-ecmaFeatures:
-  jsx: true
 
 rules:
   # react/display-name: 2

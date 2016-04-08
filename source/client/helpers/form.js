@@ -83,7 +83,7 @@ export function reset(form) {
   let j;
 
   if (!form || form.nodeName !== 'FORM') {
-    return null;
+    return;
   }
 
   for (i = form.elements.length - 1; i >= 0; i--) {
