@@ -47,3 +47,6 @@ rules:
   # react/jsx-space-before-closing: 2
   react/jsx-uses-react: 2
   react/jsx-uses-vars: 2
+
+  node/no-missing-import: 0
+  node/no-missing-require: 0

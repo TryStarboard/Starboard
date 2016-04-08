@@ -11,10 +11,8 @@ env:
   node: true
   es6: true
 
-# ecmaFeatures:
-#   defaultParams:  false
-#   destructuring: false
-#   spread: false
+plugins:
+  - node
 
 rules:
   # Possible Errors
@@ -163,3 +161,8 @@ rules:
     - RestElement # spread
     - SpreadElement # spread
   object-curly-spacing: [2, never]
+
+  # Node.js
+  node/no-missing-import: 2
+  node/no-missing-require: 2
+  node/shebang: 2
