@@ -14,4 +14,4 @@ unauthedRoute.get('/', ensureUnauthed, function *() {
   this.body = {hello: 'world'};
 });
 
-export { unauthedRoute as default };
+export {unauthedRoute as default};

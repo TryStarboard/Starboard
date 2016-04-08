@@ -36,4 +36,4 @@ socket.on(UPDATE_PROGRESS, function (progress) {
   updateProgress(progress);
 });
 
-export { socket as default };
+export {socket as default};

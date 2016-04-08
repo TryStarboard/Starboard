@@ -3,7 +3,7 @@ import {
   UPDATE_SOME_REPOS,
   REMOVE_REPOS,
   UPDATE_TAGS,
-  UPDATE_PROGRESS } from '../../shared/action-types';
+  UPDATE_PROGRESS} from '../../shared/action-types';
 
 export function updateSomeRepos(repos) {
   return {

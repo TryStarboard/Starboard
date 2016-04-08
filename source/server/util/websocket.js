@@ -1,24 +1,24 @@
 import socketio                     from 'socket.io';
 import Cookies                      from 'cookies';
 import co                           from 'co';
-import { curry                    } from 'ramda';
-import { props                    } from 'bluebird';
+import {curry} from 'ramda';
+import {props} from 'bluebird';
 import config                       from 'config';
 import log                          from '../../shared-backend/log';
-import { client as redisClient    } from '../../shared-backend/redis';
+import {client as redisClient} from '../../shared-backend/redis';
 import {
   subClient,
   subscribe as subscribeRedis,
-  unsubscribe as unsubscribeRedis } from '../../shared-backend/pubsub';
-import { getReposWithIds          } from '../../shared-backend/model/Repos';
-import { getAll as getAllTags     } from '../../shared-backend/model/Tags';
+  unsubscribe as unsubscribeRedis} from '../../shared-backend/pubsub';
+import {getReposWithIds} from '../../shared-backend/model/Repos';
+import {getAll as getAllTags} from '../../shared-backend/model/Tags';
 import {
   UPDATE_SOME_REPOS,
   REMOVE_REPOS,
   UPDATE_TAGS,
   UPDATE_PROGRESS,
-  SYNC_REPOS                      } from '../../shared/action-types';
-import { enqueueSyncStarsJob      } from './JobQueue';
+  SYNC_REPOS} from '../../shared/action-types';
+import {enqueueSyncStarsJob} from './JobQueue';
 
 const COOKIE_KEYS = config.get('cookie.keys');
 
@@ -35,7 +35,7 @@ function authenticate(socket, next) {
     if (!obj || obj.passport.user == null) {
       next(new Error('session not found, cannot auth websocket'));
     } else {
-      socket.handshake.user = { id: obj.passport.user };
+      socket.handshake.user = {id: obj.passport.user};
       next();
     }
 
@@ -93,7 +93,7 @@ function handleConnection(socket) {
 }
 
 export function createWebsocketServer(server) {
-  const io = socketio(server, { serveClient: false });
+  const io = socketio(server, {serveClient: false});
   io.use(authenticate);
   io.on('connection', handleConnection);
 }

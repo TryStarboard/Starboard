@@ -9,4 +9,4 @@ const db = knex({
 // db.on('query', console.log);
 // db.on('query-error', console.log);
 
-export { db as default };
+export {db as default};

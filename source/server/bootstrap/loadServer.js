@@ -3,7 +3,7 @@
 import http from 'http';
 import createKoaServer from './createKoaServer';
 import log from '../../shared-backend/log';
-import { createWebsocketServer } from '../util/websocket';
+import {createWebsocketServer} from '../util/websocket';
 
 const koaApp = createKoaServer();
 

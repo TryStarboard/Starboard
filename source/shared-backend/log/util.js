@@ -1,4 +1,4 @@
-import { evolve } from 'ramda';
+import {evolve} from 'ramda';
 import bunyan from 'bunyan';
 
 const LEVELS = {

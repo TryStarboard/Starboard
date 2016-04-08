@@ -6,7 +6,7 @@ import koaLogger                 from 'koa-logger';
 import views                     from 'koa-views';
 import log                       from '../../shared-backend/log';
 import session                   from '../util/session';
-import { authInit, authSession } from '../util/auth';
+import {authInit, authSession} from '../util/auth';
 import htmlRoute                 from '../routers/html';
 import unauthedRoute             from '../routers/html/unauthed';
 import apiRoute                  from '../routers/api';

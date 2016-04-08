@@ -1,4 +1,4 @@
-import { parse } from 'routility';
+import {parse} from 'routility';
 
 export default function routilityRouterFactory(routes, stateHandler) {
 

@@ -1,7 +1,7 @@
-import { ObserveObjectPath } from 'observe-object-path';
-import { CompositeDisposable } from 'rx';
-import React, { Component } from 'react';
-import { map, merge } from 'ramda';
+import {ObserveObjectPath} from 'observe-object-path';
+import {CompositeDisposable} from 'rx';
+import React, {Component} from 'react';
+import {map, merge} from 'ramda';
 import store from '../store';
 
 const oop = new ObserveObjectPath(store.getState());
@@ -45,7 +45,7 @@ export default function (getKeypath, transform) {
         }
         this.disposableBag = new CompositeDisposable();
         Object.keys(this.observableMap).forEach((key) => {
-          const disposable = this.observableMap[key].subscribe((val) => this.setState({ [key]: val }));
+          const disposable = this.observableMap[key].subscribe((val) => this.setState({[key]: val}));
           this.disposableBag.add(disposable);
         });
       }

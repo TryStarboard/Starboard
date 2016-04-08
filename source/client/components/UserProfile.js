@@ -1,16 +1,16 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import observeStore from '../higher-order-components/observeStore';
-import { deleteAccount } from '../actions';
+import {deleteAccount} from '../actions';
 
 const createObserveComponent = observeStore(
-  () => ({ user: ['user'] })
+  () => ({user: ['user']})
 );
 
 export default createObserveComponent(
   class UserProfile extends Component {
     render() {
       const {
-        user: { avatar, email, displayname } = {}
+        user: {avatar, email, displayname} = {}
       } = this.props;
 
       return (

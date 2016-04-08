@@ -91,8 +91,8 @@ export function applyTagToRepo(tag_id, repo_id) {
   return {
     type: APPLY_TAG_TO_REPO,
     payload: {
-      data: { tag_id, repo_id },
-      promise: axios.post('/api/v1/repo_tags', { tag_id, repo_id }),
+      data: {tag_id, repo_id},
+      promise: axios.post('/api/v1/repo_tags', {tag_id, repo_id}),
     }
   };
 }
@@ -111,12 +111,12 @@ export function endDragTag() {
   };
 }
 
-export function deleteTag({ tagId }) {
+export function deleteTag({tagId}) {
   mixpanel.track(DELETE_TAG);
   return {
     type: DELETE_TAG,
     payload: {
-      data: { tagId },
+      data: {tagId},
       promise: axios.delete(`/api/v1/tags/${tagId}`),
     }
   };
@@ -128,7 +128,7 @@ export function removeRepoTag(repoTag) {
     type: REMOVE_REPO_TAG,
     payload: {
       data: repoTag,
-      promise: axios.delete('/api/v1/repo_tags', { data: repoTag }),
+      promise: axios.delete('/api/v1/repo_tags', {data: repoTag}),
     }
   };
 }
@@ -137,7 +137,7 @@ export function selectTag(tagId) {
   mixpanel.track(SELECT_TAG);
   return {
     type: SELECT_TAG,
-    payload: { tagId },
+    payload: {tagId},
   };
 }
 

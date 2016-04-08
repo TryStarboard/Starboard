@@ -162,3 +162,4 @@ rules:
     - AssignmentPattern # default prama
     - RestElement # spread
     - SpreadElement # spread
+  object-curly-spacing: [2, never]

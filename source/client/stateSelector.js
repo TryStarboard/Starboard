@@ -45,7 +45,7 @@ const updateTagsStateAffectedByFilter = createSelector(
   prop('filters'),
   prop('tagsById'),
   (filters, tagsById) => {
-    const updates = fromPairs(filters.map((tagId) => [tagId, { isSelected: true }]));
+    const updates = fromPairs(filters.map((tagId) => [tagId, {isSelected: true}]));
     return u(updates, tagsById);
   }
 );

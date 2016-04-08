@@ -1,9 +1,9 @@
 import Router                                    from 'koa-router';
-import {getAll as getAllRepos                  } from '../../../../shared-backend/model/Repos';
+import {getAll as getAllRepos} from '../../../../shared-backend/model/Repos';
 import {getAll as getAllTags, addTag, deleteTag} from '../../../../shared-backend/model/Tags';
-import {addRepoTag, deleteRepoTag              } from '../../../../shared-backend/model/RepoTags';
-import {findById as findUserById, deleteUser   } from '../../../../shared-backend/model/User';
-import {UniqueConstraintError                  } from '../../../../shared-backend/model/Errors';
+import {addRepoTag, deleteRepoTag} from '../../../../shared-backend/model/RepoTags';
+import {findById as findUserById, deleteUser} from '../../../../shared-backend/model/User';
+import {UniqueConstraintError} from '../../../../shared-backend/model/Errors';
 
 function *ensureAuthed(next) {
   if (this.req.isAuthenticated()) {
@@ -61,4 +61,4 @@ authedRoute.delete('/account', ensureAuthed, function *() {
   this.body = yield deleteUser(this.req.user.id);
 });
 
-export { authedRoute as default };
+export {authedRoute as default};

@@ -1,6 +1,6 @@
-import { indexBy, prop, append, reject, equals, merge, pipe, contains, __, map } from 'ramda';
+import {indexBy, prop, append, reject, equals, merge, pipe, contains, __, map} from 'ramda';
 import u from 'updeep';
-import { UPDATE_SOME_REPOS, REMOVE_REPOS } from '../../shared/action-types';
+import {UPDATE_SOME_REPOS, REMOVE_REPOS} from '../../shared/action-types';
 import {
   APPLY_TAG_TO_REPO,
   DELETE_TAG,
@@ -24,7 +24,7 @@ function removeTagFromRepo(state, payload) {
   }, state);
 }
 
-export default function (state = {}, { type, payload }) {
+export default function (state = {}, {type, payload}) {
   switch (type) {
   case `${GET_ALL_REPOS}_FULFILLED`:
     return indexBy(prop('id'), payload.data);

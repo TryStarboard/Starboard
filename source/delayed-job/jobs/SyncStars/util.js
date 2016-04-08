@@ -136,8 +136,8 @@ export function createRepoSource(user_id) {
 }
 
 function getGithubClientForUser(user_id) {
-  return db('users').select('access_token').where({ id: user_id })
-    .then(function ([{ access_token }]) {
+  return db('users').select('access_token').where({id: user_id})
+    .then(function ([{access_token}]) {
       return github.client(access_token);
     });
 }

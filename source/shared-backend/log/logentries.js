@@ -1,7 +1,7 @@
 import config from 'config';
 import es from 'event-stream';
 import Logger from 'le_node';
-import { transformLogData } from './util';
+import {transformLogData} from './util';
 
 const definition = Logger.bunyanStream({
   token: config.get('logging.Logentries.token')

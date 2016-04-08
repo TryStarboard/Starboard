@@ -1,10 +1,10 @@
-import { bindActionCreators } from 'redux';
-import { toPairs, pipe, filter, fromPairs, merge } from 'ramda';
+import {bindActionCreators} from 'redux';
+import {toPairs, pipe, filter, fromPairs, merge} from 'ramda';
 import store from '../store';
 import socket from '../websocket';
-import { navTo } from '../routes';
+import {navTo} from '../routes';
 import * as creatorsAndTypes from './creators';
-import { createSyncRepos, createLogout, createDeleteAccount } from './factory';
+import {createSyncRepos, createLogout, createDeleteAccount} from './factory';
 
 // Filter out actions types, which all start with upper case
 //

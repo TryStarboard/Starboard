@@ -1,4 +1,4 @@
-import { wrap } from 'co';
+import {wrap} from 'co';
 import db       from '../db';
 import github   from '../github';
 
@@ -67,7 +67,7 @@ const upsert = wrap(function *(data, access_token) {
     access_token,
   };
 
-  const { rows: [ userRecord ] } = yield db.raw(`
+  const {rows: [ userRecord ]} = yield db.raw(`
     ? ON CONFLICT (github_id)
     DO UPDATE SET
       (email, username, access_token, displayname, avatar) =

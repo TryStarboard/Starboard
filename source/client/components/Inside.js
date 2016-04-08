@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import { getCurrentUser } from '../actions';
+import React, {Component} from 'react';
+import {getCurrentUser} from '../actions';
 import Sidebar from './Sidebar';
 
 export default class Inside extends Component {

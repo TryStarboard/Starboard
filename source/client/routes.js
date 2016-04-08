@@ -1,4 +1,4 @@
-import { r, redirect, start } from 'routility';
+import {r, redirect, start} from 'routility';
 import store from './store';
 
 const routes = (
@@ -12,5 +12,5 @@ const routes = (
 
 export const navTo = start(
   routes,
-  (state) => store.dispatch({ type: 'NEW_ROUTE', data: state }),
-  { browserHistory: true });
+  (state) => store.dispatch({type: 'NEW_ROUTE', data: state}),
+  {browserHistory: true});

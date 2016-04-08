@@ -1,9 +1,9 @@
 import config from 'config';
 import github from 'octonode';
-import { stringify } from 'querystring';
-import { wrap } from 'co';
+import {stringify} from 'querystring';
+import {wrap} from 'co';
 import rp from 'request-promise';
-import { promisifyAll } from 'bluebird';
+import {promisifyAll} from 'bluebird';
 
 const CLIENT_ID = config.get('github.clientID');
 const CLIENT_SECRET = config.get('github.clientSecret');
@@ -26,7 +26,7 @@ function createLoginUrl() {
 }
 
 const handleLoginCallback = wrap(function *({code, state}) {
-  const { access_token } = yield rp({
+  const {access_token} = yield rp({
     method: 'POST',
     uri: 'https://github.com/login/oauth/access_token',
     body: {

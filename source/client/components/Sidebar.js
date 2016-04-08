@@ -6,11 +6,11 @@ import UserIcon from 'svg/user-icon.svg';
 import DashboardIcon from 'svg/dashboard-icon.svg';
 import RefreshIcon from 'svg/refresh-icon.svg';
 import observeStore from '../higher-order-components/observeStore';
-import { logout, syncRepos } from '../actions';
+import {logout, syncRepos} from '../actions';
 import Link from './Link';
 
 const createObserveComponent = observeStore(
-  () => ({ routes: ['routes'] })
+  () => ({routes: ['routes']})
 );
 
 const Sidebar = ({routes}) => (

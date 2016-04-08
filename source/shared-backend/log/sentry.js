@@ -1,8 +1,8 @@
 import config from 'config';
 import es from 'event-stream';
 import raven from 'raven';
-import { omit, merge } from 'ramda';
-import { LEVELS } from './util';
+import {omit, merge} from 'ramda';
+import {LEVELS} from './util';
 
 const client = new raven.Client(
   config.get('logging.Sentry.dsn'),

@@ -1,4 +1,4 @@
-import { wrap } from 'co';
+import {wrap} from 'co';
 import db       from '../db';
 
 export const addRepoTag = wrap(function *(data) {

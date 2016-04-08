@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import octocatImg from 'img/octocat.jpg';
 
 export default class Login extends Component {

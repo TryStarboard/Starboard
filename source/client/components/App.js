@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import { Switch, Case, Default } from 'react-switch-path';
+import React, {Component} from 'react';
+import {Switch, Case, Default} from 'react-switch-path';
 import observeStore from '../higher-order-components/observeStore';
 import Login from './Login';
 import Inside from './Inside';
@@ -7,7 +7,7 @@ import Dashboard from './Dashboard';
 import UserProfile from './UserProfile';
 
 const createObserveComponent = observeStore(
-  () => ({ routes: ['routes'] })
+  () => ({routes: ['routes']})
 );
 
 export default createObserveComponent(

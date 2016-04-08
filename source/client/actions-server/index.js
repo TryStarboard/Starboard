@@ -1,5 +1,5 @@
-import { bindActionCreators } from 'redux';
-import { toPairs, pipe, filter, fromPairs } from 'ramda';
+import {bindActionCreators} from 'redux';
+import {toPairs, pipe, filter, fromPairs} from 'ramda';
 import store from '../store';
 import * as creatorsAndTypes from './creators';
 

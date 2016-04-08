@@ -1,5 +1,5 @@
 import es from 'event-stream';
-import { transformLogData } from './util';
+import {transformLogData} from './util';
 
 const pretty = es.map((data, cb) => {
   const transformed = transformLogData(data);

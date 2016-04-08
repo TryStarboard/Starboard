@@ -1,9 +1,9 @@
 import Router from 'koa-router';
-import { fromCallback } from 'bluebird';
+import {fromCallback} from 'bluebird';
 import log                                        from '../../../shared-backend/log';
-import { createLoginUrl, handleLoginCallback    } from '../../../shared-backend/github';
-import { fetchUserProfile, upsert as upsertUser } from '../../../shared-backend/model/User';
-import { enqueueSyncStarsJob                    } from '../../util/JobQueue';
+import {createLoginUrl, handleLoginCallback} from '../../../shared-backend/github';
+import {fetchUserProfile, upsert as upsertUser} from '../../../shared-backend/model/User';
+import {enqueueSyncStarsJob} from '../../util/JobQueue';
 
 const unauthedRoute = new Router();
 
@@ -24,7 +24,7 @@ unauthedRoute.get('/github-back', ensureUnauthed, function *(next) {
     const access_token = yield handleLoginCallback(this.query);
     const user = yield fetchUserProfile(access_token);
     const id = yield upsertUser(user, access_token);
-    yield fromCallback((done) => this.req.login({ id }, done));
+    yield fromCallback((done) => this.req.login({id}, done));
     enqueueSyncStarsJob(id);
     this.redirect('/dashboard');
   } catch (err) {
@@ -33,4 +33,4 @@ unauthedRoute.get('/github-back', ensureUnauthed, function *(next) {
   }
 });
 
-export { unauthedRoute as default };
+export {unauthedRoute as default};

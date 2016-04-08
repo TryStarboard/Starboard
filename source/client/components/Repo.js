@@ -48,11 +48,11 @@ export default createObserveComponent(DropTarget(
   'TAG',
   {
     canDrop(props, monitor) {
-      const { tagId } = monitor.getItem();
+      const {tagId} = monitor.getItem();
       return props.repo.tags.indexOf(tagId) === -1;
     },
     drop(props, monitor) {
-      const { tagId } = monitor.getItem();
+      const {tagId} = monitor.getItem();
       applyTagToRepo(tagId, props.id);
     }
   },

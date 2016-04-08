@@ -1,6 +1,6 @@
 import bunyan from 'bunyan';
 import config from 'config';
-import { identity } from 'ramda';
+import {identity} from 'ramda';
 
 const opts = {
   name: 'starboard',

@@ -1,9 +1,9 @@
 import kue                       from 'kue';
 import config                    from 'config';
 import Redis                     from 'ioredis';
-import { wrap                  } from 'co';
+import {wrap} from 'co';
 import log                       from '../../shared-backend/log';
-import { client as redisClient } from '../../shared-backend/redis';
+import {client as redisClient} from '../../shared-backend/redis';
 
 const REDIS_CONFIG = config.get('redis');
 

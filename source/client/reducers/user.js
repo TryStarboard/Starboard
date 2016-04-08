@@ -1,6 +1,6 @@
-import { GET_CURRENT_USER, LOGOUT, DELETE_ACCOUNT } from '../actions/creators';
+import {GET_CURRENT_USER, LOGOUT, DELETE_ACCOUNT} from '../actions/creators';
 
-export default function (state = {}, { type, payload }) {
+export default function (state = {}, {type, payload}) {
   switch (type) {
   case `${GET_CURRENT_USER}_FULFILLED`:
     return payload.data;

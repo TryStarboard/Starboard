@@ -51,4 +51,4 @@ store.getState = function () {
   return transformedState;
 };
 
-export { store as default };
+export {store as default};

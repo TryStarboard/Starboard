@@ -2,7 +2,7 @@ import u from 'updeep';
 import {contains, append, without, reject, equals} from 'ramda';
 import {SELECT_TAG, DELETE_TAG, REMOVE_FILTER} from '../actions/creators';
 
-export default function (state = [], { type, payload }) {
+export default function (state = [], {type, payload}) {
   switch (type) {
   case SELECT_TAG:
     return u(

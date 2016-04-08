@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
-import { DragLayer } from 'react-dnd';
+import React, {Component} from 'react';
+import {DragLayer} from 'react-dnd';
 import TrashCanIcon from 'svg/trash-can-icon.svg';
 
-const { pow, sqrt } = Math;
+const {pow, sqrt} = Math;
 
 class RepoTagDragLayer extends Component {
 
@@ -31,7 +31,7 @@ class RepoTagDragLayer extends Component {
       return null;
     }
 
-    const { x, y } = differenceFromInitialOffset;
+    const {x, y} = differenceFromInitialOffset;
     const showTrashCan = sqrt(pow(x, 2) + pow(y, 2)) > 200;
 
     if (!showTrashCan) {

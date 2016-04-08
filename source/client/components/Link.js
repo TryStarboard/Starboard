@@ -1,5 +1,5 @@
 import React from 'react';
-import { navTo } from '../routes';
+import {navTo} from '../routes';
 
 const Link = (props) => {
   const onClick = (event) => {
@@ -14,4 +14,4 @@ const Link = (props) => {
   );
 };
 
-export { Link as default };
+export {Link as default};
