@@ -10,3 +10,4 @@ local*
 /typings/main*
 /typings/browser*
 /.idea
+.tmp
