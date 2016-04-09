@@ -59,7 +59,7 @@
     "classnames": "2.2.3",
     "commander": "^2.9.0",
     "dev-runner": "0.0.3",
-    "docker-build-layers": "0.0.1",
+    "docker-build-layers": "0.0.2",
     "eslint": "2.7.0",
     "eslint-plugin-node": "^1.0.0",
     "eslint-plugin-react": "4.3.0",
