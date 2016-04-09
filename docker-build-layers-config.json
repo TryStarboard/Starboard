@@ -3,27 +3,27 @@
   "afterEach": "gcloud docker push <%= tag %>",
   "images": {
     "starboard-server-node": {
-      "version": 8,
+      "version": 9,
       "dockerfile": "./docker-artifact/Dockerfile-server-node"
     },
     "starboard-server-node-modules": {
-      "version": 9,
+      "version": 10,
       "dockerfile": "./docker-artifact/Dockerfile-server-node-modules.tmpl",
       "isTemplate": true,
       "baseimage": "starboard-server-node"
     },
     "starboard-server": {
-      "version": 19,
+      "version": 20,
       "dockerfile": "./docker-artifact/Dockerfile-server.tmpl",
       "isTemplate": true,
       "baseimage": "starboard-server-node-modules"
     },
     "starboard-job-server-node-modules": {
-      "version": 7,
+      "version": 8,
       "dockerfile": "./docker-artifact/Dockerfile-job-server-node-modules"
     },
     "starboard-job-server": {
-      "version": 13,
+      "version": 14,
       "dockerfile": "./docker-artifact/Dockerfile-job-server.tmpl",
       "isTemplate": true,
       "baseimage": "starboard-job-server-node-modules"
