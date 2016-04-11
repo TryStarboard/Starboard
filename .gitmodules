@@ -1,0 +1,3 @@
+[submodule "http-server"]
+	path = http-server
+	url = git@github.com:TryStarboard/http-server.git
