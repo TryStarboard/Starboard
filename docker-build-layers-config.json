@@ -1,29 +1,29 @@
 {
-  "prefix": "us.gcr.io/starboard-1224/",
-  "afterEach": "gcloud docker push <%= tag %>",
+  "prefix": "daiweilu/",
+  "afterEach": "docker push <%= tag %>",
   "images": {
     "starboard-server-node": {
-      "version": 9,
+      "version": 10,
       "dockerfile": "./docker-artifact/Dockerfile-server-node"
     },
     "starboard-server-node-modules": {
-      "version": 10,
+      "version": 11,
       "dockerfile": "./docker-artifact/Dockerfile-server-node-modules.tmpl",
       "isTemplate": true,
       "baseimage": "starboard-server-node"
     },
     "starboard-server": {
-      "version": 20,
+      "version": 24,
       "dockerfile": "./docker-artifact/Dockerfile-server.tmpl",
       "isTemplate": true,
       "baseimage": "starboard-server-node-modules"
     },
     "starboard-job-server-node-modules": {
-      "version": 8,
+      "version": 9,
       "dockerfile": "./docker-artifact/Dockerfile-job-server-node-modules"
     },
     "starboard-job-server": {
-      "version": 14,
+      "version": 15,
       "dockerfile": "./docker-artifact/Dockerfile-job-server.tmpl",
       "isTemplate": true,
       "baseimage": "starboard-job-server-node-modules"
