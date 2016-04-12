@@ -1,7 +1,33 @@
+http-server:
+  image: daiweilu/starboard-http-server:v1
+  links:
+    - postgres
+    - redis
+  environment:
+    - NODE_ENV=development
+  ports:
+    - '10000:10000'
+  volumes:
+    - ./build:/app/build
+    - ./config:/app/config
+    - ./public:/app/public
+    - ./template:/app/template
+
+job-server:
+  image: daiweilu/starboard-job-server:v1
+  links:
+    - postgres
+    - redis
+  environment:
+    - NODE_ENV=development
+  volumes:
+    - ./build:/app/build
+    - ./config:/app/config
+
 postgres:
   image: postgres:9.5
   ports:
-    - '5432:5432'
+    - '10101:5432'
   environment:
     - POSTGRES_PASSWORD=1234
     - POSTGRES_USER=dev
@@ -10,12 +36,4 @@ postgres:
 redis:
   image: redis:3.0
   ports:
-    - '10100:6379'
-
-# app:
-#   build: .
-#   links:
-#     - postgres
-#     - redis
-#   ports:
-#     - '80:80'
+    - '10102:6379'

@@ -1,7 +1,0 @@
-FROM daiweilu/starboard-server-node:v<%= baseimage_version %>
-
-RUN mkdir /home/app/webapp
-WORKDIR /home/app/webapp
-ADD package.json /home/app/webapp
-ENV NODE_ENV production
-RUN npm install

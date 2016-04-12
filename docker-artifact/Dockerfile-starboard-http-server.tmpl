@@ -1,0 +1,9 @@
+FROM daiweilu/starboard-node-modules:v<%= baseimage_version %>
+
+ADD build /app/build
+ADD config /app/config
+ADD template /app/template
+ADD public /app/public
+
+EXPOSE 10000
+CMD ["node", "build/server.js"]

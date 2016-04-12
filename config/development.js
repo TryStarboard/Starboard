@@ -1,24 +1,21 @@
 'use strict';
 
-const url = require('url');
 const join = require('path').join;
-
-const dockerConn = url.parse(process.env.DOCKER_HOST || 'tcp://localhost');
 
 module.exports = {
   cookie: {
     keys: ['keyboard cat', 'starboard'],
   },
   redis: {
-    host: dockerConn.hostname,
-    port: 10100,
+    host: 'redis',
+    port: process.env.REDIS_PORT_6379_TCP_PORT,
   },
   postgres: {
-    host: dockerConn.hostname,
-    port: 5432,
-    database: 'dev-db',
-    user: 'dev',
-    password: '1234',
+    host: 'postgres',
+    port: process.env.POSTGRES_PORT_5432_TCP_PORT,
+    database: process.env.POSTGRES_ENV_POSTGRES_DB,
+    user: process.env.POSTGRES_ENV_POSTGRES_USER,
+    password: process.env.POSTGRES_ENV_POSTGRES_PASSWORD,
   },
   koa: {
     publicDir: join(__dirname, '../public'),
@@ -27,7 +24,7 @@ module.exports = {
   github: {
     clientID: process.env.GITHUB_CLIENT_ID,
     clientSecret: process.env.GITHUB_CLIENT_SECRET,
-    callbackURL: 'http://localhost:10010/github-back'
+    callbackURL: 'http://local.docker:10000/github-back'
   },
   mixpanel: {
     token: null,

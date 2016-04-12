@@ -12,7 +12,13 @@ module.exports = {
     port: process.env.REDIS_PORT,
     password: process.env.REDIS_PASS,
   },
-  postgres: process.env.DATABASE_URL,
+  postgres: {
+    host: process.env.POSTGRES_HOST,
+    port: process.env.POSTGRES_PORT,
+    database: process.env.POSTGRES_DB,
+    user: process.env.POSTGRES_USER,
+    password: process.env.POSTGRES_PASS,
+  },
   koa: {
     publicDir: join(__dirname, '../public'),
     templateDir: join(__dirname, '../template'),

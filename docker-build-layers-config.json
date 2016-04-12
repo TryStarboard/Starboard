@@ -2,31 +2,21 @@
   "prefix": "daiweilu/",
   "afterEach": "docker push <%= tag %>",
   "images": {
-    "starboard-server-node": {
-      "version": 10,
-      "dockerfile": "./docker-artifact/Dockerfile-server-node"
+    "starboard-node-modules": {
+      "version": 1,
+      "dockerfile": "./docker-artifact/Dockerfile-starboard-node-modules"
     },
-    "starboard-server-node-modules": {
-      "version": 11,
-      "dockerfile": "./docker-artifact/Dockerfile-server-node-modules.tmpl",
+    "starboard-http-server": {
+      "version": 1,
+      "dockerfile": "./docker-artifact/Dockerfile-starboard-http-server.tmpl",
       "isTemplate": true,
-      "baseimage": "starboard-server-node"
-    },
-    "starboard-server": {
-      "version": 24,
-      "dockerfile": "./docker-artifact/Dockerfile-server.tmpl",
-      "isTemplate": true,
-      "baseimage": "starboard-server-node-modules"
-    },
-    "starboard-job-server-node-modules": {
-      "version": 9,
-      "dockerfile": "./docker-artifact/Dockerfile-job-server-node-modules"
+      "baseimage": "starboard-node-modules"
     },
     "starboard-job-server": {
-      "version": 15,
-      "dockerfile": "./docker-artifact/Dockerfile-job-server.tmpl",
+      "version": 1,
+      "dockerfile": "./docker-artifact/Dockerfile-starboard-job-server.tmpl",
       "isTemplate": true,
-      "baseimage": "starboard-job-server-node-modules"
+      "baseimage": "starboard-node-modules"
     }
   }
 }
