@@ -24,7 +24,7 @@ module.exports = {
   github: {
     clientID: process.env.GITHUB_CLIENT_ID,
     clientSecret: process.env.GITHUB_CLIENT_SECRET,
-    callbackURL: 'http://local.docker:10000/github-back'
+    callbackURL: 'http://localhost:10000/github-back'
   },
   mixpanel: {
     token: null,
