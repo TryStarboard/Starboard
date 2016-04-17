@@ -1,7 +1,4 @@
-/*eslint no-process-exit:0*/
-
 import 'source-map-support/register';
-import './loadEnv';
 import kue       from 'kue';
 import config    from 'config';
 import Redis     from 'ioredis';
