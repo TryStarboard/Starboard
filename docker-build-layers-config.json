@@ -13,7 +13,7 @@
       "baseimage": "starboard-node-modules"
     },
     "starboard-job-server": {
-      "version": 4,
+      "version": 6,
       "dockerfile": "./docker-artifact/Dockerfile-starboard-job-server.tmpl",
       "isTemplate": true,
       "baseimage": "starboard-node-modules"
