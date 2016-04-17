@@ -3,17 +3,17 @@
   "afterEach": "docker push <%= tag %>",
   "images": {
     "starboard-node-modules": {
-      "version": 1,
+      "version": 2,
       "dockerfile": "./docker-artifact/Dockerfile-starboard-node-modules"
     },
     "starboard-http-server": {
-      "version": 3,
+      "version": 5,
       "dockerfile": "./docker-artifact/Dockerfile-starboard-http-server.tmpl",
       "isTemplate": true,
       "baseimage": "starboard-node-modules"
     },
     "starboard-job-server": {
-      "version": 2,
+      "version": 4,
       "dockerfile": "./docker-artifact/Dockerfile-starboard-job-server.tmpl",
       "isTemplate": true,
       "baseimage": "starboard-node-modules"
