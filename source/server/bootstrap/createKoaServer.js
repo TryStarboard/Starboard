@@ -21,7 +21,7 @@ export default function createKoaServer() {
   app.use(koaStatic(config.get('koa.staticDir')));
 
   app.use(views(config.get('koa.templateDir'), {
-    extension: 'ejs',
+    extension: 'jade',
   }));
 
   if (config.get('isDev')) {

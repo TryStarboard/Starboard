@@ -8,7 +8,7 @@ router.get('/', function *() {
     return;
   }
 
-  yield this.render('index.jade');
+  yield this.render('index');
 });
 
 router.get('/dashboard', function *() {
