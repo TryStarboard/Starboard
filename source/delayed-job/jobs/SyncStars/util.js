@@ -148,6 +148,10 @@ function getGithubClientForUser(user_id) {
  * @yield {Promise<{id: number; language: string;}>} Resolve
  */
 export const reposSelector = wrap(function *(repos) {
+  if (!repos.length) {
+    return [];
+  }
+
   const [githubIdLangMap, transformedRepos] = transformReposForInsertion(repos);
 
   const transformInsertedRepos = map(function ({id: repo_id, github_id}) {
@@ -177,8 +181,7 @@ export const tagsSelector = curryN(2, wrap(function *(user_id, repos) {
   )(repos);
 
   if (tags.length) {
-    const sql = db('tags').insert(tags);
-    yield db.raw('? ON CONFLICT DO NOTHING', [sql]);
+    yield db.raw('? ON CONFLICT DO NOTHING', [db('tags').insert(tags)]);
   }
 
   const allTags = yield db('tags').select('id', 'text').where({user_id});
@@ -203,7 +206,9 @@ export const reposAndLanguageTagMapSelector = curryN(2, wrap(function *(user_id,
     filter(identity)
   )(repos);
 
-  yield db.raw('? ON CONFLICT DO NOTHING', [db('repo_tags').insert(entries)]);
+  if (entries.length) {
+    yield db.raw('? ON CONFLICT DO NOTHING', [db('repo_tags').insert(entries)]);
+  }
 
   return pluck('id', repos);
 }));
