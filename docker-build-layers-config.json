@@ -7,7 +7,7 @@
       "dockerfile": "./docker-artifact/Dockerfile-starboard-node-modules"
     },
     "starboard-http-server": {
-      "version": 5,
+      "version": 6,
       "dockerfile": "./docker-artifact/Dockerfile-starboard-http-server.tmpl",
       "isTemplate": true,
       "baseimage": "starboard-node-modules"
