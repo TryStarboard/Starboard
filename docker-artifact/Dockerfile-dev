@@ -1,0 +1,7 @@
+FROM nodesource/trusty:5.10.0
+
+ENV NODE_ENV=development
+RUN mkdir /app
+WORKDIR /app
+ADD package.json /app/
+RUN npm install

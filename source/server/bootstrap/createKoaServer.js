@@ -6,7 +6,7 @@ import koaLogger                 from 'koa-logger';
 import views                     from 'koa-views';
 import log                       from '../../shared-backend/log';
 import session                   from '../util/session';
-import {authInit, authSession} from '../util/auth';
+import {authInit, authSession}   from '../util/auth';
 import htmlRoute                 from '../routers/html';
 import unauthedRoute             from '../routers/html/unauthed';
 import apiRoute                  from '../routers/api';
@@ -18,9 +18,10 @@ export default function createKoaServer() {
   app.keys = config.get('cookie.keys');
 
   app.use(koaStatic(config.get('koa.publicDir')));
+  app.use(koaStatic(config.get('koa.staticDir')));
 
   app.use(views(config.get('koa.templateDir'), {
-    extension: 'ejs',
+    extension: 'jade',
   }));
 
   if (config.get('isDev')) {

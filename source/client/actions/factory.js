@@ -22,7 +22,9 @@ export function createLogout(navTo) {
     return {
       type: LOGOUT,
       payload: {
-        promise: axios.get('/api/v1/logout').tap(() => navTo('/login')),
+        promise: axios.get('/api/v1/logout').tap(() => {
+          window.location = '/';
+        }),
       }
     };
   };

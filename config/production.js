@@ -22,6 +22,7 @@ module.exports = {
   koa: {
     publicDir: join(__dirname, '../public'),
     templateDir: join(__dirname, '../template'),
+    staticDir: join(__dirname, '../static'),
   },
   github: {
     clientID: process.env.GITHUB_CLIENT_ID,

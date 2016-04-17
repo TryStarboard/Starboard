@@ -20,11 +20,12 @@ module.exports = {
   koa: {
     publicDir: join(__dirname, '../public'),
     templateDir: join(__dirname, '../template'),
+    staticDir: join(__dirname, '../static'),
   },
   github: {
     clientID: process.env.GITHUB_CLIENT_ID,
     clientSecret: process.env.GITHUB_CLIENT_SECRET,
-    callbackURL: 'http://local.docker:10000/github-back'
+    callbackURL: 'http://localhost:10000/github-back'
   },
   mixpanel: {
     token: null,
