@@ -17,7 +17,7 @@ router.get('/dashboard', function *() {
     return;
   }
 
-  yield this.render('dashboard');
+  yield this.render('-inner');
 });
 
 router.get('/user-profile', function *() {
@@ -26,7 +26,7 @@ router.get('/user-profile', function *() {
     return;
   }
 
-  yield this.render('dashboard');
+  yield this.render('-inner');
 });
 
 export default router.routes();
