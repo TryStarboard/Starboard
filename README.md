@@ -2,7 +2,7 @@
 
 A github starred repo management app.
 
-Video DEMO (https://youtu.be/NWTDXhLLzaE)
+Video demo (https://youtu.be/NWTDXhLLzaE)
 
 ![](./doc/dashboard-screenshot.png)
 
