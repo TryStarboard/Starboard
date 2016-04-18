@@ -2,9 +2,11 @@
 
 A github starred repo management app.
 
-Video demo (https://youtu.be/NWTDXhLLzaE)
-
 ![](./doc/dashboard-screenshot.png)
+
+## Acknowledgement
+
+Thanks [Eldar Burnashev (@frontendjedi)](https://twitter.com/frontendjedi) for designing the dashboard UI.
 
 ## Tech Stack
 
