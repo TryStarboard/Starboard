@@ -2,6 +2,8 @@
 
 A github starred repo management app.
 
+Video demo https://vimeo.com/163324105. Sorry for not creating a tutorial UI in the app :P
+
 ![](./doc/dashboard-screenshot.png)
 
 ## Acknowledgement
