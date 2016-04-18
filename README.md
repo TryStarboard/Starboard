@@ -1,6 +1,8 @@
 # Starboard
 
-A github starred repo management app
+A github starred repo management app.
+
+Video DEMO (https://youtu.be/NWTDXhLLzaE)
 
 ![](./doc/dashboard-screenshot.png)
 
