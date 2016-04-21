@@ -121,5 +121,29 @@
         fill: red;
       }
     }
+
+    .dashboard__tags-tip-box {
+      background-color: #438EFF;
+      margin-top: 30px;
+      padding: 10px;
+      border-radius: 4px;
+      color: white;
+      font-size: 18px;
+      position: relative;
+    }
+
+    .dashboard__tags-tip-box-arrow {
+      $length: 30px;
+      width: $length;
+      height: $length;
+      border-left: ($length / 2) solid transparent;
+      border-top: ($length / 2) solid transparent;
+      border-right: ($length / 2) solid transparent;
+      border-bottom: ($length / 2) solid #438EFF;
+      position: absolute;
+      top: - $length;
+      left: 50%;
+      transform: translate(-50%, 0);
+    }
   }
 }
