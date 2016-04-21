@@ -1,8 +1,14 @@
 # Starboard
 
-A github starred repo management app
+A github starred repo management app.
+
+Video demo https://vimeo.com/163324105. Sorry for not creating a tutorial UI in the app :P
 
 ![](./doc/dashboard-screenshot.png)
+
+## Acknowledgement
+
+Thanks [Eldar Burnashev (@frontendjedi)](https://twitter.com/frontendjedi) for designing the dashboard UI.
 
 ## Tech Stack
 
