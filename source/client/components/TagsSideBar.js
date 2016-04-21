@@ -74,6 +74,10 @@ class TagsSideBar extends Component {
         <div className='dashboard__tags-tag-list'>
           {this.props.tags.map((id) => <Tag id={id} key={id} />)}
         </div>
+        <div className="dashboard__tags-tip-box">
+          <div className="dashboard__tags-tip-box-arrow"></div>
+          Drag & drop a tag over a repo to assign tags to repos
+        </div>
       </div>
     );
   }
