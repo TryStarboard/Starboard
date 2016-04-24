@@ -1,12 +1,14 @@
+'use strict';
+
 const config = require('config');
 const Redis  = require('ioredis');
 const log    = require('./log');
 
-export const subClient = new Redis(config.get('redis'));
+const subClient = new Redis(config.get('redis'));
 
 const subCounters = new Map();
 
-export function subscribe(channelName) {
+function subscribe(channelName) {
   const current = subCounters.get(channelName);
   if (!current) {
     subCounters.set(channelName, 1);
@@ -20,7 +22,7 @@ export function subscribe(channelName) {
   }
 }
 
-export function unsubscribe(channelName) {
+function unsubscribe(channelName) {
   const current = subCounters.get(channelName);
 
   if (!current) {
@@ -39,3 +41,9 @@ export function unsubscribe(channelName) {
     }
   });
 }
+
+module.exports = {
+  subClient,
+  subscribe,
+  unsubscribe,
+};

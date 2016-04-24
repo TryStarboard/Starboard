@@ -1,8 +1,8 @@
-import {wrap}                  from 'co';
-import db                      from '../db';
-import {UniqueConstraintError} from './Errors';
+const {wrap}                  = require('co');
+const db                      = require('../db');
+const {UniqueConstraintError} = require('./Errors');
 
-export function getAll(id) {
+function getAll(id) {
   return db
     .select('id', 'text', 'foreground_color', 'background_color')
     .from('tags')
@@ -10,7 +10,7 @@ export function getAll(id) {
     .orderBy('id', 'desc');
 }
 
-export const addTag = wrap(function *(user_id, text) {
+const addTag = wrap(function *(user_id, text) {
   try {
     const [tag] = yield db('tags').insert({user_id, text}, '*');
     return tag;
@@ -22,9 +22,15 @@ export const addTag = wrap(function *(user_id, text) {
   }
 });
 
-export const deleteTag = wrap(function *(id) {
+const deleteTag = wrap(function *(id) {
   yield [
     db('repo_tags').where({tag_id: id}).del(),
     db('tags').where({id}).del(),
   ];
 });
+
+module.exports = {
+  getAll,
+  addTag,
+  deleteTag,
+};

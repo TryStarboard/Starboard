@@ -1,4 +1,6 @@
-import db from '../db';
+'use strict';
+
+const db = require('../db');
 
 function buildQuery() {
   return db
@@ -18,7 +20,7 @@ function buildQuery() {
     .orderBy('repos.starred_at', 'desc');
 }
 
-export function getAll(id, limit) {
+function getAll(id, limit) {
   let query = buildQuery().where('repos.user_id', id);
 
   if (limit != null) {
@@ -28,6 +30,11 @@ export function getAll(id, limit) {
   return query;
 }
 
-export function getReposWithIds(ids) {
+function getReposWithIds(ids) {
   return buildQuery().whereIn('repos.id', ids);
 }
+
+module.exports = {
+  getAll,
+  getReposWithIds,
+};

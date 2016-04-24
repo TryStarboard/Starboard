@@ -1,6 +1,6 @@
-import {wrap} from 'co';
-import db       from '../db';
-import github   from '../github';
+const {wrap} = require('co');
+const db     = require('../db');
+const github = require('../github');
 
 // { login: 'd6u',
 //   id: 1234,
@@ -79,7 +79,7 @@ const upsert = wrap(function *(data, access_token) {
   return userRecord.id;
 });
 
-export {
+module.exports = {
   fetchUserProfile,
   upsert,
   findById,
