@@ -14,9 +14,7 @@ const LEVELS = {
 
 const transformLogData = evolve({
   err: bunyan.stdSerializers.err,
-  level(val) {
-    return LEVELS[val];
-  }
+  level: (val) => LEVELS[val],
 });
 
 module.exports = {

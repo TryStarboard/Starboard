@@ -13,14 +13,9 @@ const opts = {
 };
 
 if (process.env.NODE_ENV !== 'production') {
-  opts.streams = [
-    require('./pretty'), // Babel compiled ES2015 module
-  ];
+  opts.streams = [require('./pretty')];
 } else {
-  opts.streams = [
-    require('./sentry'), // Babel compiled ES2015 module
-    require('./logentries'), // Babel compiled ES2015 module
-  ];
+  opts.streams = [require('./sentry'), require('./logentries')];
 }
 
 module.exports = bunyan.createLogger(opts);

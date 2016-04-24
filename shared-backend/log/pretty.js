@@ -1,17 +1,11 @@
 'use strict';
 
-const es = require('event-stream');
+const {map} = require('event-stream');
 const {transformLogData} = require('./util');
 
-const pretty = es.map((data, cb) => {
+const pretty = map((data, cb) => {
   const transformed = transformLogData(data);
-  const {req, err, msg} = transformed;
-
-  if (req && !err) {
-    cb(null, `${msg}:${req.url}\n`);
-  } else {
-    cb(null, `${JSON.stringify(transformed, null, 4)}\n`);
-  }
+  cb(null, JSON.stringify(transformed));
 });
 
 pretty.pipe(process.stdout);
