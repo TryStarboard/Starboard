@@ -1,3 +1,6 @@
 [submodule "http-server"]
 	path = http-server
 	url = git@github.com:TryStarboard/http-server.git
+[submodule "job-server"]
+	path = job-server
+	url = git@github.com:TryStarboard/job-server.git

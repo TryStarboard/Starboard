@@ -1,8 +1,0 @@
-FROM daiweilu/starboard-node-modules:v<%= baseimage_version %>
-
-ADD package.json /app/
-
-ADD build /app/build
-ADD config /app/config
-
-CMD ["node", "build/delayed-job.js"]
