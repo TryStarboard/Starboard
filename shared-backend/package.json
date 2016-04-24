@@ -1,0 +1,22 @@
+{
+  "name": "shared-backend",
+  "version": "1.0.0",
+  "private": true,
+  "author": "Daiwei Lu <daiweilu123@gmail.com> (http://daiwei.lu/)",
+  "license": "MIT",
+  "dependencies": {
+    "bunyan": "^1.8.1",
+    "co": "^4.6.0",
+    "config": "^1.20.1",
+    "event-stream": "^3.3.2",
+    "ioredis": "^1.15.1",
+    "knex": "^0.10.0",
+    "octonode": "^0.7.5",
+    "pg": "^4.5.3",
+    "ramda": "^0.21.0",
+    "request-promise": "^3.0.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
+}

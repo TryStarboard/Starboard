@@ -1,14 +1,18 @@
-const config   = require('config');
-const Redis    = require('ioredis');
-const throttle = require('lodash/throttle');
-const log      = require('./log');
+'use strict';
 
-const throttleLog = throttle((err) => log.error(err), 1000, {trailing: false});
+const Redis = require('ioredis');
 
-const client = new Redis(config.get('redis'));
-
-client.on('error', throttleLog);
+function createClient(opts, log) {
+  const client = new Redis({
+    host: opts.host,
+    port: opts.port,
+    password: opts.password,
+    retryStrategy: () => 1000,
+  });
+  client.on('error', (err) => log.error(err));
+  return client;
+}
 
 module.exports = {
-  client,
+  createClient,
 };

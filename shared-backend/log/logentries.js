@@ -1,3 +1,5 @@
+'use strict';
+
 const config = require('config');
 const es = require('event-stream');
 const Logger = require('le_node');

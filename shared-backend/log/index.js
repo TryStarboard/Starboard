@@ -1,5 +1,6 @@
+'use strict';
+
 const bunyan = require('bunyan');
-const config = require('config');
 const {identity} = require('ramda');
 
 const opts = {

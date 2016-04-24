@@ -1,3 +1,5 @@
+'use strict';
+
 const {evolve} = require('ramda');
 const bunyan = require('bunyan');
 
