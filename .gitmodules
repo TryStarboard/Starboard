@@ -4,3 +4,6 @@
 [submodule "job-server"]
 	path = job-server
 	url = git@github.com:TryStarboard/job-server.git
+[submodule "starboard-ui"]
+	path = starboard-ui
+	url = git@github.com:TryStarboard/starboard-ui.git
