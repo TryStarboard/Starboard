@@ -1,6 +1,6 @@
-const {wrap} = require('co');
-const db     = require('../db');
-const github = require('../github');
+const {wrap}   = require('co');
+const db       = require('../db');
+const {github} = require('../github');
 
 // { login: 'd6u',
 //   id: 1234,

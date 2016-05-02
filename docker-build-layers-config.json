@@ -2,21 +2,25 @@
   "prefix": "daiweilu/",
   "afterEach": "docker push <%= tag %>",
   "images": {
-    "starboard-node-modules": {
-      "version": 2,
-      "dockerfile": "./docker-artifact/Dockerfile-starboard-node-modules"
+    "starboard-http-server-node-modules": {
+      "version": 1,
+      "dockerfile": "./http-server/Dockerfile-starboard-http-server-node-modules"
     },
     "starboard-http-server": {
-      "version": 8,
-      "dockerfile": "./docker-artifact/Dockerfile-starboard-http-server.tmpl",
+      "version": 11,
+      "dockerfile": "./http-server/Dockerfile-starboard-http-server.tmpl",
       "isTemplate": true,
-      "baseimage": "starboard-node-modules"
+      "baseimage": "starboard-http-server-node-modules"
+    },
+    "starboard-job-server-node-modules": {
+      "version": 0,
+      "dockerfile": "./job-server/Dockerfile-starboard-job-server-node-modules"
     },
     "starboard-job-server": {
       "version": 7,
-      "dockerfile": "./docker-artifact/Dockerfile-starboard-job-server.tmpl",
+      "dockerfile": "./job-server/Dockerfile-starboard-job-server.tmpl",
       "isTemplate": true,
-      "baseimage": "starboard-node-modules"
+      "baseimage": "starboard-job-server-node-modules"
     }
   }
 }
