@@ -7,13 +7,13 @@
       "dockerfile": "./docker-artifact/Dockerfile-shared-backend-node-module"
     },
     "starboard-http-server-node-modules": {
-      "version": 6,
+      "version": 8,
       "dockerfile": "./docker-artifact/Dockerfile-starboard-http-server-node-modules.tmpl",
       "isTemplate": true,
       "baseimage": "starboard-shared-backend-node-module"
     },
     "starboard-http-server": {
-      "version": 19,
+      "version": 21,
       "dockerfile": "./docker-artifact/Dockerfile-starboard-http-server.tmpl",
       "isTemplate": true,
       "baseimage": "starboard-http-server-node-modules"
