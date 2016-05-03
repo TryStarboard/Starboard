@@ -1,0 +1,6 @@
+FROM nodesource/trusty:5.10.0
+
+RUN mkdir /shared-backend
+WORKDIR /shared-backend
+ADD shared-backend/package.json /shared-backend/
+RUN npm install

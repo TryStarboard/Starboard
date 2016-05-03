@@ -2,26 +2,21 @@
   "name": "starboard",
   "version": "1.0.0",
   "description": "A github starred repo management app.",
-  "main": "index.js",
-  "directories": {
-    "doc": "doc"
-  },
-  "dependencies": {},
-  "devDependencies": {
-    "docker-build-layers": "0.0.2"
-  },
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+  "keywords": [],
+  "homepage": "https://github.com/TryStarboard/Starboard#readme",
+  "bugs": {
+    "url": "https://github.com/TryStarboard/Starboard/issues"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/TryStarboard/Starboard.git"
   },
-  "keywords": [],
   "author": "Daiwei Lu <daiweilu123@gmail.com> (http://daiwei.lu/)",
   "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/TryStarboard/Starboard/issues"
+  "devDependencies": {
+    "docker-build-layers": "0.0.3"
   },
-  "homepage": "https://github.com/TryStarboard/Starboard#readme"
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
 }

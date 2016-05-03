@@ -2,23 +2,31 @@
   "prefix": "daiweilu/",
   "afterEach": "docker push <%= tag %>",
   "images": {
+    "starboard-shared-backend-node-module": {
+      "version": 2,
+      "dockerfile": "./docker-artifact/Dockerfile-shared-backend-node-module"
+    },
     "starboard-http-server-node-modules": {
-      "version": 1,
-      "dockerfile": "./http-server/Dockerfile-starboard-http-server-node-modules"
+      "version": 5,
+      "dockerfile": "./docker-artifact/Dockerfile-starboard-http-server-node-modules.tmpl",
+      "isTemplate": true,
+      "baseimage": "starboard-shared-backend-node-module"
     },
     "starboard-http-server": {
-      "version": 11,
-      "dockerfile": "./http-server/Dockerfile-starboard-http-server.tmpl",
+      "version": 16,
+      "dockerfile": "./docker-artifact/Dockerfile-starboard-http-server.tmpl",
       "isTemplate": true,
       "baseimage": "starboard-http-server-node-modules"
     },
     "starboard-job-server-node-modules": {
       "version": 0,
-      "dockerfile": "./job-server/Dockerfile-starboard-job-server-node-modules"
+      "dockerfile": "./docker-artifact/Dockerfile-starboard-job-server-node-modules.tmpl",
+      "isTemplate": true,
+      "baseimage": "starboard-shared-backend-node-module"
     },
     "starboard-job-server": {
       "version": 7,
-      "dockerfile": "./job-server/Dockerfile-starboard-job-server.tmpl",
+      "dockerfile": "./docker-artifact/Dockerfile-starboard-job-server.tmpl",
       "isTemplate": true,
       "baseimage": "starboard-job-server-node-modules"
     }

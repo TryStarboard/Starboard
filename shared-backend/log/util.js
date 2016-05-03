@@ -1,6 +1,6 @@
 'use strict';
 
-const {pipe, map, evolve, over, lensPath, invoker, fromPairs} = require('ramda');
+const {pipe, map, evolve, over, lensPath, invoker, fromPairs, when, identity} = require('ramda');
 const bunyan = require('bunyan');
 
 const LEVELS = {
@@ -17,10 +17,13 @@ const transformLogData = evolve({
   err: bunyan.stdSerializers.err,
   req: over(
     lensPath(['headers', 'cookie']),
-    pipe(
-      invoker(1, 'split')(/; /),
-      map(invoker(1, 'split')(/=/)),
-      fromPairs
+    when(
+      identity, // filter out falsy value
+      pipe(
+        invoker(1, 'split')(/; /),
+        map(invoker(1, 'split')(/=/)),
+        fromPairs
+      )
     )
   ),
 });

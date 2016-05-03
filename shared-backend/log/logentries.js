@@ -2,10 +2,10 @@
 
 const config = require('config');
 const es = require('event-stream');
-const Logger = require('le_node');
+const Loggly = require('le_node');
 const {transformLogData} = require('./util');
 
-const definition = Logger.bunyanStream({
+const definition = Loggly.bunyanStream({
   token: config.get('logging.Logentries.token')
 });
 

@@ -1,0 +1,6 @@
+FROM daiweilu/starboard-shared-backend-node-module:v<%= baseimage_version %>
+
+RUN mkdir /app
+WORKDIR /app
+ADD http-server/package.json /app/
+RUN npm install

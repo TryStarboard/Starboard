@@ -1,0 +1,15 @@
+FROM daiweilu/starboard-node-modules:v<%= baseimage_version %>
+
+ADD shared-backend/log /shared-backend/log
+ADD shared-backend/model /shared-backend/model
+ADD shared-backend/db.js /shared-backend/db.js
+ADD shared-backend/github.js /shared-backend/github.js
+ADD shared-backend/pubsub.js /shared-backend/pubsub.js
+ADD shared-backend/redis.js /shared-backend/redis.js
+
+ADD job-server/package.json /app/
+
+ADD job-server/build /app/build
+ADD job-server/config /app/config
+
+CMD ["node", "build/delayed-job.js"]
