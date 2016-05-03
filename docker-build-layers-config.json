@@ -3,29 +3,29 @@
   "afterEach": "docker push <%= tag %>",
   "images": {
     "starboard-shared-backend-node-module": {
-      "version": 2,
+      "version": 3,
       "dockerfile": "./docker-artifact/Dockerfile-shared-backend-node-module"
     },
     "starboard-http-server-node-modules": {
-      "version": 5,
+      "version": 6,
       "dockerfile": "./docker-artifact/Dockerfile-starboard-http-server-node-modules.tmpl",
       "isTemplate": true,
       "baseimage": "starboard-shared-backend-node-module"
     },
     "starboard-http-server": {
-      "version": 16,
+      "version": 19,
       "dockerfile": "./docker-artifact/Dockerfile-starboard-http-server.tmpl",
       "isTemplate": true,
       "baseimage": "starboard-http-server-node-modules"
     },
     "starboard-job-server-node-modules": {
-      "version": 0,
+      "version": 2,
       "dockerfile": "./docker-artifact/Dockerfile-starboard-job-server-node-modules.tmpl",
       "isTemplate": true,
       "baseimage": "starboard-shared-backend-node-module"
     },
     "starboard-job-server": {
-      "version": 7,
+      "version": 10,
       "dockerfile": "./docker-artifact/Dockerfile-starboard-job-server.tmpl",
       "isTemplate": true,
       "baseimage": "starboard-job-server-node-modules"
