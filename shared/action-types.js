@@ -1,0 +1,14 @@
+'use strict';
+
+module.exports = {
+  // Action
+  SYNC_REPOS: 'SYNC_REPOS',
+  LOGOUT: 'LOGOUT',
+  DELETE_ACCOUNT: 'DELETE_ACCOUNT',
+
+  // Server action
+  UPDATE_SOME_REPOS: 'UPDATE_SOME_REPOS',
+  REMOVE_REPOS: 'REMOVE_REPOS',
+  UPDATE_TAGS: 'UPDATE_TAGS',
+  UPDATE_PROGRESS: 'UPDATE_PROGRESS',
+};
