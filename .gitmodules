@@ -7,3 +7,6 @@
 [submodule "starboard-ui"]
 	path = starboard-ui
 	url = git@github.com:TryStarboard/starboard-ui.git
+[submodule "shared-backend"]
+	path = shared-backend
+	url = git@github.com:TryStarboard/shared-backend.git

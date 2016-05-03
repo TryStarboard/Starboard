@@ -1,4 +1,4 @@
-FROM daiweilu/starboard-shared-backend-node-module:v<%= baseimage_version %>
+FROM nodesource/trusty:5.11.0
 
 RUN mkdir /app
 WORKDIR /app
