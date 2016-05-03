@@ -1,4 +1,4 @@
-FROM daiweilu/starboard-node-modules:v<%= baseimage_version %>
+FROM daiweilu/starboard-job-server-node-modules:v<%= baseimage_version %>
 
 ADD shared-backend/log /shared-backend/log
 ADD shared-backend/model /shared-backend/model
@@ -7,9 +7,10 @@ ADD shared-backend/github.js /shared-backend/github.js
 ADD shared-backend/pubsub.js /shared-backend/pubsub.js
 ADD shared-backend/redis.js /shared-backend/redis.js
 
+# Add package.json again to include up to date version
 ADD job-server/package.json /app/
 
-ADD job-server/build /app/build
 ADD job-server/config /app/config
+ADD job-server/src /app/src
 
-CMD ["node", "build/delayed-job.js"]
+CMD ["node", "--harmony_destructuring", "--harmony_default_parameters", "src/index.js"]
