@@ -3,11 +3,11 @@
   "afterEach": "docker push <%= tag %>",
   "images": {
     "starboard-http-server-node-modules": {
-      "version": 9,
+      "version": 11,
       "dockerfile": "./docker-artifact/Dockerfile-starboard-http-server-node-modules"
     },
     "starboard-http-server": {
-      "version": 22,
+      "version": 24,
       "dockerfile": "./docker-artifact/Dockerfile-starboard-http-server.tmpl",
       "isTemplate": true,
       "baseimage": "starboard-http-server-node-modules"

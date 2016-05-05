@@ -2,6 +2,7 @@ FROM daiweilu/starboard-http-server-node-modules:v<%= baseimage_version %>
 
 # Add package.json again to include up to date version
 ADD http-server/package.json /app/
+RUN npm install
 
 ADD http-server/src /app/src
 ADD http-server/config /app/config

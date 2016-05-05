@@ -2,6 +2,7 @@ FROM daiweilu/starboard-job-server-node-modules:v<%= baseimage_version %>
 
 # Add package.json again to include up to date version
 ADD job-server/package.json /app/
+RUN npm install
 
 ADD job-server/config /app/config
 ADD job-server/src /app/src
