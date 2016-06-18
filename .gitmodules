@@ -10,3 +10,6 @@
 [submodule "shared-backend"]
 	path = shared-backend
 	url = git@github.com:TryStarboard/shared-backend.git
+[submodule "websocket-server"]
+	path = websocket-server
+	url = git@github.com:TryStarboard/websocket-server.git
