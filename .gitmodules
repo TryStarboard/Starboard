@@ -13,3 +13,12 @@
 [submodule "websocket-server"]
 	path = websocket-server
 	url = git@github.com:TryStarboard/websocket-server.git
+[submodule "redis"]
+	path = redis
+	url = git@github.com:TryStarboard/redis.git
+[submodule "log"]
+	path = log
+	url = git@github.com:TryStarboard/log.git
+[submodule "models"]
+	path = models
+	url = git@github.com:TryStarboard/models.git
