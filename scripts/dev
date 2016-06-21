@@ -4,9 +4,11 @@
 # Start dev servers
 # ------------------------------
 
-(cd starboard-ui && npm run watch:build) &
-(cd http-server && npm start) &
-(cd http-server && ./scripts/start-browser-sync) &
-(cd job-server  && npm start) &
+(cd starboard-ui     && npm run watch:build) &
+(cd http-server      && npm run dev) &
+(cd http-server      && ./scripts/start-browser-sync) &
+(cd job-server       && npm start) &
+(cd websocket-server && npm start) &
 
+# Wait for background tasks to end
 wait

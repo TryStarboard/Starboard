@@ -22,3 +22,6 @@
 [submodule "models"]
 	path = models
 	url = git@github.com:TryStarboard/models.git
+[submodule "github"]
+	path = github
+	url = git@github.com:TryStarboard/github.git
