@@ -1,35 +1,10 @@
-# http-server:
-#   build: .
-#   dockerfile: ./docker-artifact/Dockerfile-dev
-#   links:
-#     - postgres
-#     - redis
-#   ports:
-#     - '10000:10000'
-#   volumes:
-#     - ./build:/app/build
-#     - ./config:/app/config
-#     - ./public:/app/public
-#     - ./template:/app/template
-
-# job-server:
-#   build: .
-#   dockerfile: ./docker-artifact/Dockerfile-dev
-#   links:
-#     - postgres
-#     - redis
-#   volumes:
-#     - ./build:/app/build
-#     - ./config:/app/config
-
 postgres:
-  image: postgres:9.5.2
+  image: postgres:9.5.3
   ports:
     - '10101:5432'
   environment:
-    - POSTGRES_PASSWORD=1234
-    - POSTGRES_USER=dev
-    - POSTGRES_DB=dev-db
+    - POSTGRES_USER=starboard-dev
+    - POSTGRES_DB=starboard-dev
 
 redis:
   image: redis:3.0

@@ -7,8 +7,8 @@
 (cd starboard-ui     && npm run watch:build) &
 (cd http-server      && npm run dev) &
 (cd http-server      && ./scripts/start-browser-sync) &
-(cd job-server       && npm start) &
-(cd websocket-server && npm start) &
+(cd job-server       && npm run dev) &
+(cd websocket-server && npm run dev) &
 
 # Wait for background tasks to end
 wait

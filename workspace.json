@@ -1,0 +1,9 @@
+{
+  "links": {
+    "@starboard/starboard-ui": "starboard-ui",
+    "@starboard/github": "github",
+    "@starboard/models": "models",
+    "@starboard/log": "log",
+    "@starboard/redis": "redis"
+  }
+}
